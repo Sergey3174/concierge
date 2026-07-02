@@ -1,15 +1,17 @@
-import { Settings } from "lucide-react";
+import { Coins, Settings } from "lucide-react";
 
 type MobileDrawerProps = {
   isOpen: boolean;
   onClose: () => void;
+  openDefaultTask: () => void;
 };
 
 const primaryItems = [
-  { label: "New chat", icon: "edit" },
-  { label: "Search chats", icon: "search" },
-  { label: "Images", icon: "image" },
-  { label: "Library", icon: "grid" },
+  { label: "Новый запрос", icon: "edit", key: "new-request" },
+  // { label: "Search chats", icon: "search" },
+  // { label: "Images", icon: "image" },
+  { label: "Услуги", icon: "grid", key: "services" },
+  { label: "Счета", icon: "coins", key: "accounts" },
 ];
 
 const recentItems = [
@@ -138,10 +140,23 @@ function DrawerItemIcon({ icon }: { icon: string }) {
   if (icon === "edit") return <EditIcon />;
   if (icon === "search") return <SearchIcon />;
   if (icon === "image") return <ImageIcon />;
+  if (icon === "coins") return <Coins />;
   return <GridIcon />;
 }
 
-export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
+export function MobileDrawer({
+  isOpen,
+  onClose,
+  openDefaultTask,
+}: MobileDrawerProps) {
+  const handleOpenDefaultTask = (key: string) => {
+    if (key === "services") {
+      onClose();
+      openDefaultTask();
+      return;
+    }
+  };
+
   return (
     <>
       <div
@@ -154,7 +169,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
       />
 
       <aside
-        className={`absolute inset-y-0 left-0 z-40 flex w-[84%] max-w-[320px] flex-col bg-black px-6 pb-6 pt-4 transition-transform duration-300 ${
+        className={`absolute inset-y-0 left-0 z-40 flex w-[84%] max-w-[320px] flex-col bg-black px-6 pb-4 pt-4 transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -162,19 +177,6 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           <h2 className="text-[2rem] font-normal tracking-tight text-white/92">
             Concierge
           </h2>
-          {/* <button
-            onClick={onClose}
-            className="flex h-11 w-11 items-center justify-center rounded-full text-white/72 transition hover:bg-white/8 hover:text-white"
-          >
-            <svg viewBox="0 0 24 24" fill="none" className="size-6">
-              <path
-                d="M4 7H20M8 12H20M12 17H20"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button> */}
         </div>
 
         <div className="mt-6 space-y-1">
@@ -182,6 +184,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <button
               key={item.label}
               className="flex w-full items-center gap-5 rounded-2xl px-1 py-1 text-left text-[1.05rem] text-white/86 transition hover:bg-white/6"
+              onClick={() => handleOpenDefaultTask(item.key)}
             >
               <span className="text-white/82">
                 <DrawerItemIcon icon={item.icon} />
@@ -191,16 +194,8 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           ))}
         </div>
 
-        <div className="mt-8">
-          <p className="text-[0.95rem] text-white/42">Notebooks</p>
-          <button className="mt-3 flex w-full items-center gap-5 rounded-2xl px-1 py-1 text-left text-[1.05rem] text-white/86 transition hover:bg-white/6">
-            <PlusIcon />
-            <span>New notebook</span>
-          </button>
-        </div>
-
-        <div className="mt-8 min-h-0 flex-1">
-          <p className="text-[0.95rem] text-white/42">Recents</p>
+        <div className="mt-8 min-h-0 flex-1 overflow-auto">
+          <p className="text-[0.95rem] text-white/42">Последние запросы</p>
           <div className="mt-4 space-y-1 overflow-y-auto pr-1">
             {recentItems.map((item, index) => (
               <button
@@ -217,13 +212,13 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           </div>
         </div>
 
-        <div className="mt-5 flex items-center justify-between">
-          {/* <button className="flex items-center gap-3 rounded-full px-1 py-2 text-white/92 transition hover:bg-white/6">
+        <div className="flex items-center justify-between">
+          <button className="flex items-center gap-3 rounded-full px-2 py-2 text-white/92 transition hover:bg-white/6">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-lime-700 text-xl font-medium">
-              S
+              U
             </div>
-            <span className="text-[1.05rem]">Sergey</span>
-          </button> */}
+            <span className="text-[1.05rem]">User</span>
+          </button>
 
           <button className="flex h-11 w-11 items-center justify-center rounded-full text-white/72 transition hover:bg-white/8 hover:text-white">
             <Settings />

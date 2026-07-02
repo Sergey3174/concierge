@@ -49,7 +49,7 @@ export function DefaultTaskPicker({ onSelect }: DefaultTaskPickerProps) {
   return (
     <div className="text-white">
       <div className="mx-auto mb-4 h-1.5 w-16 rounded-full bg-white/70" />
-
+      {/* 
       <div className="mb-6 grid grid-cols-3 gap-3">
         {quickActions.map(({ id, label, icon: Icon }) => (
           <button
@@ -66,7 +66,7 @@ export function DefaultTaskPicker({ onSelect }: DefaultTaskPickerProps) {
             </span>
           </button>
         ))}
-      </div>
+      </div> */}
 
       <div className="space-y-1">
         {tools.map(({ id, title, description, icon: Icon }) => (

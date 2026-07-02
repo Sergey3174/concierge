@@ -142,6 +142,7 @@ function App() {
           <MobileDrawer
             isOpen={isDrawerOpen}
             onClose={() => setIsDrawerOpen(false)}
+            openDefaultTask={() => setIsOpenDefaultTask(true)}
           />
 
           <div
@@ -165,9 +166,9 @@ function App() {
               >
                 {!showMessges ? (
                   <div className="mx-auto flex min-h-full max-w-[280px] flex-col items-center justify-center py-16">
-                    <GeminiStar />
+                    {/* <GeminiStar /> */}
                     <h1 className="mt-7 text-center text-[2.15rem] font-light leading-[1.08] tracking-[-0.04em] text-white/92">
-                      Any new ideas to explore?
+                      How can I help you? <br /> Write what you need.
                     </h1>
                   </div>
                 ) : (
