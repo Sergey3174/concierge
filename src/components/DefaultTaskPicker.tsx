@@ -1,22 +1,8 @@
-import {
-  Camera,
-  File,
-  FolderPlus,
-  ImagePlus,
-  Images,
-  Music4,
-  Orbit,
-} from "lucide-react";
+import { FolderPlus, Images, Music4, Orbit } from "lucide-react";
 
 type DefaultTaskPickerProps = {
   onSelect?: (value: string) => void;
 };
-
-const quickActions = [
-  { id: "photos", label: "Photos", icon: ImagePlus },
-  { id: "camera", label: "Camera", icon: Camera },
-  { id: "files", label: "Files", icon: File },
-];
 
 const tools = [
   {

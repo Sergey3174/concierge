@@ -44,15 +44,6 @@ function SendIcon() {
   );
 }
 
-function GeminiStar() {
-  return (
-    <div className="relative mx-auto shrink-0 h-12 w-12 rotate-12">
-      <div className="absolute inset-0 rounded-[14px] bg-[conic-gradient(from_210deg,#ff6b6b,#ffcf5a,#5ae3a3,#58a6ff,#a78bfa,#ff6b6b)] [clip-path:polygon(50%_0%,65%_35%,100%_50%,65%_65%,50%_100%,35%_65%,0%_50%,35%_35%)] shadow-[0_0_40px_rgba(88,166,255,0.18)]" />
-      <div className="absolute inset-[11px] rounded-[8px] bg-black/20 backdrop-blur-[1px] [clip-path:polygon(50%_0%,65%_35%,100%_50%,65%_65%,50%_100%,35%_65%,0%_50%,35%_35%)]" />
-    </div>
-  );
-}
-
 function App() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [prompt, setPrompt] = useState("");
