@@ -1,8 +1,16 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { DefaultTaskPicker } from "./components/DefaultTaskPicker";
 import { MobileDrawer } from "./components/MobileDrawer";
 import { SettingsEditorSheet } from "./components/SettingsEditorSheet";
+import {
+  addChat,
+  addMessageToChat,
+  selectCurrentChat,
+  selectCurrentChatId,
+} from "./store/chatsSlice";
+import type { AppDispatch, RootState } from "./store/store";
 
 function MenuIcon() {
   return (
@@ -45,14 +53,18 @@ function SendIcon() {
 }
 
 function App() {
+  const dispatch = useDispatch<AppDispatch>();
+  const currentChat = useSelector((state: RootState) =>
+    selectCurrentChat(state),
+  );
+  const currentChatId = useSelector((state: RootState) =>
+    selectCurrentChatId(state),
+  );
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [prompt, setPrompt] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const scrollAreaRef = useRef<HTMLElement>(null);
   const [isOpenDefaultTask, setIsOpenDefaultTask] = useState(false);
-  const [messages, setMessages] = useState<{ role: string; content: string }[]>(
-    [],
-  );
 
   useEffect(() => {
     const lockViewportScroll = () => {
@@ -113,18 +125,46 @@ function App() {
   }, [prompt]);
 
   const handleSend = () => {
-    if (prompt.trim() === "") {
+    const trimmedPrompt = prompt.trim();
+
+    if (trimmedPrompt === "") {
       return;
     }
 
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { role: "user", content: prompt },
-    ]);
+    const createdAt = new Date().toISOString();
+    const firstMessage = {
+      id: `msg-${Date.now()}`,
+      role: "user" as const,
+      content: trimmedPrompt,
+      createdAt,
+    };
+
+    if (!currentChatId) {
+      const chatId = `chat-${Date.now()}`;
+
+      dispatch(
+        addChat({
+          id: chatId,
+          title: trimmedPrompt,
+          preview: trimmedPrompt,
+          updatedAt: createdAt,
+          messages: [firstMessage],
+        }),
+      );
+      setPrompt("");
+      return;
+    }
+
+    dispatch(
+      addMessageToChat({
+        chatId: currentChatId,
+        message: firstMessage,
+      }),
+    );
     setPrompt("");
   };
 
-  const showMessges = messages?.length > 0;
+  const showMessages = (currentChat?.messages.length ?? 0) > 0;
 
   return (
     <>
@@ -153,24 +193,24 @@ function App() {
             <main className="relative flex min-h-0 flex-1 flex-col justify-between">
               <section
                 ref={scrollAreaRef}
-                className="app-scroll-area relative min-h-0 flex-1 overflow-y-auto"
+                className="app-scroll-area relative min-h-0 flex-1 hide-scrollbar overflow-y-auto"
               >
-                {!showMessges ? (
+                {!showMessages ? (
                   <div className="mx-auto flex min-h-full max-w-[280px] flex-col items-center justify-center py-16">
-                    {/* <GeminiStar /> */}
                     <h1 className="mt-7 text-center text-[2.15rem] font-light leading-[1.08] tracking-[-0.04em] text-white/92">
-                      How can I help you? <br /> Write what you need.
+                      {currentChat
+                        ? currentChat.title
+                        : "How can I help you? \nWrite what you need."}
                     </h1>
                   </div>
                 ) : (
                   <div className="mx-auto flex min-h-full max-w-2xl flex-col gap-1 py-2">
-                    {messages.map((message, index) => (
+                    {currentChat?.messages.map((message) => (
                       <div
-                        key={index}
+                        key={message.id}
                         className={`text-white/92 flex w-full ${message.role === "user" ? "justify-end" : "justify-start"}`}
                       >
-                        <span className="bg-[#1f1f1f] text-md font-medium  px-3 p-3 break-all rounded-[1.5rem] max-w-[60%]">
-                          {" "}
+                        <span className="bg-[#1f1f1f] text-md font-medium px-3 p-3 break-words rounded-[1.5rem] max-w-[60%]">
                           {message.content}
                         </span>
                       </div>

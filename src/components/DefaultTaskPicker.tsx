@@ -1,4 +1,4 @@
-import { FolderPlus, Images, Music4, Orbit } from "lucide-react";
+import { BrushCleaning, Languages, ShieldUser, Wrench } from "lucide-react";
 
 type DefaultTaskPickerProps = {
   onSelect?: (value: string) => void;
@@ -6,28 +6,28 @@ type DefaultTaskPickerProps = {
 
 const tools = [
   {
-    id: "images",
-    title: "Images",
-    description: "Create and edit",
-    icon: Images,
+    id: "small-repairs",
+    title: "Small Repairs",
+    description: "Air conditioner cleaning, boiler repairs",
+    icon: Wrench,
   },
   {
-    id: "music",
-    title: "Music",
-    description: "Make audio tracks",
-    icon: Music4,
+    id: "cleaning",
+    title: "Cleaning",
+    description: "Cleaning for rooms, apartments, villas, etc.",
+    icon: BrushCleaning,
   },
   {
-    id: "canvas",
-    title: "Canvas",
-    description: "Code, write, or make slides",
-    icon: FolderPlus,
+    id: "translator-services",
+    title: "Translator Services",
+    description: "Support at meetings, video calls, etc.",
+    icon: Languages,
   },
   {
-    id: "deep-research",
-    title: "Deep research",
-    description: "Get detailed reports",
-    icon: Orbit,
+    id: "accompaniment",
+    title: "Event Support",
+    description: "Support at exhibitions, medical centers, etc.",
+    icon: ShieldUser,
   },
 ];
 

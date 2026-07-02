@@ -11,6 +11,14 @@ import {
   Send,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  selectChats,
+  selectCurrentChatId,
+  setCurrentChat,
+} from "../store/chatsSlice";
+import type { AppDispatch, RootState } from "../store/store";
 
 type MobileDrawerProps = {
   isOpen: boolean;
@@ -21,16 +29,7 @@ type MobileDrawerProps = {
 const primaryItems = [
   { label: "Новый запрос", icon: "edit", key: "new-request" },
   { label: "Услуги", icon: "grid", key: "services" },
-  { label: "Счета", icon: "coins", key: "accounts" },
-];
-
-const recentItems = [
-  "Тест прошёл успешно...",
-  "Тест прошёл успешно...",
-  "Тест прошёл успешно...",
-  "Тест прошёл успешно...",
-  "Тест прошёл успешно...",
-  "Тест прошёл успешно...",
+  { label: "Платежи", icon: "coins", key: "accounts" },
 ];
 
 const settingsItems = [
@@ -139,6 +138,11 @@ export function MobileDrawer({
   onClose,
   openDefaultTask,
 }: MobileDrawerProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const chats = useSelector((state: RootState) => selectChats(state));
+  const currentChatId = useSelector((state: RootState) =>
+    selectCurrentChatId(state),
+  );
   const [isSettingsView, setIsSettingsView] = useState(false);
 
   useEffect(() => {
@@ -151,7 +155,18 @@ export function MobileDrawer({
     if (key === "services") {
       onClose();
       openDefaultTask();
+      return;
     }
+    if (key === "new-request") {
+      onClose();
+      dispatch(setCurrentChat(null));
+      return;
+    }
+  };
+
+  const handleSelectChat = (chatId: string) => {
+    dispatch(setCurrentChat(chatId));
+    onClose();
   };
 
   return (
@@ -187,9 +202,9 @@ export function MobileDrawer({
           </div>
         </div>
 
-        <div className="relative mt-6 min-h-0 flex-1 overflow-hidden">
+        <div className="relative mt-6 min-h-0 flex-1 hide-scrollbar overflow-hidden">
           <div
-            className={`absolute inset-0 transition-all duration-300 ${
+            className={`absolute flex flex-col inset-0 transition-all  duration-300 ${
               isSettingsView
                 ? "pointer-events-none -translate-x-8 opacity-0"
                 : "pointer-events-auto translate-x-0 opacity-100"
@@ -211,28 +226,33 @@ export function MobileDrawer({
               ))}
             </div>
 
-            <div className="mt-8 min-h-0 flex-1 overflow-auto">
+            <div className="mt-8 min-h-0 flex-1 overflow-auto hide-scrollbar">
               <p className="text-[0.95rem] text-white/42">Последние запросы</p>
-              <div className="mt-4 space-y-1 overflow-y-auto pr-1">
-                {recentItems.map((item, index) => (
-                  <button
-                    key={`${item}-${index}`}
-                    type="button"
-                    className={`block w-full truncate rounded-full px-4 py-1 text-left text-[1rem] transition ${
-                      index === 0
-                        ? "bg-white/10 text-white/92"
-                        : "text-white/76 hover:bg-white/6 hover:text-white/92"
-                    }`}
-                  >
-                    {item}
-                  </button>
-                ))}
+              <div className="mt-4 space-y-1  pr-1">
+                {chats.map((chat) => {
+                  const isActive = chat.id === currentChatId;
+
+                  return (
+                    <button
+                      key={chat.id}
+                      type="button"
+                      className={`block w-full truncate rounded-full px-4 py-1 text-left text-[1rem] transition ${
+                        isActive
+                          ? "bg-white/10 text-white/92"
+                          : "text-white/76 hover:bg-white/6 hover:text-white/92"
+                      }`}
+                      onClick={() => handleSelectChat(chat.id)}
+                    >
+                      {chat.title}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
 
           <div
-            className={`absolute inset-0 overflow-y-auto transition-all duration-300 ${
+            className={`absolute inset-0 overflow-y-auto hide-scrollbar transition-all duration-300 ${
               isSettingsView
                 ? "pointer-events-auto translate-x-0 opacity-100"
                 : "pointer-events-none translate-x-8 opacity-0"
