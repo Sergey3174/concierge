@@ -1,6 +1,5 @@
 import {
   ArrowLeft,
-  ChevronRight,
   Coins,
   Globe,
   HelpCircle,
@@ -11,6 +10,7 @@ import {
   Send,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -138,6 +138,7 @@ export function MobileDrawer({
   onClose,
   openDefaultTask,
 }: MobileDrawerProps) {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const chats = useSelector((state: RootState) => selectChats(state));
   const currentChatId = useSelector((state: RootState) =>
@@ -155,11 +156,20 @@ export function MobileDrawer({
     if (key === "services") {
       onClose();
       openDefaultTask();
+      navigate("/");
       return;
     }
+
+    if (key === "accounts") {
+      onClose();
+      navigate("/payment");
+      return;
+    }
+
     if (key === "new-request") {
       onClose();
       dispatch(setCurrentChat(null));
+      navigate("/");
       return;
     }
   };
@@ -278,7 +288,6 @@ export function MobileDrawer({
                       </span>
                     </span>
                   </span>
-                  <ChevronRight size={18} className="text-white/35" />
                 </button>
               ))}
             </div>
