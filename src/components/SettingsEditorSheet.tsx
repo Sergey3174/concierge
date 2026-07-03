@@ -109,7 +109,7 @@ export function SettingsEditorSheet({
       />
 
       <div
-        className={`fixed inset-x-0 bottom-0 z-30 rounded-t-[32px] transition-transform duration-300 ${
+        className={`fixed inset-x-0 bottom-0 z-30 rounded-t-2xl transition-transform duration-300 ${
           isVisible ? "translate-y-0" : "translate-y-full"
         } ${sheetBaseClassName} ${sheetClassName}`}
       >

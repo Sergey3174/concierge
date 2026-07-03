@@ -1,3 +1,5 @@
+import { ReceiptText } from "lucide-react";
+
 type PaymentDirection = "incoming" | "outgoing";
 
 type PaymentItem = {
@@ -15,40 +17,40 @@ const payments: PaymentItem[] = [
     service: "Visa consultation",
     method: "Mastercard **** 9918",
     date: "03.07.2026",
-    amount: "- 12 500 RUB",
-    direction: "outgoing" as const,
+    amount: "-20 $",
+    direction: "outgoing",
   },
   {
     id: "pay-2",
     service: "Airport transfer booking",
     method: "Mastercard **** 9918",
     date: "02.07.2026",
-    amount: "- 4 800 RUB",
-    direction: "outgoing" as const,
+    amount: "-10 $",
+    direction: "outgoing",
   },
   {
     id: "pay-3",
-    service: "Hotel подбор",
+    service: "Hotel selection",
     method: "Mastercard **** 9918",
     date: "30.06.2026",
-    amount: "- 9 900 RUB",
-    direction: "outgoing" as const,
+    amount: "-10 $",
+    direction: "outgoing",
   },
   {
     id: "pay-4",
     service: "Personal shopping",
     method: "Mastercard **** 9918",
     date: "28.06.2026",
-    amount: "- 15 000 RUB",
-    direction: "outgoing" as const,
+    amount: "-15 $",
+    direction: "outgoing",
   },
   {
     id: "pay-5",
     service: "Private driver",
     method: "Mastercard **** 9918",
     date: "26.06.2026",
-    amount: "- 7 200 RUB",
-    direction: "outgoing" as const,
+    amount: "-10 $",
+    direction: "outgoing",
   },
 ];
 
@@ -96,7 +98,7 @@ function PaymentsPage() {
               return (
                 <article
                   key={payment.id}
-                  className="flex items-center gap-4 rounded-xl bg-[#1f1f1f] px-4 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.16)] transition hover:bg-[#252525]"
+                  className="flex items-center gap-4 rounded-lg bg-[#1f1f1f] px-4 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.16)] transition hover:bg-[#252525]"
                 >
                   <div
                     className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full ${
@@ -105,7 +107,7 @@ function PaymentsPage() {
                         : "bg-white/[0.06] text-white/74"
                     }`}
                   >
-                    <DirectionIcon direction={payment.direction} />
+                    <ReceiptText />
                   </div>
 
                   <div className="min-w-0 flex-1">

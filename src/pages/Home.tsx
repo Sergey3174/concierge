@@ -214,7 +214,7 @@ function HomePage() {
                 className={`text-white/92 flex w-full ${message.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <span
-                  className={` text-md font-medium px-3 p-3 break-words  ${message.role === "user" ? "bg-[#1f1f1f] max-w-[60%] rounded-[1.5rem] " : "py-4"}`}
+                  className={` text-md font-medium px-3 p-3 break-words  ${message.role === "user" ? "bg-[#1f1f1f] max-w-[60%] rounded-lg " : "py-4"}`}
                 >
                   {message.content}
                 </span>
@@ -227,7 +227,7 @@ function HomePage() {
       <footer className="absolute bottom-5 mx-auto w-full max-w-3xl left-1/2 -translate-x-1/2">
         {paymentRequest ? (
           <div className="mb-3 mt-5 flex justify-start">
-            <div className="w-full rounded-[1.6rem] bg-[#1f1f1f] px-4 py-3 text-white/92">
+            <div className="w-full rounded-lg bg-[#1f1f1f] px-4 py-3 text-white/92">
               <div className="flex items-center gap-3">
                 <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/[0.06] text-white/78">
                   <PaymentIcon />
@@ -240,7 +240,7 @@ function HomePage() {
 
                   <button
                     type="button"
-                    className="mt-3 inline-flex items-center justify-center rounded-full bg-blue-500 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-400"
+                    className="mt-3 inline-flex items-center justify-center rounded-lg bg-blue-500 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-400"
                     onClick={() => navigate("/payment")}
                   >
                     {`Pay ${paymentRequest.amountLabel}`}
@@ -250,7 +250,7 @@ function HomePage() {
             </div>
           </div>
         ) : null}
-        <div className="rounded-[2.5rem] bg-[#1f1f1f]/96 px-4 py-3">
+        <div className="rounded-lg bg-[#1f1f1f]/96 px-4 py-3">
           <div className="flex items-end gap-3">
             <button
               className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-white/78 transition hover:bg-white/8"

@@ -27,40 +27,40 @@ type MobileDrawerProps = {
 };
 
 const primaryItems = [
-  { label: "Новый запрос", icon: "edit", key: "new-request" },
-  { label: "Услуги", icon: "grid", key: "services" },
-  { label: "Платежи", icon: "coins", key: "accounts" },
+  { label: "New request", icon: "edit", key: "new-request" },
+  { label: "Services", icon: "grid", key: "services" },
+  { label: "Payments", icon: "coins", key: "accounts" },
 ];
 
 const settingsItems = [
   {
-    title: "Смена языка интерфейса",
-    description: "Русский, English и другие языки",
+    title: "Interface language",
+    description: "English, Russian, and other languages",
     icon: Globe,
   },
   {
-    title: "Смена пароля",
-    description: "Обновить пароль для входа",
+    title: "Change password",
+    description: "Update your sign-in password",
     icon: KeyRound,
   },
   {
-    title: "Привязка email",
-    description: "Подключить или изменить почту",
+    title: "Email connection",
+    description: "Connect or update your email",
     icon: Link,
   },
   {
-    title: "Привязка Telegram",
-    description: "Связать аккаунт с Telegram",
+    title: "Telegram connection",
+    description: "Link your account to Telegram",
     icon: Send,
   },
   {
     title: "FAQ",
-    description: "Ответы на частые вопросы",
+    description: "Answers to common questions",
     icon: HelpCircle,
   },
   {
-    title: "Выход",
-    description: "Завершить текущую сессию",
+    title: "Log out",
+    description: "End the current session",
     icon: LogOut,
   },
 ];
@@ -207,14 +207,14 @@ export function MobileDrawer({
               </button>
             )}
             <h2 className="text-[2rem] font-normal tracking-tight text-white/92">
-              {isSettingsView ? "Настройки" : "Concierge"}
+              {isSettingsView ? "Settings" : "Concierge"}
             </h2>
           </div>
         </div>
 
         <div className="relative mt-6 min-h-0 flex-1 hide-scrollbar overflow-hidden">
           <div
-            className={`absolute flex flex-col inset-0 transition-all  duration-300 ${
+            className={`absolute inset-0 flex flex-col transition-all duration-300 ${
               isSettingsView
                 ? "pointer-events-none -translate-x-8 opacity-0"
                 : "pointer-events-auto translate-x-0 opacity-100"
@@ -225,7 +225,7 @@ export function MobileDrawer({
                 <button
                   key={item.label}
                   type="button"
-                  className="flex w-full items-center gap-5 rounded-2xl px-1 py-1 text-left text-[1.05rem] text-white/86 transition hover:bg-white/6"
+                  className="flex w-full items-center gap-5 rounded-lg px-1 py-1 text-left text-[1.05rem] text-white/86 transition hover:bg-white/6"
                   onClick={() => handleOpenDefaultTask(item.key)}
                 >
                   <span className="text-white/82">
@@ -237,8 +237,8 @@ export function MobileDrawer({
             </div>
 
             <div className="mt-8 min-h-0 flex-1 overflow-auto hide-scrollbar">
-              <p className="text-[0.95rem] text-white/42">Последние запросы</p>
-              <div className="mt-4 space-y-1  pr-1">
+              <p className="text-[0.95rem] text-white/42">Recent requests</p>
+              <div className="mt-4 space-y-1 pr-1">
                 {chats.map((chat) => {
                   const isActive = chat.id === currentChatId;
 
@@ -246,7 +246,7 @@ export function MobileDrawer({
                     <button
                       key={chat.id}
                       type="button"
-                      className={`block w-full truncate rounded-full px-4 py-1 text-left text-[1rem] transition ${
+                      className={`block w-full truncate rounded-lg px-4 py-1 text-left text-[1rem] transition ${
                         isActive
                           ? "bg-white/10 text-white/92"
                           : "text-white/76 hover:bg-white/6 hover:text-white/92"
@@ -273,7 +273,7 @@ export function MobileDrawer({
                 <button
                   key={title}
                   type="button"
-                  className="flex w-full items-center justify-between rounded-2xl bg-white/[0.04] px-4 py-4 text-left transition hover:bg-white/[0.07]"
+                  className="flex w-full items-center justify-between rounded-lg bg-white/[0.04] px-4 py-4 text-left transition hover:bg-white/[0.07]"
                 >
                   <span className="flex items-center gap-4">
                     <span className="text-white/78">
