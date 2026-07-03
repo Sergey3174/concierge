@@ -57,8 +57,8 @@ const payments: PaymentItem[] = [
 function PaymentsPage() {
   return (
     <main className="flex min-h-0 flex-1 flex-col">
-      <section className="mx-auto flex w-full max-w-3xl flex-1 flex-col overflow-auto hide-scrollbar py-1">
-        <div className="mx-auto w-full max-w-2xl">
+      <section className="app-scroll-area mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col overflow-y-auto hide-scrollbar py-1">
+        <div className="mx-auto flex w-full max-w-2xl flex-col px-0 pb-8">
           <h1 className="text-[2rem] font-light tracking-[-0.04em] text-[var(--color-text-primary)]">
             My Transactions
           </h1>

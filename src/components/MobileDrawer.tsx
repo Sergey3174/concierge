@@ -176,6 +176,7 @@ export function MobileDrawer({
 
   const handleSelectChat = (chatId: string) => {
     dispatch(setCurrentChat(chatId));
+    navigate("/");
     onClose();
   };
 
