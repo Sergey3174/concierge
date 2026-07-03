@@ -85,25 +85,6 @@ function HomePage() {
   };
 
   useEffect(() => {
-    const lockViewportScroll = () => {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    };
-
-    const setAppHeight = () => {
-      const height = window.visualViewport?.height ?? window.innerHeight;
-      document.documentElement.style.setProperty("--app-height", `${height}px`);
-      lockViewportScroll();
-    };
-
-    setAppHeight();
-
-    window.visualViewport?.addEventListener("resize", setAppHeight);
-    window.visualViewport?.addEventListener("scroll", setAppHeight);
-    window.addEventListener("resize", setAppHeight);
-    window.addEventListener("scroll", lockViewportScroll, { passive: true });
-
     const handleFocusIn = (event: FocusEvent) => {
       const target = event.target;
 
@@ -119,17 +100,15 @@ function HomePage() {
           top: scrollAreaRef.current.scrollTop,
           left: 0,
         });
-        lockViewportScroll();
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
       });
     };
 
     document.addEventListener("focusin", handleFocusIn);
 
     return () => {
-      window.visualViewport?.removeEventListener("resize", setAppHeight);
-      window.visualViewport?.removeEventListener("scroll", setAppHeight);
-      window.removeEventListener("resize", setAppHeight);
-      window.removeEventListener("scroll", lockViewportScroll);
       document.removeEventListener("focusin", handleFocusIn);
     };
   }, []);

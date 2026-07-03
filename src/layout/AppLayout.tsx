@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import { DefaultTaskPicker } from "../components/DefaultTaskPicker";
@@ -28,6 +28,34 @@ function AppLayout() {
   const outletContext = {
     openDefaultTask: () => setIsOpenDefaultTask(true),
   } satisfies AppLayoutOutletContext;
+
+  useEffect(() => {
+    const lockViewportScroll = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
+    const setAppHeight = () => {
+      const height = window.visualViewport?.height ?? window.innerHeight;
+      document.documentElement.style.setProperty("--app-height", `${height}px`);
+      lockViewportScroll();
+    };
+
+    setAppHeight();
+
+    window.visualViewport?.addEventListener("resize", setAppHeight);
+    window.visualViewport?.addEventListener("scroll", setAppHeight);
+    window.addEventListener("resize", setAppHeight);
+    window.addEventListener("scroll", lockViewportScroll, { passive: true });
+
+    return () => {
+      window.visualViewport?.removeEventListener("resize", setAppHeight);
+      window.visualViewport?.removeEventListener("scroll", setAppHeight);
+      window.removeEventListener("resize", setAppHeight);
+      window.removeEventListener("scroll", lockViewportScroll);
+    };
+  }, []);
 
   return (
     <>
