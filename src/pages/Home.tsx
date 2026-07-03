@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import {
   addChat,
   addMessageToChat,
@@ -37,10 +37,30 @@ function SendIcon() {
   );
 }
 
+function PaymentIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="size-5">
+      <path
+        d="M4 8.5C4 7.11929 5.11929 6 6.5 6H17.5C18.8807 6 20 7.11929 20 8.5V15.5C20 16.8807 18.8807 18 17.5 18H6.5C5.11929 18 4 16.8807 4 15.5V8.5Z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+      />
+      <path
+        d="M4 10.5H20"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <circle cx="16.5" cy="14.25" r="1.25" fill="currentColor" />
+    </svg>
+  );
+}
+
 function HomePage() {
   const [prompt, setPrompt] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const { openDefaultTask } = useOutletContext<AppLayoutOutletContext>();
   const currentChat = useSelector((state: RootState) =>
     selectCurrentChat(state),
@@ -50,6 +70,19 @@ function HomePage() {
   );
 
   const scrollAreaRef = useRef<HTMLElement>(null);
+  const scrollToBottom = () => {
+    const scrollArea = scrollAreaRef.current;
+
+    if (!scrollArea) {
+      return;
+    }
+
+    scrollArea.scrollTo({
+      top: scrollArea.scrollHeight,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     const lockViewportScroll = () => {
@@ -109,6 +142,12 @@ function HomePage() {
     textarea.style.height = `${Math.min(textarea.scrollHeight, 160)}px`;
   }, [prompt]);
 
+  useLayoutEffect(() => {
+    window.requestAnimationFrame(() => {
+      scrollToBottom();
+    });
+  }, [currentChatId, currentChat?.messages.length]);
+
   const handleSend = () => {
     const trimmedPrompt = prompt.trim();
 
@@ -150,12 +189,14 @@ function HomePage() {
   };
 
   const showMessages = (currentChat?.messages.length ?? 0) > 0;
+  const paymentRequest =
+    currentChat?.status === "payment" ? currentChat.payment : undefined;
 
   return (
     <main className="relative flex min-h-0 flex-1 flex-col justify-between pb-12">
       <section
         ref={scrollAreaRef}
-        className="app-scroll-area relative min-h-0 flex-1 hide-scrollbar overflow-y-auto pb-12"
+        className={`app-scroll-area relative min-h-0 flex-1 hide-scrollbar overflow-y-auto ${paymentRequest ? "pb-40" : "pb-12"}`}
       >
         {!showMessages ? (
           <div className="mx-auto flex min-h-full max-w-[280px] flex-col items-center justify-center py-16">
@@ -183,7 +224,32 @@ function HomePage() {
         )}
       </section>
 
-      <footer className="absolute bottom-5 mx-auto w-full max-w-3xl">
+      <footer className="absolute bottom-5 mx-auto w-full max-w-3xl left-1/2 -translate-x-1/2">
+        {paymentRequest ? (
+          <div className="mb-3 mt-5 flex justify-start">
+            <div className="w-full rounded-[1.6rem] bg-[#1f1f1f] px-4 py-3 text-white/92">
+              <div className="flex items-center gap-3">
+                <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/[0.06] text-white/78">
+                  <PaymentIcon />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-[1rem] font-medium text-white/92">
+                    We are waiting for payment
+                  </h2>
+
+                  <button
+                    type="button"
+                    className="mt-3 inline-flex items-center justify-center rounded-full bg-blue-500 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-400"
+                    onClick={() => navigate("/payment")}
+                  >
+                    {`Pay ${paymentRequest.amountLabel}`}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
         <div className="rounded-[2.5rem] bg-[#1f1f1f]/96 px-4 py-3">
           <div className="flex items-end gap-3">
             <button

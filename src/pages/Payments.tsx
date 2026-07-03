@@ -1,4 +1,15 @@
-const payments = [
+type PaymentDirection = "incoming" | "outgoing";
+
+type PaymentItem = {
+  id: string;
+  service: string;
+  method: string;
+  date: string;
+  amount: string;
+  direction: PaymentDirection;
+};
+
+const payments: PaymentItem[] = [
   {
     id: "pay-1",
     service: "Visa consultation",
@@ -41,7 +52,7 @@ const payments = [
   },
 ];
 
-function DirectionIcon({ direction }: { direction: "incoming" | "outgoing" }) {
+function DirectionIcon({ direction }: { direction: PaymentDirection }) {
   if (direction === "incoming") {
     return (
       <svg viewBox="0 0 24 24" fill="none" className="size-5">
