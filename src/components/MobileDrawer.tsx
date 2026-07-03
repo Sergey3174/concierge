@@ -183,7 +183,7 @@ export function MobileDrawer({
     <>
       <div
         onClick={onClose}
-        className={`absolute inset-0 z-30 bg-black/30 transition-opacity duration-300 ${
+        className={`absolute inset-0 z-30 bg-[var(--color-overlay)] transition-opacity duration-300 ${
           isOpen
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0"
@@ -191,7 +191,7 @@ export function MobileDrawer({
       />
 
       <aside
-        className={`absolute inset-y-0 left-0 z-40 flex w-[84%] max-w-[320px] flex-col bg-black px-6 pb-4 pt-4 transition-transform duration-300 ${
+        className={`absolute inset-y-0 left-0 z-40 flex w-[84%] max-w-[320px] flex-col bg-[var(--color-bg)] px-6 pb-4 pt-4 transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -200,13 +200,13 @@ export function MobileDrawer({
             {isSettingsView && (
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-full text-white/72 transition hover:bg-white/8 hover:text-white"
+                className="flex h-10 w-10 items-center justify-center rounded-full text-[var(--color-text-muted)] transition hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-text-primary)]"
                 onClick={() => setIsSettingsView(false)}
               >
                 <ArrowLeft size={20} />
               </button>
             )}
-            <h2 className="text-[2rem] font-normal tracking-tight text-white/92">
+            <h2 className="text-[2rem] font-normal tracking-tight text-[var(--color-text-primary)]">
               {isSettingsView ? "Settings" : "Concierge"}
             </h2>
           </div>
@@ -225,10 +225,10 @@ export function MobileDrawer({
                 <button
                   key={item.label}
                   type="button"
-                  className="flex w-full items-center gap-5 rounded-lg px-1 py-1 text-left text-[1.05rem] text-white/86 transition hover:bg-white/6"
+                  className="flex w-full items-center gap-5 rounded-lg px-1 py-1 text-left text-[1.05rem] text-[var(--color-text-secondary)] transition hover:bg-[var(--color-surface-soft)]"
                   onClick={() => handleOpenDefaultTask(item.key)}
                 >
-                  <span className="text-white/82">
+                  <span className="text-[var(--color-text-secondary)]">
                     <DrawerItemIcon icon={item.icon} />
                   </span>
                   <span>{item.label}</span>
@@ -237,7 +237,9 @@ export function MobileDrawer({
             </div>
 
             <div className="mt-8 min-h-0 flex-1 overflow-auto hide-scrollbar">
-              <p className="text-[0.95rem] text-white/42">Recent requests</p>
+              <p className="text-[0.95rem] text-[var(--color-text-subtle)]">
+                Recent requests
+              </p>
               <div className="mt-4 space-y-1 pr-1">
                 {chats.map((chat) => {
                   const isActive = chat.id === currentChatId;
@@ -248,8 +250,8 @@ export function MobileDrawer({
                       type="button"
                       className={`block w-full truncate rounded-lg px-4 py-1 text-left text-[1rem] transition ${
                         isActive
-                          ? "bg-white/10 text-white/92"
-                          : "text-white/76 hover:bg-white/6 hover:text-white/92"
+                          ? "bg-[var(--color-surface-disabled)] text-[var(--color-text-primary)]"
+                          : "text-[var(--color-text-muted)] hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-text-primary)]"
                       }`}
                       onClick={() => handleSelectChat(chat.id)}
                     >
@@ -273,17 +275,17 @@ export function MobileDrawer({
                 <button
                   key={title}
                   type="button"
-                  className="flex w-full items-center justify-between rounded-lg bg-white/[0.04] px-4 py-4 text-left transition hover:bg-white/[0.07]"
+                  className="flex w-full items-center justify-between rounded-lg bg-[var(--color-surface-muted)] px-4 py-4 text-left transition hover:bg-[var(--color-surface-muted-hover)]"
                 >
                   <span className="flex items-center gap-4">
-                    <span className="text-white/78">
+                    <span className="text-[var(--color-text-muted)]">
                       <Icon size={20} />
                     </span>
                     <span>
-                      <span className="block text-[1rem] text-white/92">
+                      <span className="block text-[1rem] text-[var(--color-text-primary)]">
                         {title}
                       </span>
-                      <span className="block text-sm text-white/45">
+                      <span className="block text-sm text-[var(--color-text-soft)]">
                         {description}
                       </span>
                     </span>
@@ -295,8 +297,8 @@ export function MobileDrawer({
         </div>
 
         <div className="flex items-center justify-between">
-          <button className="flex items-center gap-3 rounded-full px-2 py-2 text-white/92 transition hover:bg-white/6">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-lime-700 text-xl font-medium">
+          <button className="flex items-center gap-3 rounded-full px-2 py-2 text-[var(--color-text-primary)] transition hover:bg-[var(--color-surface-soft)]">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-avatar)] text-xl font-medium">
               U
             </div>
             <span className="text-[1.05rem]">User</span>
@@ -304,8 +306,10 @@ export function MobileDrawer({
 
           <button
             type="button"
-            className={`flex h-11 w-11 items-center justify-center rounded-full transition hover:bg-white/8 hover:text-white ${
-              isSettingsView ? "bg-white/10 text-white" : "text-white/72"
+            className={`flex h-11 w-11 items-center justify-center rounded-full transition hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-text-primary)] ${
+              isSettingsView
+                ? "bg-[var(--color-surface-disabled)] text-[var(--color-text-primary)]"
+                : "text-[var(--color-text-muted)]"
             }`}
             onClick={() => setIsSettingsView((prev) => !prev)}
           >

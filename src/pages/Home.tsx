@@ -200,7 +200,7 @@ function HomePage() {
       >
         {!showMessages ? (
           <div className="mx-auto flex min-h-full max-w-[280px] flex-col items-center justify-center py-16">
-            <h1 className="mt-7 text-center text-[2.15rem] font-light leading-[1.08] tracking-[-0.04em] text-white/92">
+            <h1 className="mt-7 text-center text-[2.15rem] font-light leading-[1.08] tracking-[-0.04em] text-[var(--color-text-primary)]">
               {currentChat
                 ? currentChat.title
                 : "How can I help you? \nWrite what you need."}
@@ -211,10 +211,10 @@ function HomePage() {
             {currentChat?.messages.map((message) => (
               <div
                 key={message.id}
-                className={`text-white/92 flex w-full ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                className={`text-[var(--color-text-primary)] flex w-full ${message.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <span
-                  className={` text-md font-medium px-3 p-3 break-words  ${message.role === "user" ? "bg-[#1f1f1f] max-w-[60%] rounded-lg " : "py-4"}`}
+                  className={` text-md font-medium px-3 p-3 break-words ${message.role === "user" ? "max-w-[60%] rounded-lg bg-[var(--color-surface)]" : "py-4"}`}
                 >
                   {message.content}
                 </span>
@@ -227,20 +227,20 @@ function HomePage() {
       <footer className="absolute bottom-5 mx-auto w-full max-w-3xl left-1/2 -translate-x-1/2">
         {paymentRequest ? (
           <div className="mb-3 mt-5 flex justify-start">
-            <div className="w-full rounded-lg bg-[#1f1f1f] px-4 py-3 text-white/92">
+            <div className="w-full rounded-lg bg-[var(--color-surface)] px-4 py-3 text-[var(--color-text-primary)]">
               <div className="flex items-center gap-3">
-                <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/[0.06] text-white/78">
+                <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-soft)] text-[var(--color-text-muted)]">
                   <PaymentIcon />
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <h2 className="text-[1rem] font-medium text-white/92">
+                  <h2 className="text-[1rem] font-medium text-[var(--color-text-primary)]">
                     We are waiting for payment
                   </h2>
 
                   <button
                     type="button"
-                    className="mt-3 inline-flex items-center justify-center rounded-lg bg-blue-500 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-400"
+                    className="mt-3 inline-flex items-center justify-center rounded-lg bg-[var(--color-accent)] px-5 py-2.5 text-sm font-medium text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)]"
                     onClick={() => navigate("/payment")}
                   >
                     {`Pay ${paymentRequest.amountLabel}`}
@@ -250,10 +250,10 @@ function HomePage() {
             </div>
           </div>
         ) : null}
-        <div className="rounded-lg bg-[#1f1f1f]/96 px-4 py-3">
+        <div className="rounded-lg bg-[var(--color-surface-translucent)] px-4 py-3">
           <div className="flex items-end gap-3">
             <button
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-white/78 transition hover:bg-white/8"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-[var(--color-text-muted)] transition hover:bg-[var(--color-surface-soft)]"
               onClick={() => openDefaultTask()}
             >
               <PlusIcon />
@@ -264,12 +264,12 @@ function HomePage() {
               rows={1}
               value={prompt}
               onChange={(event) => setPrompt(event.target.value)}
-              className="max-h-40 min-h-12 flex-1 resize-none overflow-y-auto bg-transparent py-3 text-[1.05rem] leading-6 text-white outline-none placeholder:text-white/45"
+              className="max-h-40 min-h-12 flex-1 resize-none overflow-y-auto bg-transparent py-3 text-[1.05rem] leading-6 text-[var(--color-accent-contrast)] outline-none placeholder:text-[var(--color-text-soft)]"
               placeholder="Ask Concierge"
             />
 
             <button
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-500 disabled:bg-white/10 text-white/55 transition hover:bg-white/15 hover:text-white"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)] text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)] disabled:bg-[var(--color-surface-disabled)] disabled:text-[var(--color-text-soft)]"
               onClick={handleSend}
               disabled={prompt.trim() === ""}
             >

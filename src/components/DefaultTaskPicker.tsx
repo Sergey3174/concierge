@@ -33,8 +33,8 @@ const tools = [
 
 export function DefaultTaskPicker({ onSelect }: DefaultTaskPickerProps) {
   return (
-    <div className="text-white">
-      <div className="mx-auto mb-4 h-1.5 w-16 rounded-full bg-white/70" />
+    <div className="text-[var(--color-text-primary)]">
+      <div className="mx-auto mb-4 h-1.5 w-16 rounded-full bg-[var(--color-text-muted)]" />
       {/* 
       <div className="mb-6 grid grid-cols-3 gap-3">
         {quickActions.map(({ id, label, icon: Icon }) => (
@@ -60,16 +60,16 @@ export function DefaultTaskPicker({ onSelect }: DefaultTaskPickerProps) {
             key={id}
             type="button"
             onClick={() => onSelect?.(id)}
-            className="flex w-full items-center gap-4 rounded-[1.65rem] px-2 py-3 text-left transition hover:bg-white/[0.04]"
+            className="flex w-full items-center gap-4 rounded-lg px-2 py-3 text-left transition hover:bg-[var(--color-surface-muted)]"
           >
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-white/82">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-[var(--color-text-secondary)]">
               <Icon size={25} strokeWidth={1.7} />
             </span>
             <span className="min-w-0">
-              <span className="block text-xl leading-none tracking-[-0.05em] text-white/95 ">
+              <span className="block text-xl leading-none tracking-[-0.05em] text-[var(--color-text-primary)]">
                 {title}
               </span>
-              <span className="mt-1 block text-lg leading-6 text-white/50">
+              <span className="mt-1 block text-lg leading-6 text-[var(--color-text-soft)]">
                 {description}
               </span>
             </span>

@@ -47,7 +47,7 @@ function AppLayout() {
             <header className="flex items-center justify-between">
               <button
                 onClick={() => setIsDrawerOpen(true)}
-                className="flex h-11 w-11 items-center justify-center rounded-full text-white/90 transition hover:bg-white/8"
+                className="flex h-11 w-11 items-center justify-center rounded-full text-[var(--color-text-primary)] transition hover:bg-[var(--color-surface-soft)]"
               >
                 <MenuIcon />
               </button>
@@ -62,9 +62,9 @@ function AppLayout() {
         showHeader={false}
         showCloseButton={false}
         showSaveButtons={false}
-        overlayClassName="bg-black/40"
+        overlayClassName="bg-[var(--color-overlay-strong)]"
         sheetBaseClassName=""
-        sheetClassName="mx-auto w-full max-w-3xl bg-[#1f1f1f] px-4 pb-8 pt-2 shadow-[0_-24px_60px_rgba(0,0,0,0.48)]"
+        sheetClassName="mx-auto w-full max-w-3xl bg-[var(--color-surface)] px-4 pb-8 pt-2 shadow-[var(--shadow-sheet)]"
       >
         <DefaultTaskPicker onSelect={() => setIsOpenDefaultTask(false)} />
       </SettingsEditorSheet>

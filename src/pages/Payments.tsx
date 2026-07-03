@@ -54,40 +54,12 @@ const payments: PaymentItem[] = [
   },
 ];
 
-function DirectionIcon({ direction }: { direction: PaymentDirection }) {
-  if (direction === "incoming") {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" className="size-5">
-        <path
-          d="M12 5V19M12 19L7 14M12 19L17 14"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="size-5">
-      <path
-        d="M12 19V5M12 5L7 10M12 5L17 10"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 function PaymentsPage() {
   return (
     <main className="flex min-h-0 flex-1 flex-col">
       <section className="mx-auto flex w-full max-w-3xl flex-1 flex-col overflow-auto hide-scrollbar py-1">
         <div className="mx-auto w-full max-w-2xl">
-          <h1 className="text-[2rem] font-light tracking-[-0.04em] text-white/92">
+          <h1 className="text-[2rem] font-light tracking-[-0.04em] text-[var(--color-text-primary)]">
             My Transactions
           </h1>
 
@@ -98,23 +70,23 @@ function PaymentsPage() {
               return (
                 <article
                   key={payment.id}
-                  className="flex items-center gap-4 rounded-lg bg-[#1f1f1f] px-4 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.16)] transition hover:bg-[#252525]"
+                  className="flex items-center gap-4 rounded-lg bg-[var(--color-surface)] px-4 py-4 shadow-[var(--shadow-card)] transition hover:bg-[var(--color-surface-hover)]"
                 >
                   <div
                     className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full ${
                       isIncoming
-                        ? "bg-emerald-500/12 text-emerald-300"
-                        : "bg-white/[0.06] text-white/74"
+                        ? "bg-[var(--color-positive-soft)] text-[var(--color-positive)]"
+                        : "bg-[var(--color-surface-soft)] text-[var(--color-text-muted)]"
                     }`}
                   >
                     <ReceiptText />
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <h2 className="truncate text-[1.02rem] font-medium text-white/92">
+                    <h2 className="truncate text-[1.02rem] font-medium text-[var(--color-text-primary)]">
                       {payment.service}
                     </h2>
-                    <p className="mt-1 truncate text-sm text-white/42">
+                    <p className="mt-1 truncate text-sm text-[var(--color-text-subtle)]">
                       {payment.method}
                     </p>
                   </div>
@@ -122,12 +94,14 @@ function PaymentsPage() {
                   <div className="shrink-0 text-right">
                     <div
                       className={`text-[1.02rem] font-medium ${
-                        isIncoming ? "text-emerald-300" : "text-white/92"
+                        isIncoming
+                          ? "text-[var(--color-positive)]"
+                          : "text-[var(--color-text-primary)]"
                       }`}
                     >
                       {payment.amount}
                     </div>
-                    <div className="mt-1 text-sm text-white/34">
+                    <div className="mt-1 text-sm text-[var(--color-text-faint)]">
                       {payment.date}
                     </div>
                   </div>

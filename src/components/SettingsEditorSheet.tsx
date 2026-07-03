@@ -33,7 +33,7 @@ export function SettingsEditorSheet({
   showHeader = true,
   overlayClassName = "",
   sheetClassName = "",
-  sheetBaseClassName = "bg-white px-5 pb-8 pt-4 shadow-[0_-18px_48px_rgba(22,71,107,0.28)]",
+  sheetBaseClassName = "bg-[var(--color-surface)] px-5 pb-8 pt-4 shadow-[var(--shadow-sheet)]",
 }: SettingsEditorSheetProps) {
   const [shouldRender, setShouldRender] = useState(isOpen);
   const [isVisible, setIsVisible] = useState(false);
@@ -100,7 +100,7 @@ export function SettingsEditorSheet({
   return createPortal(
     <>
       <div
-        className={`fixed inset-0 z-20 bg-[#0F2E46]/35 transition-opacity duration-300 ${
+        className={`fixed inset-0 z-20 bg-[var(--color-overlay-strong)] transition-opacity duration-300 ${
           isVisible
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0"
@@ -116,15 +116,19 @@ export function SettingsEditorSheet({
         {showHeader && (
           <div className="mb-5 flex items-start justify-between gap-4">
             <div>
-              <h3 className="text-xl font-bold text-[#183C59]">{title}</h3>
+              <h3 className="text-xl font-bold text-[var(--color-text-primary)]">
+                {title}
+              </h3>
               {description && (
-                <p className="mt-1 text-sm text-[#7A97AF]">{description}</p>
+                <p className="mt-1 text-sm text-[var(--color-text-soft)]">
+                  {description}
+                </p>
               )}
             </div>
             {showCloseButton && (
               <button
                 type="button"
-                className="rounded-full bg-[#EEF7FD] p-2 text-[#5D7890]"
+                className="rounded-full bg-[var(--color-surface-soft)] p-2 text-[var(--color-text-muted)]"
                 onClick={onClose}
               >
                 <X size={18} />
@@ -139,7 +143,7 @@ export function SettingsEditorSheet({
           <div className="mt-6 flex gap-3">
             <button
               type="button"
-              className="flex-1 rounded-2xl border border-[#D8E5EF] px-4 py-3 font-semibold text-[#5D7890]"
+              className="flex-1 rounded-2xl border border-[var(--color-surface-disabled)] px-4 py-3 font-semibold text-[var(--color-text-muted)]"
               onClick={onClose}
               disabled={disabled}
             >
@@ -147,7 +151,7 @@ export function SettingsEditorSheet({
             </button>
             <button
               type="button"
-              className={`flex-1 rounded-2xl bg-[#0F9BFF] px-4 py-3 font-semibold text-white shadow-[0_12px_24px_rgba(15,155,255,0.28)] ${disabled ? "opacity-40" : ""}`}
+              className={`flex-1 rounded-2xl bg-[var(--color-accent)] px-4 py-3 font-semibold text-[var(--color-accent-contrast)] shadow-[var(--shadow-card)] ${disabled ? "opacity-40" : ""}`}
               onClick={onSave}
               disabled={disabled}
             >
