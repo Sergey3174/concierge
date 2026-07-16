@@ -3,6 +3,14 @@ export type MockChatMessage = {
   role: "user" | "assistant";
   content: string;
   createdAt: string;
+  attachments?: ChatAttachment[];
+};
+
+export type ChatAttachment = {
+  id: string;
+  name: string;
+  type: string;
+  previewUrl?: string;
 };
 
 export type MockChatStatus = "payment" | (string & {});

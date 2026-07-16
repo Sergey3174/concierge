@@ -7,9 +7,17 @@ import {
   selectCurrentChatId,
 } from "../store/chatsSlice";
 import type { AppDispatch, RootState } from "../store/store";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+} from "react";
 import type { AppLayoutOutletContext } from "../layout/AppLayout";
 import { useTranslation } from "react-i18next";
+import { FileText, Paperclip, X } from "lucide-react";
+import type { ChatAttachment } from "../mocks/chats";
 
 function PlusIcon() {
   return (
@@ -57,10 +65,40 @@ function PaymentIcon() {
   );
 }
 
+function AttachmentCard({ attachment }: { attachment: ChatAttachment }) {
+  const isImage = attachment.type.startsWith("image/");
+
+  if (isImage && attachment.previewUrl) {
+    return (
+      <div className="overflow-hidden rounded-lg border border-[var(--color-surface-muted)]">
+        <a href={attachment.previewUrl} target="_blank" rel="noreferrer">
+          <img
+            src={attachment.previewUrl}
+            alt={attachment.name}
+            className="max-h-52 w-full object-cover"
+          />
+        </a>
+        <div className="truncate px-3 py-2 text-sm text-[var(--color-text-primary)]">
+          {attachment.name}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-3 rounded-lg bg-[var(--color-surface-muted)] px-3 py-2.5 text-[var(--color-text-primary)]">
+      <FileText size={20} className="shrink-0 text-[var(--color-text-muted)]" />
+      <span className="min-w-0 flex-1 truncate text-sm">{attachment.name}</span>
+    </div>
+  );
+}
+
 function HomePage() {
   const { t } = useTranslation();
   const [prompt, setPrompt] = useState("");
+  const [attachments, setAttachments] = useState<ChatAttachment[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { openDefaultTask } = useOutletContext<AppLayoutOutletContext>();
@@ -132,7 +170,7 @@ function HomePage() {
   const handleSend = () => {
     const trimmedPrompt = prompt.trim();
 
-    if (trimmedPrompt === "") {
+    if (trimmedPrompt === "" && attachments.length === 0) {
       return;
     }
 
@@ -142,6 +180,7 @@ function HomePage() {
       role: "user" as const,
       content: trimmedPrompt,
       createdAt,
+      attachments,
     };
 
     if (!currentChatId) {
@@ -150,13 +189,14 @@ function HomePage() {
       dispatch(
         addChat({
           id: chatId,
-          title: trimmedPrompt,
-          preview: trimmedPrompt,
+          title: trimmedPrompt || attachments[0].name,
+          preview: trimmedPrompt || attachments[0].name,
           updatedAt: createdAt,
           messages: [firstMessage],
         }),
       );
       setPrompt("");
+      setAttachments([]);
       return;
     }
 
@@ -167,6 +207,41 @@ function HomePage() {
       }),
     );
     setPrompt("");
+    setAttachments([]);
+  };
+
+  const handleAttachmentChange = async (
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
+    const files = Array.from(event.target.files ?? []);
+    const nextAttachments = await Promise.all(
+      files.map(
+        (file) =>
+          new Promise<ChatAttachment>((resolve) => {
+            if (!file.type.startsWith("image/")) {
+              resolve({
+                id: `${file.name}-${file.lastModified}`,
+                name: file.name,
+                type: file.type,
+              });
+              return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = () =>
+              resolve({
+                id: `${file.name}-${file.lastModified}`,
+                name: file.name,
+                type: file.type,
+                previewUrl: String(reader.result),
+              });
+            reader.readAsDataURL(file);
+          }),
+      ),
+    );
+
+    setAttachments((current) => [...current, ...nextAttachments]);
+    event.target.value = "";
   };
 
   const showMessages = (currentChat?.messages.length ?? 0) > 0;
@@ -192,11 +267,29 @@ function HomePage() {
                 key={message.id}
                 className={`text-[var(--color-text-primary)] flex w-full ${message.role === "user" ? "justify-end" : "justify-start"}`}
               >
-                <span
-                  className={` text-md font-medium px-3 p-3 break-words ${message.role === "user" ? "max-w-[60%] rounded-lg bg-[var(--color-surface)]" : "py-4"}`}
+                <div
+                  className={`max-w-[60%] ${message.role === "user" ? "rounded-lg bg-[var(--color-surface)] p-3" : "py-4"}`}
                 >
-                  {message.content}
-                </span>
+                  {message.content && (
+                    <p className="text-md break-words px-3 font-medium">
+                      {message.content}
+                    </p>
+                  )}
+                  {message.attachments?.length ? (
+                    <div
+                      className={
+                        message.content ? "mt-2 space-y-2" : "space-y-2"
+                      }
+                    >
+                      {message.attachments.map((attachment) => (
+                        <AttachmentCard
+                          key={attachment.id}
+                          attachment={attachment}
+                        />
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
               </div>
             ))}
           </div>
@@ -230,13 +323,68 @@ function HomePage() {
           </div>
         ) : null}
         <div className="rounded-lg bg-[var(--color-surface-translucent)] px-4 py-3">
+          {attachments.length > 0 && (
+            <div className="mb-3 flex gap-2 overflow-x-auto hide-scrollbar">
+              {attachments.map((attachment) => (
+                <div
+                  key={attachment.id}
+                  className="relative flex items-center w-48 shrink-0 overflow-hidden rounded-lg bg-[var(--color-surface-muted)] text-[var(--color-text-muted)] p-1"
+                >
+                  <div className="flex h-8  items-center justify-center">
+                    {attachment.previewUrl ? (
+                      <img
+                        src={attachment.previewUrl}
+                        alt={attachment.name}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <FileText size={24} />
+                    )}
+                  </div>
+                  <div className="truncate px-2 py-1 text-xs text-[var(--color-text-primary)]">
+                    {attachment.name}
+                  </div>
+                  <button
+                    type="button"
+                    aria-label={`Remove ${attachment.name}`}
+                    onClick={() =>
+                      setAttachments((current) =>
+                        current.filter((item) => item.id !== attachment.id),
+                      )
+                    }
+                    className="rounded-full bg-[var(--color-surface)] p-0.5 text-[var(--color-text-primary)]"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="flex items-end gap-3">
-            <button
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-[var(--color-text-muted)] transition hover:bg-[var(--color-surface-soft)]"
-              onClick={() => openDefaultTask()}
-            >
-              <PlusIcon />
-            </button>
+            <div className="flex items-center h-12 gap-2">
+              <button
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[var(--color-text-muted)] transition hover:bg-[var(--color-surface-soft)]"
+                onClick={() => openDefaultTask()}
+              >
+                <PlusIcon />
+              </button>
+              <button
+                type="button"
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[var(--color-text-muted)] transition hover:bg-[var(--color-surface-soft)]"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <Paperclip />
+              </button>
+            </div>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"
+              className="hidden"
+              onChange={handleAttachmentChange}
+            />
 
             <div className="relative min-w-0 flex-1">
               <textarea
@@ -260,7 +408,7 @@ function HomePage() {
             <button
               className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)] text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)] disabled:bg-[var(--color-surface-disabled)] disabled:text-[var(--color-text-soft)]"
               onClick={handleSend}
-              disabled={prompt.trim() === ""}
+              disabled={prompt.trim() === "" && attachments.length === 0}
             >
               <SendIcon />
             </button>
