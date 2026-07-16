@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { DefaultTaskPicker } from "../components/DefaultTaskPicker";
 import { MobileDrawer } from "../components/MobileDrawer";
 import { SettingsEditorSheet } from "../components/SettingsEditorSheet";
+import { addChat } from "../store/chatsSlice";
+import type { AppDispatch } from "../store/store";
 
 function MenuIcon() {
   return (
@@ -25,6 +29,8 @@ export type AppLayoutOutletContext = {
 function AppLayout() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isOpenDefaultTask, setIsOpenDefaultTask] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const outletContext = {
     openDefaultTask: () => setIsOpenDefaultTask(true),
   } satisfies AppLayoutOutletContext;
@@ -56,6 +62,30 @@ function AppLayout() {
       window.removeEventListener("scroll", lockViewportScroll);
     };
   }, []);
+
+  const handleSelectService = (service: string) => {
+    const createdAt = new Date().toISOString();
+    const id = Date.now();
+
+    dispatch(
+      addChat({
+        id: `chat-${id}`,
+        title: service,
+        preview: service,
+        updatedAt: createdAt,
+        messages: [
+          {
+            id: `msg-${id}`,
+            role: "user",
+            content: service,
+            createdAt,
+          },
+        ],
+      }),
+    );
+    setIsOpenDefaultTask(false);
+    navigate("/");
+  };
 
   return (
     <>
@@ -94,7 +124,7 @@ function AppLayout() {
         sheetBaseClassName=""
         sheetClassName="mx-auto w-full max-w-3xl bg-[var(--color-surface)] px-4 pb-8 pt-2 shadow-[var(--shadow-sheet)]"
       >
-        <DefaultTaskPicker onSelect={() => setIsOpenDefaultTask(false)} />
+        <DefaultTaskPicker onSelect={handleSelectService} />
       </SettingsEditorSheet>
     </>
   );
