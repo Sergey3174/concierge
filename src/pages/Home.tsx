@@ -238,14 +238,24 @@ function HomePage() {
               <PlusIcon />
             </button>
 
-            <textarea
-              ref={textareaRef}
-              rows={1}
-              value={prompt}
-              onChange={(event) => setPrompt(event.target.value)}
-              className="max-h-40 min-h-12 flex-1 resize-none overflow-y-auto bg-transparent py-3 text-[1.05rem] leading-6 text-[var(--color-accent-contrast)] outline-none placeholder:text-[var(--color-text-soft)]"
-              placeholder={t("home.askPlaceholder")}
-            />
+            <div className="relative min-w-0 flex-1">
+              <textarea
+                ref={textareaRef}
+                rows={1}
+                value={prompt}
+                onChange={(event) => setPrompt(event.target.value)}
+                aria-label={t("home.askPlaceholder")}
+                className="block max-h-40 min-h-12 w-full resize-none overflow-x-hidden overflow-y-auto bg-transparent py-3 text-[1.05rem] leading-6 text-[var(--color-accent-contrast)] outline-none"
+              />
+              {!prompt && (
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 top-3 truncate text-[1.05rem] leading-6 text-[var(--color-text-soft)]"
+                >
+                  {t("home.askPlaceholder")}
+                </span>
+              )}
+            </div>
 
             <button
               className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)] text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)] disabled:bg-[var(--color-surface-disabled)] disabled:text-[var(--color-text-soft)]"

@@ -18,6 +18,7 @@ const FaqCard = memo(function FaqCard({
   onSelect,
 }: FaqCardProps) {
   const { t } = useTranslation();
+  console.log(index);
 
   return (
     <article

@@ -325,7 +325,7 @@ export function MobileDrawer({
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-avatar)] text-xl font-medium">
               U
             </div>
-            <span className="text-[1.05rem]">User</span>
+            <span className="text-[1.05rem]">{t("profile.user")}</span>
           </button>
 
           <button
