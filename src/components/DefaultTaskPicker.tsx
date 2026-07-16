@@ -45,9 +45,13 @@ export function DefaultTaskPicker({ onSelect }: DefaultTaskPickerProps) {
                 key={service}
                 type="button"
                 onClick={() => onSelect?.(service)}
-                className="flex w-full  gap-3 items-center rounded-lg px-2 py-3 text-left text-[var(--color-text-secondary)] transition hover:bg-[var(--color-surface-muted)] hover:text-[var(--color-text-primary)]"
+                className="flex w-full  gap-3 items-center rounded-lg px-2 py-2 text-left text-[var(--color-text-secondary)] transition hover:bg-[var(--color-surface-muted)] hover:text-[var(--color-text-primary)]"
               >
-                <MessageCircleQuestionIcon className="shrink-0 text-[var(--color-accent)]" />
+                <div className="bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] p-2 shrink-0 rounded-full">
+                  {" "}
+                  <MessageCircleQuestionIcon className="shrink-0 text-[var(--color-accent)]" />
+                </div>
+
                 <span className="text-base leading-6">{service}</span>
               </button>
             ))}
@@ -65,11 +69,13 @@ export function DefaultTaskPicker({ onSelect }: DefaultTaskPickerProps) {
                 key={category.id}
                 type="button"
                 onClick={() => setSelectedCategoryId(category.id)}
-                className="flex w-full items-center gap-4 rounded-lg px-2 py-3 text-left transition hover:bg-[var(--color-surface-muted)]"
+                className="flex w-full items-center gap-4 rounded-lg px-2 py-2 text-left transition hover:bg-[var(--color-surface-muted)]"
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[var(--color-text-secondary)]">
-                  <ListChecks size={23} strokeWidth={1.7} />
-                </span>
+                <div className="bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] p-1.5 shrink-0 rounded-full">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[var(--color-text-secondary)]">
+                    <ListChecks size={23} strokeWidth={1.7} />
+                  </span>
+                </div>
                 <span className="min-w-0 flex-1">
                   <span className="block text-lg leading-6 text-[var(--color-text-primary)]">
                     {category.title}
