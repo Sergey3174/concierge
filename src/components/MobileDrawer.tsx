@@ -8,11 +8,16 @@ import {
   LogOut,
   Settings,
   Send,
+  Check,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
+import type { AppLanguage } from "../i18n";
+import { SettingsEditorSheet } from "./SettingsEditorSheet";
+import { changeLanguage } from "../store/appSlice";
 import {
   selectChats,
   selectCurrentChatId,
@@ -33,32 +38,33 @@ const primaryItems = [
 ];
 
 const settingsItems = [
+  { key: "language", icon: Globe },
   {
-    title: "Interface language",
-    description: "English, Russian, and other languages",
-    icon: Globe,
-  },
-  {
+    key: "password",
     title: "Change password",
     description: "Update your sign-in password",
     icon: KeyRound,
   },
   {
+    key: "email",
     title: "Email connection",
     description: "Connect or update your email",
     icon: Link,
   },
   {
+    key: "telegram",
     title: "Telegram connection",
     description: "Link your account to Telegram",
     icon: Send,
   },
   {
+    key: "faq",
     title: "FAQ",
     description: "Answers to common questions",
     icon: HelpCircle,
   },
   {
+    key: "logout",
     title: "Log out",
     description: "End the current session",
     icon: LogOut,
@@ -144,13 +150,25 @@ export function MobileDrawer({
   const currentChatId = useSelector((state: RootState) =>
     selectCurrentChatId(state),
   );
+  const language = useSelector((state: RootState) => state.app.language);
+  const { t } = useTranslation();
   const [isSettingsView, setIsSettingsView] = useState(false);
+  const [isLanguageSheetOpen, setIsLanguageSheetOpen] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
       setIsSettingsView(false);
     }
   }, [isOpen]);
+
+  const openLanguageSettings = () => {
+    setIsLanguageSheetOpen(true);
+  };
+
+  const saveLanguage = async (selectedLanguage: AppLanguage) => {
+    await dispatch(changeLanguage(selectedLanguage)).unwrap();
+    setIsLanguageSheetOpen(false);
+  };
 
   const handleOpenDefaultTask = (key: string) => {
     if (key === "services") {
@@ -272,11 +290,14 @@ export function MobileDrawer({
             }`}
           >
             <div className="space-y-2">
-              {settingsItems.map(({ title, description, icon: Icon }) => (
+              {settingsItems.map(({ key, title, description, icon: Icon }) => (
                 <button
-                  key={title}
+                  key={key}
                   type="button"
                   className="flex w-full items-center justify-between rounded-lg bg-[var(--color-surface-muted)] px-4 py-4 text-left transition hover:bg-[var(--color-surface-muted-hover)]"
+                  onClick={
+                    key === "language" ? openLanguageSettings : undefined
+                  }
                 >
                   <span className="flex items-center gap-4">
                     <span className="text-[var(--color-text-muted)]">
@@ -284,10 +305,14 @@ export function MobileDrawer({
                     </span>
                     <span>
                       <span className="block text-[1rem] text-[var(--color-text-primary)]">
-                        {title}
+                        {key === "language"
+                          ? t("settings.language.title")
+                          : title}
                       </span>
                       <span className="block text-sm text-[var(--color-text-soft)]">
-                        {description}
+                        {key === "language"
+                          ? t(`settings.language.${language}`)
+                          : description}
                       </span>
                     </span>
                   </span>
@@ -318,6 +343,40 @@ export function MobileDrawer({
           </button>
         </div>
       </aside>
+
+      <SettingsEditorSheet
+        isOpen={isLanguageSheetOpen}
+        title={t("settings.language.title")}
+        description={t("settings.language.description")}
+        onClose={() => setIsLanguageSheetOpen(false)}
+        overlayClassName="z-50"
+        sheetClassName="z-[60]"
+        showSaveButtons={false}
+      >
+        <div className="space-y-2 pb-6">
+          {(["en", "ru"] as const).map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => saveLanguage(option)}
+              className={`flex w-full items-center justify-between rounded-lg border px-4 py-4 text-left transition ${
+                language === option
+                  ? "border-[var(--color-accent)] bg-[var(--color-surface-soft)] text-[var(--color-text-primary)]"
+                  : "border-[var(--color-surface-disabled)] text-[var(--color-text-muted)]"
+              }`}
+            >
+              <span className="font-medium">
+                {t(`settings.language.${option}`)}
+              </span>
+              {language === option && (
+                <span className="text-sm text-[var(--color-accent)]">
+                  <Check />
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+      </SettingsEditorSheet>
     </>
   );
 }

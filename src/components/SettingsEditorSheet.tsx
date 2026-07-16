@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 
 const SHEET_ANIMATION_MS = 300;
 
@@ -35,6 +36,7 @@ export function SettingsEditorSheet({
   sheetClassName = "",
   sheetBaseClassName = "bg-[var(--color-surface)] px-5 pb-8 pt-4 shadow-[var(--shadow-sheet)]",
 }: SettingsEditorSheetProps) {
+  const { t } = useTranslation();
   const [shouldRender, setShouldRender] = useState(isOpen);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -109,7 +111,7 @@ export function SettingsEditorSheet({
       />
 
       <div
-        className={`fixed inset-x-0 bottom-0 z-30 rounded-t-2xl transition-transform duration-300 ${
+        className={`fixed inset-x-0 bottom-0 z-30 rounded-t-2xl pb-[var(--sa-b)] transition-transform duration-300 ${
           isVisible ? "translate-y-0" : "translate-y-full"
         } ${sheetBaseClassName} ${sheetClassName}`}
       >
@@ -147,7 +149,7 @@ export function SettingsEditorSheet({
               onClick={onClose}
               disabled={disabled}
             >
-              Cancel
+              {t("common.cancel")}
             </button>
             <button
               type="button"
@@ -155,7 +157,7 @@ export function SettingsEditorSheet({
               onClick={onSave}
               disabled={disabled}
             >
-              Save
+              {t("common.save")}
             </button>
           </div>
         )}

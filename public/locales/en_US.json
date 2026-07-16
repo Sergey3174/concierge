@@ -1,0 +1,15 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "settings": {
+    "language": {
+      "title": "Interface language",
+      "description": "Choose the language for the app interface",
+      "en": "English",
+      "ru": "Russian",
+      "selected": "Selected"
+    }
+  }
+}

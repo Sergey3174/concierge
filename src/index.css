@@ -35,6 +35,10 @@
     sans-serif;
   background: var(--color-bg);
   color: var(--color-text-primary);
+  --sa-t: env(safe-area-inset-top);
+  --sa-r: env(safe-area-inset-right);
+  --sa-b: env(safe-area-inset-bottom);
+  --sa-l: env(safe-area-inset-left);
 }
 
 * {
@@ -102,3 +106,5 @@ button {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
+

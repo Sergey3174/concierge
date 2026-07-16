@@ -59,7 +59,7 @@ function AppLayout() {
 
   return (
     <>
-      <div className="app-shell overflow-hidden">
+      <div className="app-shell overflow-hidden pt-[var(--sa-t)] pb-[var(--sa-b)]">
         <div className="relative mx-auto flex h-full w-full flex-col overflow-hidden">
           <MobileDrawer
             isOpen={isDrawerOpen}
