@@ -79,5 +79,26 @@
       "title": "Log out",
       "description": "End the current session"
     }
+  },
+  "faq": {
+    "title": "FAQ",
+    "available_tasks": { "question": "What tasks can I delegate to the concierge service?", "answer": "We help with household, transport, travel, document, medical, legal, and other organizational matters." },
+    "create_request": { "question": "How do I create a request?", "answer": "Describe the task in the chat: what you need, where, when, and any important conditions. We will ask follow-up questions if needed." },
+    "non_standard_request": { "question": "Can I make a non-standard request?", "answer": "Yes. Send your request in any form, even if the service is not in the catalogue. We will check what is possible and suggest a solution." },
+    "service_provider": { "question": "Who provides the services?", "answer": "Depending on the task, it is handled by our team or a vetted contractor. We organize and monitor the work." },
+    "price_calculation": { "question": "How is the price calculated?", "answer": "The cost depends on the complexity, timing, location, and price of the selected provider. We will confirm the final cost before work begins." },
+    "payment_before_start": { "question": "Do I need to pay before work starts?", "answer": "Payment is made after the terms and cost are agreed. Paid work begins after payment is confirmed, unless otherwise specified." },
+    "included_cost": { "question": "Is the contractor's cost included in the service price?", "answer": "Before payment, we specify exactly what is included. Additional expenses are agreed separately." },
+    "payment_methods": { "question": "What payment methods are available?", "answer": "Available payment methods are shown in the app when an invoice is issued. You can view your transaction history in Payments." },
+    "request_processing_time": { "question": "How quickly are requests processed?", "answer": "Timing depends on the task. Simple requests are handled faster, while complex services may require additional time." },
+    "urgent_request": { "question": "Can I make an urgent request?", "answer": "Yes. State that the task is urgent and give the exact deadline. We will check availability and let you know what is possible." },
+    "request_status": { "question": "How can I check my request status?", "answer": "All messages, updates, offers, and progress information are saved in the relevant request chat." },
+    "change_cancel_order": { "question": "Can I change or cancel an order?", "answer": "Yes, until the provider starts work and expenses are incurred. Terms after work starts depend on the service and provider rules." },
+    "executor_unavailable": { "question": "What happens if the provider cannot complete the task?", "answer": "We will try to offer a replacement or another solution. If completion is impossible, we will let you know and agree on next steps." },
+    "telegram_email": { "question": "Can I connect Telegram or email?", "answer": "Yes. Connections are available in account settings and provide additional ways to receive request updates." },
+    "languages": { "question": "Which languages does the service support?", "answer": "The app interface is available in English and Russian. Support in other languages depends on the task and translator availability." },
+    "document_security": { "question": "Is it safe to send documents through the service?", "answer": "Send only documents and data needed for the task. We use them solely to organize the requested service." },
+    "legal_medical_services": { "question": "Does the concierge service provide legal and medical services itself?", "answer": "We can find a specialist and organize a consultation or appointment. Professional legal and medical services are provided by qualified specialists and organizations." },
+    "service_locations": { "question": "In which cities and countries is the service available?", "answer": "Availability depends on the location and service type. Specify the city or country in your request, and we will check the options." }
   }
 }

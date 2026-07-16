@@ -174,17 +174,15 @@ function HomePage() {
     currentChat?.status === "payment" ? currentChat.payment : undefined;
 
   return (
-    <main className="relative flex min-h-0 flex-1 flex-col justify-between pb-12">
+    <main className="relative transition-all flex min-h-0 flex-1 flex-col justify-between pb-12">
       <section
         ref={scrollAreaRef}
         className={`app-scroll-area relative min-h-0 flex-1 hide-scrollbar overflow-y-auto ${paymentRequest ? "pb-40" : "pb-12"}`}
       >
         {!showMessages ? (
-          <div className="mx-auto flex min-h-full max-w-[280px] flex-col items-center justify-center py-16">
+          <div className="transition-all mx-auto flex min-h-full max-w-[280px] flex-col items-center justify-center py-16">
             <h1 className="mt-7 text-center text-[2.15rem] font-light leading-[1.08] tracking-[-0.04em] text-[var(--color-text-primary)]">
-              {currentChat
-                ? currentChat.title
-                : t("home.emptyState")}
+              {currentChat ? currentChat.title : t("home.emptyState")}
             </h1>
           </div>
         ) : (

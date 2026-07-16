@@ -155,6 +155,18 @@ export function MobileDrawer({
     setIsLanguageSheetOpen(true);
   };
 
+  const handleSettingsItemClick = (key: string) => {
+    if (key === "language") {
+      openLanguageSettings();
+      return;
+    }
+
+    if (key === "faq") {
+      onClose();
+      navigate("/faq");
+    }
+  };
+
   const saveLanguage = async (selectedLanguage: AppLanguage) => {
     await dispatch(changeLanguage(selectedLanguage)).unwrap();
     setIsLanguageSheetOpen(false);
@@ -285,9 +297,7 @@ export function MobileDrawer({
                   key={key}
                   type="button"
                   className="flex w-full items-center justify-between rounded-lg bg-[var(--color-surface-muted)] px-4 py-4 text-left transition hover:bg-[var(--color-surface-muted-hover)]"
-                  onClick={
-                    key === "language" ? openLanguageSettings : undefined
-                  }
+                  onClick={() => handleSettingsItemClick(key)}
                 >
                   <span className="flex items-center gap-4">
                     <span className="text-[var(--color-text-muted)]">
