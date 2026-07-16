@@ -97,7 +97,7 @@
     "executor_unavailable": { "question": "What happens if the provider cannot complete the task?", "answer": "We will try to offer a replacement or another solution. If completion is impossible, we will let you know and agree on next steps." },
     "telegram_email": { "question": "Can I connect Telegram or email?", "answer": "Yes. Connections are available in account settings and provide additional ways to receive request updates." },
     "languages": { "question": "Which languages does the service support?", "answer": "The app interface is available in English and Russian. Support in other languages depends on the task and translator availability." },
-    "document_security": { "question": "Is it safe to send documents through the service?", "answer": "Send only documents and data needed for the task. We use them solely to organize the requested service." },
+    "document_security": { "question": "Is it safe to send documents through the service?", "answer": "Send only documents and data needed for the task. We use them solely to organize the requested service. Documents are deleted from our servers after the service is completed or at your request." },
     "legal_medical_services": { "question": "Does the concierge service provide legal and medical services itself?", "answer": "We can find a specialist and organize a consultation or appointment. Professional legal and medical services are provided by qualified specialists and organizations." },
     "service_locations": { "question": "In which cities and countries is the service available?", "answer": "Availability depends on the location and service type. Specify the city or country in your request, and we will check the options." }
   }
