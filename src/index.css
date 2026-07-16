@@ -60,9 +60,7 @@ body {
   position: fixed;
   inset: 0;
   overflow: hidden;
-  background:
-
-    linear-gradient(
+  background: linear-gradient(
       180deg,
       var(--color-bg) 0%,
       var(--color-bg-secondary) 52%,

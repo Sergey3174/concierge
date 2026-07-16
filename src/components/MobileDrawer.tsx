@@ -32,41 +32,31 @@ type MobileDrawerProps = {
 };
 
 const primaryItems = [
-  { label: "New request", icon: "edit", key: "new-request" },
-  { label: "Services", icon: "grid", key: "services" },
-  { label: "Payments", icon: "coins", key: "accounts" },
+  { icon: "edit", key: "new-request" },
+  { icon: "grid", key: "services" },
+  { icon: "coins", key: "accounts" },
 ];
 
 const settingsItems = [
   { key: "language", icon: Globe },
   {
     key: "password",
-    title: "Change password",
-    description: "Update your sign-in password",
     icon: KeyRound,
   },
   {
     key: "email",
-    title: "Email connection",
-    description: "Connect or update your email",
     icon: Link,
   },
   {
     key: "telegram",
-    title: "Telegram connection",
-    description: "Link your account to Telegram",
     icon: Send,
   },
   {
     key: "faq",
-    title: "FAQ",
-    description: "Answers to common questions",
     icon: HelpCircle,
   },
   {
     key: "logout",
-    title: "Log out",
-    description: "End the current session",
     icon: LogOut,
   },
 ];
@@ -226,7 +216,7 @@ export function MobileDrawer({
               </button>
             )}
             <h2 className="text-[2rem] font-normal tracking-tight text-[var(--color-text-primary)]">
-              {isSettingsView ? "Settings" : "Concierge"}
+              {isSettingsView ? t("settings.title") : t("app.name")}
             </h2>
           </div>
         </div>
@@ -242,7 +232,7 @@ export function MobileDrawer({
             <div className="space-y-1">
               {primaryItems.map((item) => (
                 <button
-                  key={item.label}
+                  key={item.key}
                   type="button"
                   className="flex w-full items-center gap-5 rounded-lg px-1 py-1 text-left text-[1.05rem] text-[var(--color-text-secondary)] transition hover:bg-[var(--color-surface-soft)]"
                   onClick={() => handleOpenDefaultTask(item.key)}
@@ -250,14 +240,14 @@ export function MobileDrawer({
                   <span className="text-[var(--color-text-secondary)]">
                     <DrawerItemIcon icon={item.icon} />
                   </span>
-                  <span>{item.label}</span>
+                  <span>{t(`navigation.${item.key}`)}</span>
                 </button>
               ))}
             </div>
 
             <div className="mt-8 min-h-0 flex-1 overflow-auto hide-scrollbar">
               <p className="text-[0.95rem] text-[var(--color-text-subtle)]">
-                Recent requests
+                {t("navigation.recentRequests")}
               </p>
               <div className="mt-4 space-y-1 pr-1">
                 {chats.map((chat) => {
@@ -290,7 +280,7 @@ export function MobileDrawer({
             }`}
           >
             <div className="space-y-2">
-              {settingsItems.map(({ key, title, description, icon: Icon }) => (
+              {settingsItems.map(({ key, icon: Icon }) => (
                 <button
                   key={key}
                   type="button"
@@ -305,14 +295,12 @@ export function MobileDrawer({
                     </span>
                     <span>
                       <span className="block text-[1rem] text-[var(--color-text-primary)]">
-                        {key === "language"
-                          ? t("settings.language.title")
-                          : title}
+                        {t(`settings.${key}.title`)}
                       </span>
                       <span className="block text-sm text-[var(--color-text-soft)]">
                         {key === "language"
                           ? t(`settings.language.${language}`)
-                          : description}
+                          : t(`settings.${key}.description`)}
                       </span>
                     </span>
                   </span>

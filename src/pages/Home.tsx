@@ -9,6 +9,7 @@ import {
 import type { AppDispatch, RootState } from "../store/store";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { AppLayoutOutletContext } from "../layout/AppLayout";
+import { useTranslation } from "react-i18next";
 
 function PlusIcon() {
   return (
@@ -57,6 +58,7 @@ function PaymentIcon() {
 }
 
 function HomePage() {
+  const { t } = useTranslation();
   const [prompt, setPrompt] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const dispatch = useDispatch<AppDispatch>();
@@ -182,7 +184,7 @@ function HomePage() {
             <h1 className="mt-7 text-center text-[2.15rem] font-light leading-[1.08] tracking-[-0.04em] text-[var(--color-text-primary)]">
               {currentChat
                 ? currentChat.title
-                : "How can I help you? \nWrite what you need."}
+                : t("home.emptyState")}
             </h1>
           </div>
         ) : (
@@ -214,7 +216,7 @@ function HomePage() {
 
                 <div className="min-w-0 flex-1">
                   <h2 className="text-[1rem] font-medium text-[var(--color-text-primary)]">
-                    We are waiting for payment
+                    {t("home.waitingForPayment")}
                   </h2>
 
                   <button
@@ -222,7 +224,7 @@ function HomePage() {
                     className="mt-3 inline-flex items-center justify-center rounded-lg bg-[var(--color-accent)] px-5 py-2.5 text-sm font-medium text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)]"
                     onClick={() => navigate("/payment")}
                   >
-                    {`Pay ${paymentRequest.amountLabel}`}
+                    {t("home.pay", { amount: paymentRequest.amountLabel })}
                   </button>
                 </div>
               </div>
@@ -244,7 +246,7 @@ function HomePage() {
               value={prompt}
               onChange={(event) => setPrompt(event.target.value)}
               className="max-h-40 min-h-12 flex-1 resize-none overflow-y-auto bg-transparent py-3 text-[1.05rem] leading-6 text-[var(--color-accent-contrast)] outline-none placeholder:text-[var(--color-text-soft)]"
-              placeholder="Ask Concierge"
+              placeholder={t("home.askPlaceholder")}
             />
 
             <button

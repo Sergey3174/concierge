@@ -1,4 +1,5 @@
 import { BrushCleaning, Languages, ShieldUser, Wrench } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 type DefaultTaskPickerProps = {
   onSelect?: (value: string) => void;
@@ -7,31 +8,25 @@ type DefaultTaskPickerProps = {
 const tools = [
   {
     id: "small-repairs",
-    title: "Small Repairs",
-    description: "Air conditioner cleaning, boiler repairs",
     icon: Wrench,
   },
   {
     id: "cleaning",
-    title: "Cleaning",
-    description: "Cleaning for rooms, apartments, villas, etc.",
     icon: BrushCleaning,
   },
   {
     id: "translator-services",
-    title: "Translator Services",
-    description: "Support at meetings, video calls, etc.",
     icon: Languages,
   },
   {
     id: "accompaniment",
-    title: "Event Support",
-    description: "Support at exhibitions, medical centers, etc.",
     icon: ShieldUser,
   },
 ];
 
 export function DefaultTaskPicker({ onSelect }: DefaultTaskPickerProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="text-[var(--color-text-primary)]">
       <div className="mx-auto mb-4 h-1.5 w-16 rounded-full bg-[var(--color-text-muted)]" />
@@ -55,7 +50,7 @@ export function DefaultTaskPicker({ onSelect }: DefaultTaskPickerProps) {
       </div> */}
 
       <div className="space-y-1">
-        {tools.map(({ id, title, description, icon: Icon }) => (
+        {tools.map(({ id, icon: Icon }) => (
           <button
             key={id}
             type="button"
@@ -67,10 +62,10 @@ export function DefaultTaskPicker({ onSelect }: DefaultTaskPickerProps) {
             </span>
             <span className="min-w-0">
               <span className="block text-xl leading-none tracking-[-0.05em] text-[var(--color-text-primary)]">
-                {title}
+                {t(`services.${id}.title`)}
               </span>
               <span className="mt-1 block text-lg leading-6 text-[var(--color-text-soft)]">
-                {description}
+                {t(`services.${id}.description`)}
               </span>
             </span>
           </button>

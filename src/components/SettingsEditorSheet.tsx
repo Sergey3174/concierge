@@ -23,7 +23,7 @@ type SettingsEditorSheetProps = {
 
 export function SettingsEditorSheet({
   isOpen,
-  title = "Edit setting",
+  title,
   description,
   children,
   onClose,
@@ -119,7 +119,7 @@ export function SettingsEditorSheet({
           <div className="mb-5 flex items-start justify-between gap-4">
             <div>
               <h3 className="text-xl font-bold text-[var(--color-text-primary)]">
-                {title}
+                {title ?? t("settings.edit")}
               </h3>
               {description && (
                 <p className="mt-1 text-sm text-[var(--color-text-soft)]">

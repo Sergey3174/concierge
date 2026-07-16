@@ -1,10 +1,11 @@
 import { ReceiptText } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 type PaymentDirection = "incoming" | "outgoing";
 
 type PaymentItem = {
   id: string;
-  service: string;
+  serviceKey: string;
   method: string;
   date: string;
   amount: string;
@@ -14,7 +15,7 @@ type PaymentItem = {
 const payments: PaymentItem[] = [
   {
     id: "pay-1",
-    service: "Visa consultation",
+    serviceKey: "visaConsultation",
     method: "Mastercard **** 9918",
     date: "03.07.2026",
     amount: "-20 $",
@@ -22,7 +23,7 @@ const payments: PaymentItem[] = [
   },
   {
     id: "pay-2",
-    service: "Airport transfer booking",
+    serviceKey: "airportTransfer",
     method: "Mastercard **** 9918",
     date: "02.07.2026",
     amount: "-10 $",
@@ -30,7 +31,7 @@ const payments: PaymentItem[] = [
   },
   {
     id: "pay-3",
-    service: "Hotel selection",
+    serviceKey: "hotelSelection",
     method: "Mastercard **** 9918",
     date: "30.06.2026",
     amount: "-10 $",
@@ -38,7 +39,7 @@ const payments: PaymentItem[] = [
   },
   {
     id: "pay-4",
-    service: "Personal shopping",
+    serviceKey: "personalShopping",
     method: "Mastercard **** 9918",
     date: "28.06.2026",
     amount: "-15 $",
@@ -46,7 +47,7 @@ const payments: PaymentItem[] = [
   },
   {
     id: "pay-5",
-    service: "Private driver",
+    serviceKey: "privateDriver",
     method: "Mastercard **** 9918",
     date: "26.06.2026",
     amount: "-10 $",
@@ -55,12 +56,14 @@ const payments: PaymentItem[] = [
 ];
 
 function PaymentsPage() {
+  const { t } = useTranslation();
+
   return (
     <main className="flex min-h-0 flex-1 flex-col">
       <section className="app-scroll-area mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col overflow-y-auto hide-scrollbar py-1">
         <div className="mx-auto flex w-full max-w-2xl flex-col px-0 pb-8">
           <h1 className="text-[2rem] font-light tracking-[-0.04em] text-[var(--color-text-primary)]">
-            My Transactions
+            {t("payments.title")}
           </h1>
 
           <div className="mt-5 space-y-3">
@@ -84,7 +87,7 @@ function PaymentsPage() {
 
                   <div className="min-w-0 flex-1">
                     <h2 className="truncate text-[1.02rem] font-medium text-[var(--color-text-primary)]">
-                      {payment.service}
+                      {t(`payments.services.${payment.serviceKey}`)}
                     </h2>
                     <p className="mt-1 truncate text-sm text-[var(--color-text-subtle)]">
                       {payment.method}

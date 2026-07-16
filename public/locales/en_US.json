@@ -1,15 +1,83 @@
 {
+  "app": {
+    "name": "Concierge"
+  },
   "common": {
     "cancel": "Cancel",
     "save": "Save"
   },
+  "navigation": {
+    "new-request": "New request",
+    "services": "Services",
+    "accounts": "Payments",
+    "recentRequests": "Recent requests"
+  },
+  "profile": {
+    "user": "User"
+  },
+  "home": {
+    "emptyState": "How can I help you?\nWrite what you need.",
+    "waitingForPayment": "We are waiting for payment",
+    "pay": "Pay {{amount}}",
+    "askPlaceholder": "Ask Concierge"
+  },
+  "services": {
+    "small-repairs": {
+      "title": "Small Repairs",
+      "description": "Air conditioner cleaning, boiler repairs"
+    },
+    "cleaning": {
+      "title": "Cleaning",
+      "description": "Cleaning for rooms, apartments, villas, etc."
+    },
+    "translator-services": {
+      "title": "Translator Services",
+      "description": "Support at meetings, video calls, etc."
+    },
+    "accompaniment": {
+      "title": "Event Support",
+      "description": "Support at exhibitions, medical centers, etc."
+    }
+  },
+  "payments": {
+    "title": "My Transactions",
+    "services": {
+      "visaConsultation": "Visa consultation",
+      "airportTransfer": "Airport transfer booking",
+      "hotelSelection": "Hotel selection",
+      "personalShopping": "Personal shopping",
+      "privateDriver": "Private driver"
+    }
+  },
   "settings": {
+    "title": "Settings",
+    "edit": "Edit setting",
     "language": {
       "title": "Interface language",
       "description": "Choose the language for the app interface",
       "en": "English",
       "ru": "Russian",
       "selected": "Selected"
+    },
+    "password": {
+      "title": "Change password",
+      "description": "Update your sign-in password"
+    },
+    "email": {
+      "title": "Email connection",
+      "description": "Connect or update your email"
+    },
+    "telegram": {
+      "title": "Telegram connection",
+      "description": "Link your account to Telegram"
+    },
+    "faq": {
+      "title": "FAQ",
+      "description": "Answers to common questions"
+    },
+    "logout": {
+      "title": "Log out",
+      "description": "End the current session"
     }
   }
 }

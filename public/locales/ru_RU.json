@@ -1,15 +1,83 @@
 {
+  "app": {
+    "name": "Консьерж"
+  },
   "common": {
     "cancel": "Отмена",
     "save": "Сохранить"
   },
+  "navigation": {
+    "new-request": "Новый запрос",
+    "services": "Услуги",
+    "accounts": "Платежи",
+    "recentRequests": "Недавние запросы"
+  },
+  "profile": {
+    "user": "Пользователь"
+  },
+  "home": {
+    "emptyState": "Чем я могу помочь?\nНапишите, что вам нужно.",
+    "waitingForPayment": "Ожидаем оплату",
+    "pay": "Оплатить {{amount}}",
+    "askPlaceholder": "Напишите Консьержу"
+  },
+  "services": {
+    "small-repairs": {
+      "title": "Мелкий ремонт",
+      "description": "Чистка кондиционера, ремонт бойлера"
+    },
+    "cleaning": {
+      "title": "Уборка",
+      "description": "Уборка комнат, квартир, вилл и других помещений"
+    },
+    "translator-services": {
+      "title": "Услуги переводчика",
+      "description": "Сопровождение на встречах, видеозвонках и не только"
+    },
+    "accompaniment": {
+      "title": "Сопровождение мероприятий",
+      "description": "Помощь на выставках, в медицинских центрах и не только"
+    }
+  },
+  "payments": {
+    "title": "Мои операции",
+    "services": {
+      "visaConsultation": "Консультация по визе",
+      "airportTransfer": "Бронирование трансфера в аэропорт",
+      "hotelSelection": "Подбор отеля",
+      "personalShopping": "Персональный шопинг",
+      "privateDriver": "Личный водитель"
+    }
+  },
   "settings": {
+    "title": "Настройки",
+    "edit": "Редактировать настройку",
     "language": {
       "title": "Язык интерфейса",
       "description": "Выберите язык интерфейса приложения",
       "en": "Английский",
       "ru": "Русский",
       "selected": "Выбран"
+    },
+    "password": {
+      "title": "Изменить пароль",
+      "description": "Обновите пароль для входа"
+    },
+    "email": {
+      "title": "Подключение почты",
+      "description": "Подключите или обновите электронную почту"
+    },
+    "telegram": {
+      "title": "Подключение Telegram",
+      "description": "Привяжите аккаунт к Telegram"
+    },
+    "faq": {
+      "title": "FAQ",
+      "description": "Ответы на частые вопросы"
+    },
+    "logout": {
+      "title": "Выйти",
+      "description": "Завершить текущий сеанс"
     }
   }
 }
