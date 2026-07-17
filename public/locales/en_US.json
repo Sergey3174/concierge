@@ -27,6 +27,255 @@
     "snail": "Snail",
     "bug": "Bug"
   },
+  "serviceCatalog": {
+    "title": "Service categories",
+    "back": "All categories",
+    "serviceCount": "{{count}} services",
+    "categories": {
+      "1": {
+        "title": "Personal assistance and lifestyle management",
+        "services": {
+          "1": "Personal concierge or dedicated manager",
+          "2": "Personal, household, and administrative errands",
+          "3": "Daily schedule, meetings, and reminders management",
+          "4": "Personalized relocation, travel, or residence plan",
+          "5": "Coordination of multiple contractors and deadline control",
+          "6": "Representation of the client's interests under a power of attorney",
+          "7": "Support for VIP clients, delegations, guests, artists, and public figures",
+          "8": "Preparation of personalized selections, comparisons, estimates, and recommendations",
+          "9": "Payment, booking, document, and deadline tracking"
+        }
+      },
+      "2": {
+        "title": "Immigration, visas, residence legalization, and other documents",
+        "services": {
+          "1": "Selecting a visa strategy that matches the client's goals and timeline",
+          "2": "Preparing forms, applications, letters, and document packages",
+          "3": "Submitting applications for tourist, business, work, investor, family, and other visas",
+          "4": "Extending visas and residence permits",
+          "5": "Processing KITAS and KITAP permits",
+          "6": "Changing sponsor, visa type, or grounds for stay",
+          "7": "Restoring immigration documents",
+          "8": "Support for visa runs and border crossings",
+          "9": "Appointments and support at immigration offices",
+          "10": "Residence address registration and notification of local authorities",
+          "11": "Obtaining re-entry permits, exit permits, and other immigration documents",
+          "12": "Consultation support for refusals, additional document requests, and inspections",
+          "13": "Assistance with visas for family members, employees, and household staff",
+          "14": "Translation and legalization of documents for immigration procedures"
+        }
+      },
+      "3": {
+        "title": "Passports, ID documents, driver's licenses, and government documents",
+        "services": {
+          "1": "Help with issuing, renewing, and replacing driver's licenses",
+          "2": "Obtaining an international driving permit",
+          "3": "Assistance with obtaining local IDs and registration documents",
+          "4": "Appointments at government institutions and electronic queue registration",
+          "5": "Obtaining certificates, extracts, duplicates, and archived documents",
+          "6": "Preparing powers of attorney and applications",
+          "7": "Notarization of documents and signatures",
+          "8": "Apostille and consular legalization",
+          "9": "Certified, notarized, and standard document translation",
+          "10": "Obtaining criminal record certificates and other official certificates",
+          "11": "Assistance with registering births, marriages, divorces, and other civil status records",
+          "12": "Arranging consular appointments and support at embassies",
+          "13": "Restoring lost documents",
+          "14": "Courier delivery of originals and notarized copies",
+          "15": "IMEI registration for mobile devices and assistance with customs formalities"
+        }
+      },
+      "4": {
+        "title": "Relocation and adaptation",
+        "services": {
+          "1": "End-to-end support for relocation to another country or city",
+          "2": "Selecting a neighborhood based on budget, school, office, and lifestyle",
+          "3": "Relocation budget planning",
+          "4": "Organizing international and local moves",
+          "5": "Packing, transportation, and unpacking of personal belongings",
+          "6": "Customs clearance of personal property",
+          "7": "Storage rental and temporary belongings storage",
+          "8": "Temporary accommodation while searching for permanent housing",
+          "9": "Help with local SIM cards, internet, banking services, and transport",
+          "10": "Adaptation consultations on local rules, everyday life, and business culture",
+          "11": "Selecting language courses and tutors",
+          "12": "Enrolling children in school or kindergarten",
+          "13": "Selecting doctors, insurance, and essential services near home",
+          "14": "Support during the first weeks and months after relocation",
+          "15": "Arranging departure and closing household matters when leaving the country"
+        }
+      },
+      "5": {
+        "title": "Real estate and accommodation",
+        "services": {
+          "1": "Finding apartments, houses, villas, apartments, townhouses, and residences",
+          "2": "Finding short-, medium-, and long-term accommodation",
+          "3": "Finding commercial premises, offices, warehouses, and land plots",
+          "4": "Arranging viewings and property support",
+          "5": "Photo and video property inspections for remote clients",
+          "6": "Checking the owner, documents, and rights to the property",
+          "7": "Reviewing lease or purchase agreement terms",
+          "8": "Negotiating price, deposit, repairs, and living conditions",
+          "9": "Preparing, translating, and agreeing contracts",
+          "10": "Paying reservations and arranging move-in",
+          "11": "Property handover, condition photo record, and inventory preparation",
+          "12": "Lease extension, renewal, and termination",
+          "13": "Deposit return and dispute resolution with the owner",
+          "14": "Selecting a virtual office and legal address",
+          "15": "Property management while the owner is away",
+          "16": "Monitoring utility payments and bills",
+          "17": "Regular property condition checks",
+          "18": "Preparing property for the owner or guests' arrival",
+          "19": "Arranging property rental and tenant coordination"
+        }
+      },
+      "6": {
+        "title": "Cleaning, household management, and home services",
+        "services": {
+          "1": "One-time, regular, and deep cleaning",
+          "2": "Cleaning after renovation, relocation, tenants, or events",
+          "3": "Daily cleaning of a house, apartment, villa, or office",
+          "4": "Window, facade, balcony, and terrace cleaning",
+          "5": "Dry cleaning of upholstered furniture, mattresses, curtains, and carpets",
+          "6": "Cleaning pools, fountains, and water reservoirs",
+          "7": "Garden, lawn, and plant care",
+          "8": "Disinfection, pest control, and pest treatment",
+          "9": "Removal of rubbish, bulky items, and construction waste",
+          "10": "Laundry, ironing, and laundry services",
+          "11": "Dry cleaning of clothing, shoes, bags, and accessories",
+          "12": "Clothing repair and alterations",
+          "13": "Purchasing household chemicals, supplies, and groceries",
+          "14": "Arranging drinking water and gas delivery",
+          "15": "House care while the owner is away",
+          "16": "Ventilating rooms and humidity control",
+          "17": "Preparing bedroom, bathroom, and kitchen for the client's arrival",
+          "18": "Seasonal replacement of textiles, bed linen, and decor"
+        }
+      },
+      "7": {
+        "title": "Household staff",
+        "services": {
+          "1": "Selecting housekeepers, maids, and household assistants",
+          "2": "Selecting nannies, governesses, and children's companions",
+          "3": "Selecting caregivers and assistants for elderly people",
+          "4": "Selecting personal and family drivers",
+          "5": "Selecting private chefs, family cooks, and catering staff",
+          "6": "Selecting gardeners, house managers, and technical staff",
+          "7": "Selecting personal assistants, secretaries, and administrators",
+          "8": "Checking candidates' documents, references, and experience",
+          "9": "Arranging interviews and trial shifts",
+          "10": "Preparing job descriptions and work schedules",
+          "11": "Arranging staff replacement during vacation or illness",
+          "12": "Monitoring household staff performance",
+          "13": "Arranging staff training and onboarding"
+        }
+      },
+      "8": {
+        "title": "Repairs, maintenance, and equipment",
+        "services": {
+          "1": "Handyman services and minor household repairs",
+          "2": "Electrician, plumber, carpenter, welder, and painter services",
+          "3": "Repair of walls, ceilings, floors, doors, windows, and locks",
+          "4": "Furniture assembly, disassembly, and repair",
+          "5": "Installation of shelves, TVs, light fixtures, mirrors, and curtain rods",
+          "6": "Repair of refrigerators, washing machines, and dishwashers",
+          "7": "Repair of cooktops, ovens, microwave ovens, and extractor hoods",
+          "8": "Repair of water heaters, pumps, and water supply systems",
+          "9": "Installation, cleaning, refilling, and repair of air conditioners",
+          "10": "Repair of generators, voltage stabilizers, and uninterruptible power supplies",
+          "11": "Repair of televisions, audio systems, and home electronics",
+          "12": "Repair of computers, laptops, phones, and tablets",
+          "13": "Wi-Fi, router, mesh system, and home network setup",
+          "14": "Installation of video surveillance, alarm systems, and smart home equipment",
+          "15": "Smart TV, streaming service, and multimedia setup",
+          "16": "Pool, filtration, and pump equipment diagnostics and repair",
+          "17": "Repair of office equipment, printers, scanners, and cash register equipment",
+          "18": "Finding spare parts and consumables",
+          "19": "Obtaining estimates, comparing contractors, and repair oversight",
+          "20": "Technical supervision and acceptance of completed work",
+          "21": "Emergency technician call-out"
+        }
+      },
+      "9": {
+        "title": "Utilities, communications, and digital infrastructure",
+        "services": {
+          "1": "Connecting and transferring electricity, water, and gas services",
+          "2": "Connecting home and office internet",
+          "3": "Installing and configuring satellite or cable television",
+          "4": "Purchasing and registering SIM cards and eSIMs",
+          "5": "Paying and monitoring utility bills",
+          "6": "Increasing electrical capacity and resolving outage issues",
+          "7": "Arranging backup power and generators",
+          "8": "Setting up corporate telephony and virtual numbers",
+          "9": "Connecting intercoms, access control, and security systems",
+          "10": "Setting up cloud services and backups"
+        }
+      },
+      "10": {
+        "title": "Cars, scooters, motorcycles, and ground transport",
+        "services": {
+          "1": "Short- and long-term car rental",
+          "2": "Rental of scooters, motorcycles, e-scooters, and bicycles",
+          "3": "Car or motorcycle rental with a driver",
+          "4": "Private driver for a day, week, month, or ongoing basis",
+          "5": "Transfers to the airport, port, hotel, office, and between cities",
+          "6": "VIP transfers and meet-and-greet service",
+          "7": "Transport support for delegations and events",
+          "8": "Purchase of a new or used car or motorcycle",
+          "9": "Vehicle selection, inspection, and diagnostics before purchase",
+          "10": "Negotiating with the seller and completing the transaction",
+          "11": "Vehicle registration, re-registration, and deregistration",
+          "12": "Renewing registration documents and paying vehicle taxes",
+          "13": "Arranging insurance",
+          "14": "Maintenance and repairs",
+          "15": "Car wash, dry cleaning, polishing, and detailing",
+          "16": "Tow truck, roadside assistance, and jump-start service",
+          "17": "Arranging a parking space and site access permit",
+          "18": "Selling a car or motorcycle on the client's behalf"
+        }
+      },
+      "11": {
+        "title": "Aviation, marine transport, and premium mobility",
+        "services": {
+          "1": "Booking commercial flights",
+          "2": "Selecting optimal routes and connections",
+          "3": "Ticket changes, exchanges, and refunds",
+          "4": "Booking charter flights and private jets",
+          "5": "Helicopter rental and helicopter transfer arrangements",
+          "6": "Booking yachts, motorboats, sailboats, and cruises",
+          "7": "Arranging fishing, diving, and sea trips",
+          "8": "Hiring crew, captain, and onboard service",
+          "9": "Baggage and oversized equipment transfer",
+          "10": "VIP lounges, lounge access, and airport assistance",
+          "11": "Fast Track, Meet & Assist, and baggage assistance",
+          "12": "Arranging private baggage delivery between cities and countries",
+          "13": "Airport meet-and-greet and expedited security clearance"
+        }
+      },
+      "12": {
+        "title": "Travel, leisure, and bookings",
+        "services": {
+          "1": "Designing personalized travel itineraries",
+          "2": "Booking hotels, villas, apartments, resorts, and boutique hotels",
+          "3": "Booking restaurants, beach clubs, and private venues",
+          "4": "Booking excursions, tours, and private guides",
+          "5": "End-to-end organization of business and leisure trips",
+          "6": "Selecting family, romantic, wellness, or active holidays",
+          "7": "Organizing honeymoons and trips for special occasions",
+          "8": "Purchasing rail, bus, and ferry tickets",
+          "9": "Car rental and transfers at the destination",
+          "10": "Arranging visa support for travel",
+          "11": "Selecting travel insurance",
+          "12": "Booking excursions, museums, and attractions without queues",
+          "13": "Arranging interpreters and companions",
+          "14": "Preparing a country guide, entry rules, and local tips",
+          "15": "Support with flight cancellation, delayed baggage, or itinerary changes",
+          "16": "Emergency rebooking and assistance during travel",
+          "17": "Personal assistant for the duration of a holiday"
+        }
+      }
+    }
+  },
   "home": {
     "emptyState": "How can I help you?\nWrite what you need.",
     "waitingForPayment": "We are waiting for payment",
@@ -94,23 +343,78 @@
   },
   "faq": {
     "title": "FAQ",
-    "available_tasks": { "question": "What tasks can I delegate to the concierge service?", "answer": "We help with household, transport, travel, document, medical, legal, and other organizational matters." },
-    "create_request": { "question": "How do I create a request?", "answer": "Describe the task in the chat: what you need, where, when, and any important conditions. We will ask follow-up questions if needed." },
-    "non_standard_request": { "question": "Can I make a non-standard request?", "answer": "Yes. Send your request in any form, even if the service is not in the catalogue. We will check what is possible and suggest a solution." },
-    "service_provider": { "question": "Who provides the services?", "answer": "Depending on the task, it is handled by our team or a vetted contractor. We organize and monitor the work." },
-    "price_calculation": { "question": "How is the price calculated?", "answer": "The cost depends on the complexity, timing, location, and price of the selected provider. We will confirm the final cost before work begins." },
-    "payment_before_start": { "question": "Do I need to pay before work starts?", "answer": "Payment is made after the terms and cost are agreed. Paid work begins after payment is confirmed, unless otherwise specified." },
-    "included_cost": { "question": "Is the contractor's cost included in the service price?", "answer": "Before payment, we specify exactly what is included. Additional expenses are agreed separately." },
-    "payment_methods": { "question": "What payment methods are available?", "answer": "Available payment methods are shown in the app when an invoice is issued. You can view your transaction history in Payments." },
-    "request_processing_time": { "question": "How quickly are requests processed?", "answer": "Timing depends on the task. Simple requests are handled faster, while complex services may require additional time." },
-    "urgent_request": { "question": "Can I make an urgent request?", "answer": "Yes. State that the task is urgent and give the exact deadline. We will check availability and let you know what is possible." },
-    "request_status": { "question": "How can I check my request status?", "answer": "All messages, updates, offers, and progress information are saved in the relevant request chat." },
-    "change_cancel_order": { "question": "Can I change or cancel an order?", "answer": "Yes, until the provider starts work and expenses are incurred. Terms after work starts depend on the service and provider rules." },
-    "executor_unavailable": { "question": "What happens if the provider cannot complete the task?", "answer": "We will try to offer a replacement or another solution. If completion is impossible, we will let you know and agree on next steps." },
-    "telegram_email": { "question": "Can I connect Telegram or email?", "answer": "Yes. Connections are available in account settings and provide additional ways to receive request updates." },
-    "languages": { "question": "Which languages does the service support?", "answer": "The app interface is available in English and Russian. Support in other languages depends on the task and translator availability." },
-    "document_security": { "question": "Is it safe to send documents through the service?", "answer": "Send only documents and data needed for the task. We use them solely to organize the requested service. Documents are deleted from our servers after the service is completed or at your request." },
-    "legal_medical_services": { "question": "Does the concierge service provide legal and medical services itself?", "answer": "We can find a specialist and organize a consultation or appointment. Professional legal and medical services are provided by qualified specialists and organizations." },
-    "service_locations": { "question": "In which cities and countries is the service available?", "answer": "Availability depends on the location and service type. Specify the city or country in your request, and we will check the options." }
+    "available_tasks": {
+      "question": "What tasks can I delegate to the concierge service?",
+      "answer": "We help with household, transport, travel, document, medical, legal, and other organizational matters."
+    },
+    "create_request": {
+      "question": "How do I create a request?",
+      "answer": "Describe the task in the chat: what you need, where, when, and any important conditions. We will ask follow-up questions if needed."
+    },
+    "non_standard_request": {
+      "question": "Can I make a non-standard request?",
+      "answer": "Yes. Send your request in any form, even if the service is not in the catalogue. We will check what is possible and suggest a solution."
+    },
+    "service_provider": {
+      "question": "Who provides the services?",
+      "answer": "Depending on the task, it is handled by our team or a vetted contractor. We organize and monitor the work."
+    },
+    "price_calculation": {
+      "question": "How is the price calculated?",
+      "answer": "The cost depends on the complexity, timing, location, and price of the selected provider. We will confirm the final cost before work begins."
+    },
+    "payment_before_start": {
+      "question": "Do I need to pay before work starts?",
+      "answer": "Payment is made after the terms and cost are agreed. Paid work begins after payment is confirmed, unless otherwise specified."
+    },
+    "included_cost": {
+      "question": "Is the contractor's cost included in the service price?",
+      "answer": "Before payment, we specify exactly what is included. Additional expenses are agreed separately."
+    },
+    "payment_methods": {
+      "question": "What payment methods are available?",
+      "answer": "Available payment methods are shown in the app when an invoice is issued. You can view your transaction history in Payments."
+    },
+    "request_processing_time": {
+      "question": "How quickly are requests processed?",
+      "answer": "Timing depends on the task. Simple requests are handled faster, while complex services may require additional time."
+    },
+    "urgent_request": {
+      "question": "Can I make an urgent request?",
+      "answer": "Yes. State that the task is urgent and give the exact deadline. We will check availability and let you know what is possible."
+    },
+    "request_status": {
+      "question": "How can I check my request status?",
+      "answer": "All messages, updates, offers, and progress information are saved in the relevant request chat."
+    },
+    "change_cancel_order": {
+      "question": "Can I change or cancel an order?",
+      "answer": "Yes, until the provider starts work and expenses are incurred. Terms after work starts depend on the service and provider rules."
+    },
+    "executor_unavailable": {
+      "question": "What happens if the provider cannot complete the task?",
+      "answer": "We will try to offer a replacement or another solution. If completion is impossible, we will let you know and agree on next steps."
+    },
+    "telegram_email": {
+      "question": "Can I connect Telegram or email?",
+      "answer": "Yes. Connections are available in account settings and provide additional ways to receive request updates."
+    },
+    "languages": {
+      "question": "Which languages does the service support?",
+      "answer": "The app interface is available in English and Russian. Support in other languages depends on the task and translator availability."
+    },
+    "document_security": {
+      "question": "Is it safe to send documents through the service?",
+      "answer": "Send only documents and data needed for the task. We use them solely to organize the requested service. Documents are deleted from our servers after the service is completed or at your request."
+    },
+    "legal_medical_services": {
+      "question": "Does the concierge service provide legal and medical services itself?",
+      "answer": "We can find a specialist and organize a consultation or appointment. Professional legal and medical services are provided by qualified specialists and organizations."
+    },
+    "service_locations": {
+      "question": "In which cities and countries is the service available?",
+      "answer": "Availability depends on the location and service type. Specify the city or country in your request, and we will check the options."
+    }
   }
 }
+
