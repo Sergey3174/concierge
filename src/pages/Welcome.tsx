@@ -118,15 +118,17 @@ export default function WelcomePage() {
             </div>
           )}
 
-          <button
-            type="button"
-            onClick={handlePwaAction}
-            disabled={!isPwaInstalled && !installPrompt && !iosDevice}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--color-accent)] px-5 py-4 text-[1.05rem] font-medium text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)] disabled:cursor-default disabled:opacity-55"
-          >
-            <Download size={19} />
-            {isPwaInstalled ? "Открыть приложение" : "Установить PWA"}
-          </button>
+          {!iosDevice && (
+            <button
+              type="button"
+              onClick={handlePwaAction}
+              disabled={!isPwaInstalled && !installPrompt && !iosDevice}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--color-accent)] px-5 py-4 text-[1.05rem] font-medium text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)] disabled:cursor-default disabled:opacity-55"
+            >
+              <Download size={19} />
+              {isPwaInstalled ? "Открыть приложение" : "Установить PWA"}
+            </button>
+          )}
 
           {androidDevice && (
             <button
