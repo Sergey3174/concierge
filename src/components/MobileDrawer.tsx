@@ -5,6 +5,7 @@ import {
   HelpCircle,
   KeyRound,
   Link,
+  LogIn,
   LogOut,
   Settings,
   Send,
@@ -38,7 +39,13 @@ const primaryItems = [
   { icon: "coins", key: "accounts" },
 ];
 
-const settingsItems = [
+const guestSettingsItems = [
+  { key: "language", icon: Globe },
+  { key: "faq", icon: HelpCircle },
+  { key: "auth", icon: LogIn },
+];
+
+const accountSettingsItems = [
   { key: "language", icon: Globe },
   {
     key: "password",
@@ -142,11 +149,17 @@ export function MobileDrawer({
     selectCurrentChatId(state),
   );
   const language = useSelector((state: RootState) => state.app.language);
+  const isCreateAccount = useSelector(
+    (state: RootState) => state.authUser.isCreateAccount,
+  );
   const { t } = useTranslation();
   const [isSettingsView, setIsSettingsView] = useState(false);
   const [isLanguageSheetOpen, setIsLanguageSheetOpen] = useState(false);
   const [userAnimal] = useState(getUserAnimalIcon);
   const UserAnimalIcon = userAnimal.icon;
+  const settingsItems = isCreateAccount
+    ? accountSettingsItems
+    : guestSettingsItems;
 
   useEffect(() => {
     if (!isOpen) {
@@ -167,6 +180,12 @@ export function MobileDrawer({
     if (key === "faq") {
       onClose();
       navigate("/faq");
+      return;
+    }
+
+    if (key === "auth") {
+      onClose();
+      navigate("/auth");
     }
   };
 

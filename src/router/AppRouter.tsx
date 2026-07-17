@@ -4,8 +4,10 @@ import AppLayout from "../layout/AppLayout";
 import PaymentsPage from "../pages/Payments";
 import FaqPage from "../pages/Faq";
 import WelcomePage from "../pages/Welcome";
-import { AppOnlyRoute } from "./AppOnlyRoute";
+import AuthPage from "../pages/Auth";
+import RegistrationPage from "../pages/Registration";
 import { BrowserOnlyRoute } from "./BrowserOnlyRoute";
+import { AppOnlyRoute } from "./AppOnlyRoute";
 
 function AppRouter() {
   return (
@@ -16,6 +18,8 @@ function AppRouter() {
             <Route path="/" element={<HomePage />} />
             <Route path="/payment" element={<PaymentsPage />} />
             <Route path="/faq" element={<FaqPage />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/registration" element={<RegistrationPage />} />
           </Route>
         </Route>
 

@@ -650,6 +650,10 @@
       "ru": "Русский",
       "selected": "Выбран"
     },
+    "auth": {
+      "title": "Регистрация / авторизация",
+      "description": "Создать аккаунт или войти"
+    },
     "password": {
       "title": "Пароль",
       "description": "Изменить пароль для входа"
@@ -670,6 +674,15 @@
       "title": "Выйти из аккаунта",
       "description": "Завершить текущий сеанс"
     }
+  },
+  "authPage": {
+    "telegram": "Войти через Telegram",
+    "loginPlaceholder": "Логин",
+    "passwordPlaceholder": "Пароль",
+    "login": "Войти",
+    "registration": "Зарегистрироваться",
+    "switchToRegistration": "Нет аккаунта? Зарегистрироваться",
+    "switchToLogin": "Уже есть аккаунт? Войти"
   },
   "faq": {
     "title": "Частые вопросы",

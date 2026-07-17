@@ -650,6 +650,10 @@
       "ru": "Russian",
       "selected": "Selected"
     },
+    "auth": {
+      "title": "Sign up / sign in",
+      "description": "Create an account or sign in"
+    },
     "password": {
       "title": "Change password",
       "description": "Update your sign-in password"
@@ -670,6 +674,15 @@
       "title": "Log out",
       "description": "End the current session"
     }
+  },
+  "authPage": {
+    "telegram": "Continue with Telegram",
+    "loginPlaceholder": "Login",
+    "passwordPlaceholder": "Password",
+    "login": "Sign in",
+    "registration": "Create account",
+    "switchToRegistration": "Don't have an account? Sign up",
+    "switchToLogin": "Already have an account? Sign in"
   },
   "faq": {
     "title": "FAQ",
