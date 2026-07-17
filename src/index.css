@@ -90,7 +90,7 @@ body {
     body,
     #root,
     .app-shell {
-      height: calc(100dvh + var(--sa-b));
+      height: calc(var(--app-height) + var(--sa-b));
     }
   }
 }
