@@ -36,7 +36,7 @@ function AppLayout() {
   } satisfies AppLayoutOutletContext;
 
   useEffect(() => {
-    const isWebKit = CSS.supports("-webkit-touch-callout", "none");
+    const isWebKit = CSS.supports("(-webkit-touch-callout: none)");
 
     if (isWebKit) {
       document.documentElement.style.removeProperty("--app-height");
