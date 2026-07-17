@@ -36,6 +36,43 @@ function AppLayout() {
   } satisfies AppLayoutOutletContext;
 
   useEffect(() => {
+    const isIosStandalone =
+      CSS.supports("(-webkit-touch-callout: none)") &&
+      window.matchMedia("(display-mode: standalone)").matches;
+
+    if (isIosStandalone && window.visualViewport) {
+      const viewport = window.visualViewport;
+
+      const syncIosKeyboardHeight = () => {
+        const isKeyboardOpen = window.innerHeight - viewport.height > 150;
+
+        document.documentElement.classList.toggle(
+          "keyboard-open",
+          isKeyboardOpen,
+        );
+
+        if (isKeyboardOpen) {
+          document.documentElement.style.setProperty(
+            "--app-height",
+            `${viewport.height}px`,
+          );
+        } else {
+          document.documentElement.style.removeProperty("--app-height");
+        }
+      };
+
+      syncIosKeyboardHeight();
+      viewport.addEventListener("resize", syncIosKeyboardHeight);
+      viewport.addEventListener("scroll", syncIosKeyboardHeight);
+
+      return () => {
+        viewport.removeEventListener("resize", syncIosKeyboardHeight);
+        viewport.removeEventListener("scroll", syncIosKeyboardHeight);
+        document.documentElement.classList.remove("keyboard-open");
+        document.documentElement.style.removeProperty("--app-height");
+      };
+    }
+
     const lockViewportScroll = () => {
       window.scrollTo(0, 0);
       document.documentElement.scrollTop = 0;

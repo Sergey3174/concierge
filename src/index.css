@@ -90,6 +90,13 @@ body {
     .app-shell {
       height: 100vh
     }
+
+    html.keyboard-open,
+    html.keyboard-open body,
+    html.keyboard-open #root,
+    html.keyboard-open .app-shell {
+      height: var(--app-height);
+    }
   }
 }
 
@@ -113,4 +120,3 @@ button {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-
