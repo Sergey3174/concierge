@@ -53,6 +53,7 @@ function AppLayout() {
         window.matchMedia("(display-mode: standalone)").matches);
 
     if (isIosStandalone) {
+      document.documentElement.style.removeProperty("--app-height");
       return;
     }
 
