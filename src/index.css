@@ -90,7 +90,7 @@ body {
     body,
     #root,
     .app-shell {
-      height: calc(var(--app-height) + var(--sa-b));
+      height: 100dvh;
     }
   }
 }
@@ -115,4 +115,3 @@ button {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-
