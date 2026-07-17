@@ -15,14 +15,14 @@ export default defineConfig({
         short_name: "Concierge",
         description: "Personal concierge service",
         theme_color: "#171819",
-        background_color: "#171819",
+        background_color: "#000000",
         display: "standalone",
         icons: [
           {
-            src: "/logo.png",
+            src: "/icon.png",
             sizes: "512x512",
             type: "image/png",
-            purpose: "any maskable",
+            purpose: "any",
           },
         ],
       },
