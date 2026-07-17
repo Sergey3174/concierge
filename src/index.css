@@ -82,16 +82,23 @@ body {
   overscroll-behavior: none;
 }
 
-/* @supports (-webkit-touch-callout: none) {
+@supports (-webkit-touch-callout: none) {
   @media (display-mode: standalone) {
     html,
     body,
     #root,
     .app-shell {
-      height: 100vh
+      height: 100vh;
+    }
+
+    html.keyboard-open,
+    html.keyboard-open body,
+    html.keyboard-open #root,
+    html.keyboard-open .app-shell {
+      height: var(--app-height);
     }
   }
-} */
+}
 
 .app-scroll-area {
   overscroll-behavior-y: contain;
@@ -113,4 +120,3 @@ button {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-
