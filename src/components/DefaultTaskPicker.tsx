@@ -4,7 +4,7 @@ import {
   ListChecks,
   MessageCircleQuestionIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import { serviceCategories } from "../mocks/serviceCatalog";
 
@@ -16,9 +16,22 @@ export function DefaultTaskPicker({ onSelect }: DefaultTaskPickerProps) {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null,
   );
+  const categoryListRef = useRef<HTMLDivElement>(null);
+  const categoryScrollTopRef = useRef(0);
   const selectedCategory = serviceCategories.find(
     (category) => category.id === selectedCategoryId,
   );
+
+  useLayoutEffect(() => {
+    if (!selectedCategoryId && categoryListRef.current) {
+      categoryListRef.current.scrollTop = categoryScrollTopRef.current;
+    }
+  }, [selectedCategoryId]);
+
+  const handleSelectCategory = (categoryId: number) => {
+    categoryScrollTopRef.current = categoryListRef.current?.scrollTop ?? 0;
+    setSelectedCategoryId(categoryId);
+  };
 
   return (
     <div className="text-[var(--color-text-primary)]  max-h-[75vh] flex flex-col">
@@ -63,12 +76,15 @@ export function DefaultTaskPicker({ onSelect }: DefaultTaskPickerProps) {
             Категории услуг
           </h2>
 
-          <div className=" space-y-1 overflow-y-auto pr-1 hide-scrollbar">
+          <div
+            ref={categoryListRef}
+            className=" space-y-1 overflow-y-auto pr-1 hide-scrollbar"
+          >
             {serviceCategories.map((category) => (
               <button
                 key={category.id}
                 type="button"
-                onClick={() => setSelectedCategoryId(category.id)}
+                onClick={() => handleSelectCategory(category.id)}
                 className="flex w-full items-center gap-4 rounded-lg px-2 py-2 text-left transition hover:bg-[var(--color-surface-muted)]"
               >
                 <div className="bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] p-1.5 shrink-0 rounded-full">
