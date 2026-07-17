@@ -15,6 +15,18 @@
   "profile": {
     "user": "User"
   },
+  "animals": {
+    "cat": "Cat",
+    "dog": "Dog",
+    "bird": "Bird",
+    "rabbit": "Rabbit",
+    "fish": "Fish",
+    "turtle": "Turtle",
+    "squirrel": "Squirrel",
+    "rat": "Rat",
+    "snail": "Snail",
+    "bug": "Bug"
+  },
   "home": {
     "emptyState": "How can I help you?\nWrite what you need.",
     "waitingForPayment": "We are waiting for payment",
