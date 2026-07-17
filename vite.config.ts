@@ -14,8 +14,8 @@ export default defineConfig({
         name: "Concierge",
         short_name: "Concierge",
         description: "Personal concierge service",
-        theme_color: "#171819",
-        background_color: "#000000",
+        theme_color: "#020202",
+        background_color: "#020202",
         display: "standalone",
         icons: [
           {
