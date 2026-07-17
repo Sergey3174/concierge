@@ -75,9 +75,7 @@ body {
 
 .app-shell {
   position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
+  inset: 0;
   height: var(--app-height);
   width: 100%;
   overflow: hidden;
