@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -26,16 +26,16 @@ export type AppLayoutOutletContext = {
   openDefaultTask: () => void;
 };
 
-type IosNavigator = Navigator & {
-  standalone?: boolean;
-};
+// type IosNavigator = Navigator & {
+//   standalone?: boolean;
+// };
 
-function isIosDevice() {
-  return (
-    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
-  );
-}
+// function isIosDevice() {
+//   return (
+//     /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+//     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+//   );
+// }
 
 function AppLayout() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -46,43 +46,43 @@ function AppLayout() {
     openDefaultTask: () => setIsOpenDefaultTask(true),
   } satisfies AppLayoutOutletContext;
 
-  useEffect(() => {
-    const isIosStandalone =
-      (navigator as IosNavigator).standalone === true ||
-      (isIosDevice() &&
-        window.matchMedia("(display-mode: standalone)").matches);
+  // useEffect(() => {
+  //   const isIosStandalone =
+  //     (navigator as IosNavigator).standalone === true ||
+  //     (isIosDevice() &&
+  //       window.matchMedia("(display-mode: standalone)").matches);
 
-    if (isIosStandalone) {
-      document.documentElement.style.removeProperty("--app-height");
-      return;
-    }
+  //   if (isIosStandalone) {
+  //     document.documentElement.style.removeProperty("--app-height");
+  //     return;
+  //   }
 
-    const lockViewportScroll = () => {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    };
+  //   const lockViewportScroll = () => {
+  //     window.scrollTo(0, 0);
+  //     document.documentElement.scrollTop = 0;
+  //     document.body.scrollTop = 0;
+  //   };
 
-    const setAppHeight = () => {
-      const height = window.visualViewport?.height ?? window.innerHeight;
-      document.documentElement.style.setProperty("--app-height", `${height}px`);
-      lockViewportScroll();
-    };
+  //   const setAppHeight = () => {
+  //     const height = window.visualViewport?.height ?? window.innerHeight;
+  //     document.documentElement.style.setProperty("--app-height", `${height}px`);
+  //     lockViewportScroll();
+  //   };
 
-    setAppHeight();
+  //   setAppHeight();
 
-    window.visualViewport?.addEventListener("resize", setAppHeight);
-    window.visualViewport?.addEventListener("scroll", setAppHeight);
-    window.addEventListener("resize", setAppHeight);
-    window.addEventListener("scroll", lockViewportScroll, { passive: true });
+  //   window.visualViewport?.addEventListener("resize", setAppHeight);
+  //   window.visualViewport?.addEventListener("scroll", setAppHeight);
+  //   window.addEventListener("resize", setAppHeight);
+  //   window.addEventListener("scroll", lockViewportScroll, { passive: true });
 
-    return () => {
-      window.visualViewport?.removeEventListener("resize", setAppHeight);
-      window.visualViewport?.removeEventListener("scroll", setAppHeight);
-      window.removeEventListener("resize", setAppHeight);
-      window.removeEventListener("scroll", lockViewportScroll);
-    };
-  }, []);
+  //   return () => {
+  //     window.visualViewport?.removeEventListener("resize", setAppHeight);
+  //     window.visualViewport?.removeEventListener("scroll", setAppHeight);
+  //     window.removeEventListener("resize", setAppHeight);
+  //     window.removeEventListener("scroll", lockViewportScroll);
+  //   };
+  // }, []);
 
   const handleSelectService = (service: string) => {
     const createdAt = new Date().toISOString();
