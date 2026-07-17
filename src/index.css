@@ -90,7 +90,7 @@ body {
     body,
     #root,
     .app-shell {
-      height: calc(var(--app-height) + var(--sa-b) - var(--sa-t));
+      height: calc(var(--app-height) + var(--sa-b));
     }
   }
 }
