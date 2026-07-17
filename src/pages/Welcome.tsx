@@ -7,6 +7,8 @@ type BeforeInstallPromptEvent = Event & {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 };
 
+const PWA_INSTALL_STORAGE_KEY = "concierge.pwa-installed";
+
 function isIosDevice() {
   return (
     /iPad|iPhone|iPod/.test(navigator.userAgent) ||
@@ -19,7 +21,10 @@ function isAndroidDevice() {
 }
 
 function hasKnownPwaInstallation() {
-  return window.matchMedia("(display-mode: standalone)").matches;
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    localStorage.getItem(PWA_INSTALL_STORAGE_KEY) === "true"
+  );
 }
 
 export default function WelcomePage() {
@@ -33,9 +38,11 @@ export default function WelcomePage() {
     const handleBeforeInstallPrompt = (event: Event) => {
       event.preventDefault();
       setInstallPrompt(event as BeforeInstallPromptEvent);
+      localStorage.removeItem(PWA_INSTALL_STORAGE_KEY);
       setIsPwaInstalled(false);
     };
     const handleAppInstalled = () => {
+      localStorage.setItem(PWA_INSTALL_STORAGE_KEY, "true");
       setIsPwaInstalled(true);
     };
 
@@ -58,6 +65,7 @@ export default function WelcomePage() {
     const { outcome } = await installPrompt.userChoice;
 
     if (outcome === "accepted") {
+      localStorage.setItem(PWA_INSTALL_STORAGE_KEY, "true");
       setIsPwaInstalled(true);
     }
 
