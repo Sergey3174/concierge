@@ -116,4 +116,3 @@ export function DefaultTaskPicker({ onSelect }: DefaultTaskPickerProps) {
     </div>
   );
 }
-
