@@ -82,16 +82,6 @@ body {
   overscroll-behavior: none;
 }
 
-@supports (-webkit-touch-callout: none) {
-  @media (display-mode: standalone) {
-    html,
-    body,
-    #root,
-    .app-shell {
-      height: 100dvh
-    }
-  }
-}
 
 .app-scroll-area {
   overscroll-behavior-y: contain;

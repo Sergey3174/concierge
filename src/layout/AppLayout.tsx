@@ -26,6 +26,13 @@ export type AppLayoutOutletContext = {
   openDefaultTask: () => void;
 };
 
+function isIosDevice() {
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
+}
+
 function AppLayout() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isOpenDefaultTask, setIsOpenDefaultTask] = useState(false);
@@ -36,6 +43,10 @@ function AppLayout() {
   } satisfies AppLayoutOutletContext;
 
   useEffect(() => {
+    if (isIosDevice()) {
+      return;
+    }
+
     const lockViewportScroll = () => {
       window.scrollTo(0, 0);
       document.documentElement.scrollTop = 0;
