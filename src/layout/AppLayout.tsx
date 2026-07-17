@@ -43,7 +43,7 @@ function AppLayout() {
     };
 
     const setAppHeight = () => {
-      const height = window.visualViewport?.height ?? window.innerHeight;
+      const height = window.innerHeight;
       document.documentElement.style.setProperty("--app-height", `${height}px`);
       lockViewportScroll();
     };
