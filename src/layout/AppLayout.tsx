@@ -36,13 +36,6 @@ function AppLayout() {
   } satisfies AppLayoutOutletContext;
 
   useEffect(() => {
-    const isWebKit = CSS.supports("(-webkit-touch-callout: none)");
-
-    if (isWebKit) {
-      document.documentElement.style.removeProperty("--app-height");
-      return;
-    }
-
     const lockViewportScroll = () => {
       window.scrollTo(0, 0);
       document.documentElement.scrollTop = 0;
