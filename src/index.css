@@ -55,6 +55,11 @@ body,
   overscroll-behavior: none;
 }
 
+html {
+  position: fixed;
+  inset: 0;
+}
+
 body {
   min-width: 320px;
   position: fixed;
