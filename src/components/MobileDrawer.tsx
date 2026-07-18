@@ -234,7 +234,7 @@ export function MobileDrawer({
       />
 
       <aside
-        className={`absolute inset-y-0 left-0 z-40 flex w-[84%] max-w-[320px] flex-col bg-[var(--color-bg)] px-6 pb-4 pt-4 transition-transform duration-300 ${
+        className={`absolute inset-y-0 left-0 z-40 flex w-[84%] max-w-[320px] flex-col bg-[var(--color-bg)] px-6 pb-[calc(16px+var(--sa-b))] pt-4 transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

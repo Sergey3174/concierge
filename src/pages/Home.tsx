@@ -249,7 +249,7 @@ function HomePage() {
     currentChat?.status === "payment" ? currentChat.payment : undefined;
 
   return (
-    <main className="relative transition-all flex min-h-0 flex-1 flex-col justify-between pb-12">
+    <main className="relative transition-all flex min-h-0 flex-1 flex-col justify-between pb-[calc(48px+var(--sa-b))]">
       <section
         ref={scrollAreaRef}
         className={`app-scroll-area relative min-h-0 flex-1 hide-scrollbar overflow-y-auto ${paymentRequest ? "pb-40" : "pb-12"}`}
@@ -296,7 +296,7 @@ function HomePage() {
         )}
       </section>
 
-      <footer className="absolute bottom-5 mx-auto w-full max-w-3xl left-1/2 -translate-x-1/2">
+      <footer className="absolute bottom-[calc(12px+var(--sa-b))] mx-auto w-full max-w-3xl left-1/2 -translate-x-1/2">
         {paymentRequest ? (
           <div className="mb-3 mt-5 flex justify-start">
             <div className="w-full rounded-lg bg-[var(--color-surface)] px-4 py-3 text-[var(--color-text-primary)]">
