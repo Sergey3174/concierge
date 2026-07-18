@@ -55,11 +55,7 @@ body,
   overscroll-behavior: none;
 }
 
-html {
-  position: fixed;
-  inset: 0;
-  height: var(--app-height);
-}
+
 
 body {
   min-width: 320px;
