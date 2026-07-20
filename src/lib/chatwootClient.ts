@@ -7,6 +7,9 @@ type ChatwootAttachment = {
   data_url?: string;
   extension?: string;
   fallback_title?: string;
+  file_name?: string;
+  filename?: string;
+  original_filename?: string;
 };
 
 export type ChatwootMessage = {

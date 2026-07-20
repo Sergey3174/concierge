@@ -40,13 +40,37 @@ const initialState: ChatsState = {
   sendStatus: "idle",
 };
 
+function getFileNameFromUrl(url?: string): string | undefined {
+  if (!url) {
+    return undefined;
+  }
+
+  try {
+    const pathname = new URL(url).pathname;
+    const encodedFileName = pathname.split("/").filter(Boolean).at(-1);
+
+    return encodedFileName ? decodeURIComponent(encodedFileName) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 function mapAttachment(attachment: {
   id: number;
   data_url?: string;
   extension?: string;
   fallback_title?: string;
+  file_name?: string;
+  filename?: string;
+  original_filename?: string;
 }): ChatAttachment {
-  const name = attachment.fallback_title ?? attachment.extension ?? "Attachment";
+  const name =
+    attachment.file_name ??
+    attachment.filename ??
+    attachment.original_filename ??
+    attachment.fallback_title ??
+    getFileNameFromUrl(attachment.data_url) ??
+    `Attachment${attachment.extension ? `.${attachment.extension}` : ""}`;
   const extension = attachment.extension?.toLowerCase();
   const imageExtensions = ["png", "jpg", "jpeg", "gif", "webp", "svg"];
 
@@ -166,6 +190,18 @@ function mapSocketMessage(payload: unknown): SocketChatMessage | null {
           fallback_title:
             typeof attachment.fallback_title === "string"
               ? attachment.fallback_title
+              : undefined,
+          file_name:
+            typeof attachment.file_name === "string"
+              ? attachment.file_name
+              : undefined,
+          filename:
+            typeof attachment.filename === "string"
+              ? attachment.filename
+              : undefined,
+          original_filename:
+            typeof attachment.original_filename === "string"
+              ? attachment.original_filename
               : undefined,
         }),
       )
