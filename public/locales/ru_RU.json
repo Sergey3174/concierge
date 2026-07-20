@@ -679,6 +679,7 @@
     "telegram": "Войти через Telegram",
     "loginPlaceholder": "Логин",
     "passwordPlaceholder": "Пароль",
+    "passwordPlaceholderReg": "Придумайте пароль",
     "login": "Войти",
     "registration": "Зарегистрироваться",
     "switchToRegistration": "Нет аккаунта? Зарегистрироваться",

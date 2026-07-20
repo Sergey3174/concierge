@@ -5,3 +5,9 @@ export function getItemFromStore(key: string): string | null {
 
   return window.localStorage.getItem(key);
 }
+
+export function setItemInStore(key: string, value: string) {
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(key, value);
+  }
+}

@@ -149,17 +149,16 @@ export function MobileDrawer({
     selectCurrentChatId(state),
   );
   const language = useSelector((state: RootState) => state.app.language);
-  const isCreateAccount = useSelector(
-    (state: RootState) => state.authUser.isCreateAccount,
+  const sessionType = useSelector(
+    (state: RootState) => state.authUser.sessionType,
   );
   const { t } = useTranslation();
   const [isSettingsView, setIsSettingsView] = useState(false);
   const [isLanguageSheetOpen, setIsLanguageSheetOpen] = useState(false);
   const [userAnimal] = useState(getUserAnimalIcon);
   const UserAnimalIcon = userAnimal.icon;
-  const settingsItems = isCreateAccount
-    ? accountSettingsItems
-    : guestSettingsItems;
+  const settingsItems =
+    sessionType === "authenticated" ? accountSettingsItems : guestSettingsItems;
 
   useEffect(() => {
     if (!isOpen) {

@@ -7,7 +7,7 @@ import WelcomePage from "../pages/Welcome";
 import AuthPage from "../pages/Auth";
 import RegistrationPage from "../pages/Registration";
 import { BrowserOnlyRoute } from "./BrowserOnlyRoute";
-import { AppOnlyRoute } from "./AppOnlyRoute";
+// import { AppOnlyRoute } from "./AppOnlyRoute";
 
 function AppRouter() {
   return (

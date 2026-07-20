@@ -7,10 +7,7 @@ import { DefaultTaskPicker } from "../components/DefaultTaskPicker";
 import { MobileDrawer } from "../components/MobileDrawer";
 import { SettingsEditorSheet } from "../components/SettingsEditorSheet";
 import { useAppViewport } from "../hooks/useAppViewport";
-import {
-  createAnonymousSession,
-  selectAuthSessionType,
-} from "../store/authUserSlice";
+import { createAnonymousSession } from "../store/authUserSlice";
 import { addChat } from "../store/chatsSlice";
 import type { AppDispatch, RootState } from "../store/store";
 
@@ -35,10 +32,17 @@ function AppLayout() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isOpenDefaultTask, setIsOpenDefaultTask] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const sessionType = useSelector(selectAuthSessionType);
+  const anonymousSession = useSelector(
+    (state: RootState) => state.authUser.anonymousSession,
+  );
   const anonymousSessionStatus = useSelector(
     (state: RootState) => state.authUser.anonymousSessionStatus,
   );
+
+  const sessionType = useSelector(
+    (state: RootState) => state.authUser.sessionType,
+  );
+
   const navigate = useNavigate();
   useAppViewport();
   const outletContext = {
@@ -46,10 +50,14 @@ function AppLayout() {
   } satisfies AppLayoutOutletContext;
 
   useEffect(() => {
-    if (sessionType === null && anonymousSessionStatus === "idle") {
+    if (
+      sessionType !== "authenticated" &&
+      anonymousSession === null &&
+      anonymousSessionStatus === "idle"
+    ) {
       void dispatch(createAnonymousSession());
     }
-  }, [anonymousSessionStatus, dispatch, sessionType]);
+  }, [anonymousSession, anonymousSessionStatus, dispatch, sessionType]);
 
   const handleSelectService = (service: string) => {
     const createdAt = new Date().toISOString();

@@ -679,6 +679,7 @@
     "telegram": "Continue with Telegram",
     "loginPlaceholder": "Login",
     "passwordPlaceholder": "Password",
+    "passwordPlaceholderReg": "Create password",
     "login": "Sign in",
     "registration": "Create account",
     "switchToRegistration": "Don't have an account? Sign up",
