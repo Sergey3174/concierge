@@ -10,6 +10,8 @@ import {
   Settings,
   Send,
   Check,
+  LayoutGrid,
+  PencilLine,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -20,10 +22,14 @@ import type { AppLanguage } from "../i18n";
 import { SettingsEditorSheet } from "./SettingsEditorSheet";
 import { UserProfileButton } from "./UserProfileButton";
 import { changeLanguage } from "../store/appSlice";
+import { logoutUser } from "../store/authUserSlice";
 import {
   selectChats,
   selectCurrentChatId,
+  selectLoadedMessageChatIds,
+  loadChatwootMessages,
   setCurrentChat,
+  resetChats,
 } from "../store/chatsSlice";
 import type { AppDispatch, RootState } from "../store/store";
 
@@ -69,72 +75,10 @@ const accountSettingsItems = [
   },
 ];
 
-function EditIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="size-6">
-      <path
-        d="M12 20H21"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-      <path
-        d="M16.5 3.5C17.3284 2.67157 18.6716 2.67157 19.5 3.5C20.3284 4.32843 20.3284 5.67157 19.5 6.5L8 18L4 19L5 15L16.5 3.5Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function GridIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="size-6">
-      <rect
-        x="4.5"
-        y="4.5"
-        width="5"
-        height="5"
-        rx="1.5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <rect
-        x="14.5"
-        y="4.5"
-        width="5"
-        height="5"
-        rx="1.5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <rect
-        x="4.5"
-        y="14.5"
-        width="5"
-        height="5"
-        rx="1.5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <rect
-        x="14.5"
-        y="14.5"
-        width="5"
-        height="5"
-        rx="1.5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-    </svg>
-  );
-}
-
 function DrawerItemIcon({ icon }: { icon: string }) {
-  if (icon === "edit") return <EditIcon />;
-  if (icon === "coins") return <Coins />;
-  return <GridIcon />;
+  if (icon === "edit") return <PencilLine className="size-6" />;
+  if (icon === "coins") return <Coins className="size-6" />;
+  return <LayoutGrid className="size-6" />;
 }
 
 export function MobileDrawer({
@@ -147,6 +91,12 @@ export function MobileDrawer({
   const chats = useSelector((state: RootState) => selectChats(state));
   const currentChatId = useSelector((state: RootState) =>
     selectCurrentChatId(state),
+  );
+  const loadedMessageChatIds = useSelector((state: RootState) =>
+    selectLoadedMessageChatIds(state),
+  );
+  const chatwootSession = useSelector(
+    (state: RootState) => state.authUser.anonymousSession?.chatwoot,
   );
   const language = useSelector((state: RootState) => state.app.language);
   const sessionType = useSelector(
@@ -183,6 +133,14 @@ export function MobileDrawer({
     if (key === "auth") {
       onClose();
       navigate("/auth");
+      return;
+    }
+
+    if (key === "logout") {
+      void dispatch(logoutUser());
+      dispatch(resetChats());
+      onClose();
+      navigate("/", { replace: true });
     }
   };
 
@@ -215,6 +173,14 @@ export function MobileDrawer({
 
   const handleSelectChat = (chatId: string) => {
     dispatch(setCurrentChat(chatId));
+    if (chatwootSession && !loadedMessageChatIds.includes(chatId)) {
+      void dispatch(
+        loadChatwootMessages({
+          session: chatwootSession,
+          conversationId: chatId,
+        }),
+      );
+    }
     navigate("/");
     onClose();
   };
@@ -344,7 +310,7 @@ export function MobileDrawer({
 
           <button
             type="button"
-            className={`flex h-11 w-11 items-center justify-center rounded-full transition hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-text-primary)] ${
+            className={`flex shrink-0 h-11 w-11 items-center justify-center rounded-full transition hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-text-primary)] ${
               isSettingsView
                 ? "bg-[var(--color-surface-disabled)] text-[var(--color-text-primary)]"
                 : "text-[var(--color-text-muted)]"

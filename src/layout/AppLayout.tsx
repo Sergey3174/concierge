@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +7,13 @@ import { DefaultTaskPicker } from "../components/DefaultTaskPicker";
 import { MobileDrawer } from "../components/MobileDrawer";
 import { SettingsEditorSheet } from "../components/SettingsEditorSheet";
 import { useAppViewport } from "../hooks/useAppViewport";
+import { useChatwootCable } from "../hooks/useChatwootCable";
 import { createAnonymousSession } from "../store/authUserSlice";
-import { addChat } from "../store/chatsSlice";
+import {
+  applyChatwootSocketMessage,
+  loadChatwootChats,
+  sendChatwootMessage,
+} from "../store/chatsSlice";
 import type { AppDispatch, RootState } from "../store/store";
 
 function MenuIcon() {
@@ -38,13 +43,28 @@ function AppLayout() {
   const anonymousSessionStatus = useSelector(
     (state: RootState) => state.authUser.anonymousSessionStatus,
   );
-
+  const chatsStatus = useSelector((state: RootState) => state.chats.status);
+  const loadedSessionType = useSelector(
+    (state: RootState) => state.chats.loadedSessionType,
+  );
   const sessionType = useSelector(
     (state: RootState) => state.authUser.sessionType,
   );
 
   const navigate = useNavigate();
+
   useAppViewport();
+
+  const handleChatwootSocketMessage = useCallback(
+    (message: unknown) => dispatch(applyChatwootSocketMessage(message)),
+    [dispatch],
+  );
+
+  useChatwootCable({
+    session: anonymousSession?.chatwoot,
+    onMessage: handleChatwootSocketMessage,
+  });
+
   const outletContext = {
     openDefaultTask: () => setIsOpenDefaultTask(true),
   } satisfies AppLayoutOutletContext;
@@ -59,28 +79,47 @@ function AppLayout() {
     }
   }, [anonymousSession, anonymousSessionStatus, dispatch, sessionType]);
 
-  const handleSelectService = (service: string) => {
-    const createdAt = new Date().toISOString();
-    const id = Date.now();
+  useEffect(() => {
+    if (
+      anonymousSession?.chatwoot &&
+      sessionType &&
+      chatsStatus !== "loading" &&
+      (chatsStatus === "idle" || loadedSessionType !== sessionType)
+    ) {
+      void dispatch(
+        loadChatwootChats({
+          session: anonymousSession.chatwoot,
+          sessionType,
+        }),
+      );
+    }
+  }, [
+    anonymousSession?.chatwoot,
+    chatsStatus,
+    dispatch,
+    loadedSessionType,
+    sessionType,
+  ]);
 
-    dispatch(
-      addChat({
-        id: `chat-${id}`,
-        title: service,
-        preview: service,
-        updatedAt: createdAt,
-        messages: [
-          {
-            id: `msg-${id}`,
-            role: "user",
-            content: service,
-            createdAt,
-          },
-        ],
-      }),
-    );
-    setIsOpenDefaultTask(false);
-    navigate("/");
+  const handleSelectService = async (service: string) => {
+    if (!anonymousSession?.chatwoot) {
+      return;
+    }
+
+    try {
+      await dispatch(
+        sendChatwootMessage({
+          session: anonymousSession.chatwoot,
+          conversationId: null,
+          content: service,
+          files: [],
+        }),
+      ).unwrap();
+      setIsOpenDefaultTask(false);
+      navigate("/");
+    } catch {
+      // Keep the picker open so the user can retry.
+    }
   };
 
   return (

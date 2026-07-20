@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import {
-  addChat,
-  addMessageToChat,
+  sendChatwootMessage,
   selectCurrentChat,
   selectCurrentChatId,
 } from "../store/chatsSlice";
@@ -16,54 +15,20 @@ import {
 } from "react";
 import type { AppLayoutOutletContext } from "../layout/AppLayout";
 import { useTranslation } from "react-i18next";
-import { FileText, Paperclip, X } from "lucide-react";
+import {
+  ArrowUp,
+  CreditCard,
+  Download,
+  FileText,
+  Paperclip,
+  Plus,
+  X,
+} from "lucide-react";
 import type { ChatAttachment } from "../mocks/chats";
 
-function PlusIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="size-6">
-      <path
-        d="M12 5V19M5 12H19"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function SendIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="size-5">
-      <path
-        d="M12 5V19M12 5L6 11M12 5L18 11"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function PaymentIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="size-5">
-      <path
-        d="M4 8.5C4 7.11929 5.11929 6 6.5 6H17.5C18.8807 6 20 7.11929 20 8.5V15.5C20 16.8807 18.8807 18 17.5 18H6.5C5.11929 18 4 16.8807 4 15.5V8.5Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M4 10.5H20"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-      <circle cx="16.5" cy="14.25" r="1.25" fill="currentColor" />
-    </svg>
-  );
-}
+type PendingAttachment = ChatAttachment & {
+  file: File;
+};
 
 function AttachmentCard({ attachment }: { attachment: ChatAttachment }) {
   const isImage = attachment.type.startsWith("image/");
@@ -89,6 +54,18 @@ function AttachmentCard({ attachment }: { attachment: ChatAttachment }) {
     <div className="flex items-center gap-3 rounded-lg bg-[var(--color-surface-muted)] px-3 py-2.5 text-[var(--color-text-primary)]">
       <FileText size={20} className="shrink-0 text-[var(--color-text-muted)]" />
       <span className="min-w-0 flex-1 truncate text-sm">{attachment.name}</span>
+      {attachment.previewUrl && (
+        <a
+          href={attachment.previewUrl}
+          download={attachment.name}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`Download ${attachment.name}`}
+          className="flex size-9 shrink-0 items-center justify-center rounded-full text-[var(--color-text-muted)] transition hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-text-primary)]"
+        >
+          <Download size={18} />
+        </a>
+      )}
     </div>
   );
 }
@@ -96,7 +73,7 @@ function AttachmentCard({ attachment }: { attachment: ChatAttachment }) {
 function HomePage() {
   const { t } = useTranslation();
   const [prompt, setPrompt] = useState("");
-  const [attachments, setAttachments] = useState<ChatAttachment[]>([]);
+  const [attachments, setAttachments] = useState<PendingAttachment[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch<AppDispatch>();
@@ -108,6 +85,10 @@ function HomePage() {
   const currentChatId = useSelector((state: RootState) =>
     selectCurrentChatId(state),
   );
+  const chatwootSession = useSelector(
+    (state: RootState) => state.authUser.anonymousSession?.chatwoot,
+  );
+  const sendStatus = useSelector((state: RootState) => state.chats.sendStatus);
 
   const scrollAreaRef = useRef<HTMLElement>(null);
   const scrollToBottom = () => {
@@ -167,47 +148,30 @@ function HomePage() {
     });
   }, [currentChatId, currentChat?.messages.length]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const trimmedPrompt = prompt.trim();
 
-    if (trimmedPrompt === "" && attachments.length === 0) {
+    if (
+      (trimmedPrompt === "" && attachments.length === 0) ||
+      !chatwootSession
+    ) {
       return;
     }
 
-    const createdAt = new Date().toISOString();
-    const firstMessage = {
-      id: `msg-${Date.now()}`,
-      role: "user" as const,
-      content: trimmedPrompt,
-      createdAt,
-      attachments,
-    };
-
-    if (!currentChatId) {
-      const chatId = `chat-${Date.now()}`;
-
-      dispatch(
-        addChat({
-          id: chatId,
-          title: trimmedPrompt || attachments[0].name,
-          preview: trimmedPrompt || attachments[0].name,
-          updatedAt: createdAt,
-          messages: [firstMessage],
+    try {
+      await dispatch(
+        sendChatwootMessage({
+          session: chatwootSession,
+          conversationId: currentChatId,
+          content: trimmedPrompt,
+          files: attachments.map((attachment) => attachment.file),
         }),
-      );
+      ).unwrap();
       setPrompt("");
       setAttachments([]);
-      return;
+    } catch {
+      // The user can retry from the input; the text is kept intact on failure.
     }
-
-    dispatch(
-      addMessageToChat({
-        chatId: currentChatId,
-        message: firstMessage,
-      }),
-    );
-    setPrompt("");
-    setAttachments([]);
   };
 
   const handleAttachmentChange = async (
@@ -217,12 +181,13 @@ function HomePage() {
     const nextAttachments = await Promise.all(
       files.map(
         (file) =>
-          new Promise<ChatAttachment>((resolve) => {
+          new Promise<PendingAttachment>((resolve) => {
             if (!file.type.startsWith("image/")) {
               resolve({
                 id: `${file.name}-${file.lastModified}`,
                 name: file.name,
                 type: file.type,
+                file,
               });
               return;
             }
@@ -234,6 +199,7 @@ function HomePage() {
                 name: file.name,
                 type: file.type,
                 previewUrl: String(reader.result),
+                file,
               });
             reader.readAsDataURL(file);
           }),
@@ -302,7 +268,7 @@ function HomePage() {
             <div className="w-full rounded-lg bg-[var(--color-surface)] px-4 py-3 text-[var(--color-text-primary)]">
               <div className="flex items-center gap-3">
                 <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-soft)] text-[var(--color-text-muted)]">
-                  <PaymentIcon />
+                  <CreditCard className="size-5" />
                 </div>
 
                 <div className="min-w-0 flex-1">
@@ -366,7 +332,7 @@ function HomePage() {
                 className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[var(--color-text-muted)] transition hover:bg-[var(--color-surface-soft)]"
                 onClick={() => openDefaultTask()}
               >
-                <PlusIcon />
+                <Plus className="size-6" />
               </button>
               <button
                 type="button"
@@ -408,9 +374,13 @@ function HomePage() {
             <button
               className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)] text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)] disabled:bg-[var(--color-surface-disabled)] disabled:text-[var(--color-text-soft)]"
               onClick={handleSend}
-              disabled={prompt.trim() === "" && attachments.length === 0}
+              disabled={
+                prompt.trim() === "" ||
+                !chatwootSession ||
+                sendStatus === "loading"
+              }
             >
-              <SendIcon />
+              <ArrowUp className="size-5" />
             </button>
           </div>
         </div>

@@ -11,3 +11,9 @@ export function setItemInStore(key: string, value: string) {
     window.localStorage.setItem(key, value);
   }
 }
+
+export function removeItemFromStore(key: string) {
+  if (typeof window !== "undefined") {
+    window.localStorage.removeItem(key);
+  }
+}

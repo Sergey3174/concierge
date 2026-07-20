@@ -2,7 +2,11 @@ import { isAxiosError } from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import apiClient, { API_BASE_URL } from "../lib/apiClient";
-import { getItemFromStore, setItemInStore } from "../lib/utils";
+import {
+  getItemFromStore,
+  removeItemFromStore,
+  setItemInStore,
+} from "../lib/utils";
 
 export type ChatwootSession = {
   base_url: string;
@@ -113,17 +117,43 @@ export type AuthUserState = {
   anonymousSessionError: string | null;
 };
 
-const initialState: AuthUserState = {
-  isCreateAccount: false,
-  userInfo: getStoredUserInfo(),
-  sessionType: getStoredSessionType(),
-  anonymousSession:
-    getStoredSessionType() === "authenticated"
-      ? getStoredAuthenticatedSession()
-      : null,
-  anonymousSessionStatus: "idle",
-  anonymousSessionError: null,
-};
+function createInitialState(): AuthUserState {
+  const sessionType = getStoredSessionType();
+
+  return {
+    isCreateAccount: false,
+    userInfo: getStoredUserInfo(),
+    sessionType,
+    anonymousSession:
+      sessionType === "authenticated" ? getStoredAuthenticatedSession() : null,
+    anonymousSessionStatus: "idle",
+    anonymousSessionError: null,
+  };
+}
+
+const initialState = createInitialState();
+
+function clearAccessibleCookies() {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  document.cookie.split(";").forEach((cookie) => {
+    const name = cookie.split("=")[0]?.trim();
+
+    if (name) {
+      document.cookie = `${name}=; Max-Age=0; path=/`;
+    }
+  });
+}
+
+export const logoutUser = createAsyncThunk("authUser/logoutUser", async () => {
+  removeItemFromStore(AUTH_SESSION_TYPE_KEY);
+  removeItemFromStore(AUTH_CHATWOOT_SESSION_KEY);
+  removeItemFromStore(USER_INFO_STORAGE_KEY);
+  removeItemFromStore("auth_token");
+  clearAccessibleCookies();
+});
 
 export const createAnonymousSession = createAsyncThunk<
   AnonymousSessionResponse,
@@ -223,6 +253,14 @@ const authUserSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(logoutUser.fulfilled, () => ({
+        isCreateAccount: false,
+        userInfo: { email: null },
+        sessionType: null,
+        anonymousSession: null,
+        anonymousSessionStatus: "idle",
+        anonymousSessionError: null,
+      }))
       .addCase(createAnonymousSession.pending, (state) => {
         state.anonymousSessionStatus = "loading";
         state.anonymousSessionError = null;
