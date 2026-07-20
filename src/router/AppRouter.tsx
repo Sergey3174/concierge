@@ -13,15 +13,15 @@ function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<AppOnlyRoute />}>
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/payment" element={<PaymentsPage />} />
-            <Route path="/faq" element={<FaqPage />} />
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/registration" element={<RegistrationPage />} />
-          </Route>
+        {/* <Route element={<AppOnlyRoute />}> */}
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/payment" element={<PaymentsPage />} />
+          <Route path="/faq" element={<FaqPage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/registration" element={<RegistrationPage />} />
         </Route>
+        {/* </Route> */}
 
         <Route element={<BrowserOnlyRoute />}>
           <Route path="/welcome" element={<WelcomePage />} />
