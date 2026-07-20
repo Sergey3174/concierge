@@ -7,21 +7,21 @@ import WelcomePage from "../pages/Welcome";
 import AuthPage from "../pages/Auth";
 import RegistrationPage from "../pages/Registration";
 import { BrowserOnlyRoute } from "./BrowserOnlyRoute";
-// import { AppOnlyRoute } from "./AppOnlyRoute";
+import { AppOnlyRoute } from "./AppOnlyRoute";
 
 function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route element={<AppOnlyRoute />}> */}
-        <Route element={<AppLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/payment" element={<PaymentsPage />} />
-          <Route path="/faq" element={<FaqPage />} />
-          <Route path="/auth" element={<AuthPage />} />
-          <Route path="/registration" element={<RegistrationPage />} />
+        <Route element={<AppOnlyRoute />}>
+          <Route element={<AppLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/payment" element={<PaymentsPage />} />
+            <Route path="/faq" element={<FaqPage />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/registration" element={<RegistrationPage />} />
+          </Route>
         </Route>
-        {/* </Route> */}
 
         <Route element={<BrowserOnlyRoute />}>
           <Route path="/welcome" element={<WelcomePage />} />
