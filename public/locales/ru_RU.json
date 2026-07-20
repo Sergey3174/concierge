@@ -677,7 +677,7 @@
   },
   "authPage": {
     "telegram": "Войти через Telegram",
-    "loginPlaceholder": "Логин",
+    "loginPlaceholder": "Почта",
     "passwordPlaceholder": "Пароль",
     "passwordPlaceholderReg": "Придумайте пароль",
     "login": "Войти",

@@ -677,7 +677,7 @@
   },
   "authPage": {
     "telegram": "Continue with Telegram",
-    "loginPlaceholder": "Login",
+    "loginPlaceholder": "Email",
     "passwordPlaceholder": "Password",
     "passwordPlaceholderReg": "Create password",
     "login": "Sign in",

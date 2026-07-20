@@ -42,6 +42,7 @@ export type AsyncRequestStatus = "idle" | "loading" | "succeeded" | "failed";
 
 const AUTH_SESSION_TYPE_KEY = "auth_session_type";
 const AUTH_CHATWOOT_SESSION_KEY = "auth_chatwoot_session";
+const USER_INFO_STORAGE_KEY = "user_info";
 
 function getStoredSessionType(): AuthSessionType {
   const sessionType = getItemFromStore(AUTH_SESSION_TYPE_KEY);
@@ -74,8 +75,38 @@ function saveAuthenticatedSession(session: AnonymousSessionResponse) {
   setItemInStore(AUTH_CHATWOOT_SESSION_KEY, JSON.stringify(session));
 }
 
+export type UserInfo = {
+  email: string | null;
+};
+
+function getStoredUserInfo(): UserInfo {
+  const storedUserInfo = getItemFromStore(USER_INFO_STORAGE_KEY);
+
+  if (!storedUserInfo) {
+    return { email: null };
+  }
+
+  try {
+    const userInfo = JSON.parse(storedUserInfo) as unknown;
+
+    return typeof userInfo === "object" &&
+      userInfo !== null &&
+      "email" in userInfo &&
+      typeof userInfo.email === "string"
+      ? { email: userInfo.email }
+      : { email: null };
+  } catch {
+    return { email: null };
+  }
+}
+
+function saveUserInfo(userInfo: UserInfo) {
+  setItemInStore(USER_INFO_STORAGE_KEY, JSON.stringify(userInfo));
+}
+
 export type AuthUserState = {
   isCreateAccount: boolean;
+  userInfo: UserInfo;
   sessionType: AuthSessionType;
   anonymousSession: AnonymousSessionResponse | null;
   anonymousSessionStatus: AsyncRequestStatus;
@@ -84,6 +115,7 @@ export type AuthUserState = {
 
 const initialState: AuthUserState = {
   isCreateAccount: false,
+  userInfo: getStoredUserInfo(),
   sessionType: getStoredSessionType(),
   anonymousSession:
     getStoredSessionType() === "authenticated"
@@ -215,6 +247,8 @@ const authUserSlice = createSlice({
         state.anonymousSession = action.payload;
         state.anonymousSessionStatus = "succeeded";
         state.sessionType = "authenticated";
+        state.userInfo.email = action.meta.arg.login;
+        saveUserInfo(state.userInfo);
       })
       .addCase(fetchCreateUser.rejected, (state, action) => {
         state.anonymousSessionStatus = "failed";
@@ -229,6 +263,8 @@ const authUserSlice = createSlice({
         state.anonymousSession = action.payload;
         state.anonymousSessionStatus = "succeeded";
         state.sessionType = "authenticated";
+        state.userInfo.email = action.meta.arg.login;
+        saveUserInfo(state.userInfo);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.anonymousSessionStatus = "failed";
@@ -245,3 +281,6 @@ export const selectIsCreateAccount = (state: { authUser: AuthUserState }) =>
 
 export const selectAuthSessionType = (state: { authUser: AuthUserState }) =>
   state.authUser.sessionType;
+
+export const selectUserEmail = (state: { authUser: AuthUserState }) =>
+  state.authUser.userInfo.email;

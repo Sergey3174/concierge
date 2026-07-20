@@ -17,8 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import type { AppLanguage } from "../i18n";
-import { getUserAnimalIcon } from "../constants/animals";
 import { SettingsEditorSheet } from "./SettingsEditorSheet";
+import { UserProfileButton } from "./UserProfileButton";
 import { changeLanguage } from "../store/appSlice";
 import {
   selectChats,
@@ -155,8 +155,6 @@ export function MobileDrawer({
   const { t } = useTranslation();
   const [isSettingsView, setIsSettingsView] = useState(false);
   const [isLanguageSheetOpen, setIsLanguageSheetOpen] = useState(false);
-  const [userAnimal] = useState(getUserAnimalIcon);
-  const UserAnimalIcon = userAnimal.icon;
   const settingsItems =
     sessionType === "authenticated" ? accountSettingsItems : guestSettingsItems;
 
@@ -342,16 +340,7 @@ export function MobileDrawer({
         </div>
 
         <div className="flex items-center justify-between">
-          <button className="flex items-center gap-3 rounded-full px-2 py-2 text-[var(--color-text-primary)] transition hover:bg-[var(--color-surface-soft)]">
-            <div
-              className={`flex h-12 w-12 items-center justify-center rounded-full ${userAnimal.styleIcons}`}
-            >
-              <UserAnimalIcon size={24} />
-            </div>
-            <span className="text-[1.05rem]">
-              {t(`animals.${userAnimal.key}`)}
-            </span>
-          </button>
+          <UserProfileButton />
 
           <button
             type="button"

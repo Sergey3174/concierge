@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { fetchCreateUser } from "../store/authUserSlice";
 import type { AppDispatch, RootState } from "../store/store";
+import LOGO from "../../public/logo.png";
 
 type FormErrors = {
   email?: string;
@@ -148,15 +149,10 @@ function RegistrationPage() {
   return (
     <main className="flex mx-auto w-full max-w-2xl min-h-0 overflow-auto flex-1 flex-col pb-[calc(8px+var(--sa-b))] pt-2 ">
       <div className="flex flex-col flex-1 justify-center ">
-        <div className="flex flex-col gap-18">
-          <button
-            type="button"
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#229ED9] px-5 py-4 text-[1rem] font-medium text-white transition hover:bg-[#1d8bc1]"
-          >
-            <Send size={19} />
-            {t("authPage.telegram")}
-          </button>
-
+        <div className="flex flex-col gap-14">
+          <div className="mx-auto flex size-[4.5rem] items-center justify-center rounded-3xl bg-[var(--color-surface-muted)] text-[var(--color-accent)]">
+            <img src={LOGO} alt="logo" />
+          </div>
           <form
             className="flex flex-1 flex-col justify-center gap-3"
             onSubmit={showOtp ? handleSubmitCode : handleSubmit}
@@ -241,6 +237,13 @@ function RegistrationPage() {
                   : t("authPage.registration")}
             </button>
           </form>
+          <button
+            type="button"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#229ED9] px-5 py-4 text-[1rem] font-medium text-white transition hover:bg-[#1d8bc1]"
+          >
+            <Send size={19} />
+            {t("authPage.telegram")}
+          </button>
         </div>
       </div>
 
