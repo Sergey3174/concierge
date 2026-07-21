@@ -7,6 +7,7 @@ import WelcomePage from "../pages/Welcome";
 import AuthPage from "../pages/Auth";
 import RegistrationPage from "../pages/Registration";
 import { BrowserOnlyRoute } from "./BrowserOnlyRoute";
+import ChangePasswordPage from "../pages/ChangePassword";
 import { AppOnlyRoute } from "./AppOnlyRoute";
 
 function AppRouter() {
@@ -20,6 +21,7 @@ function AppRouter() {
             <Route path="/faq" element={<FaqPage />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/registration" element={<RegistrationPage />} />
+            <Route path="/change-password" element={<ChangePasswordPage />} />
           </Route>
         </Route>
 

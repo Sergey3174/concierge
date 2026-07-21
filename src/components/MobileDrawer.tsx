@@ -22,7 +22,7 @@ import type { AppLanguage } from "../i18n";
 import { SettingsEditorSheet } from "./SettingsEditorSheet";
 import { UserProfileButton } from "./UserProfileButton";
 import { changeLanguage } from "../store/appSlice";
-import { logoutUser } from "../store/authUserSlice";
+import { fetchUserInfo, logoutUser } from "../store/authUserSlice";
 import {
   selectChats,
   selectCurrentChatId,
@@ -103,16 +103,46 @@ export function MobileDrawer({
     (state: RootState) => state.authUser.sessionType,
   );
   const { t } = useTranslation();
+  const [hasEmailProvider, setHasEmailProvider] = useState(false);
   const [isSettingsView, setIsSettingsView] = useState(false);
   const [isLanguageSheetOpen, setIsLanguageSheetOpen] = useState(false);
   const settingsItems =
-    sessionType === "authenticated" ? accountSettingsItems : guestSettingsItems;
+    sessionType === "authenticated"
+      ? accountSettingsItems.filter(
+          (item) => item.key !== "password" || hasEmailProvider,
+        )
+      : guestSettingsItems;
 
   useEffect(() => {
     if (!isOpen) {
       setIsSettingsView(false);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (sessionType !== "authenticated") {
+      return;
+    }
+
+    let isActive = true;
+
+    void dispatch(fetchUserInfo())
+      .unwrap()
+      .then((userInfo) => {
+        if (isActive) {
+          setHasEmailProvider(Boolean(userInfo.providers.email?.subject));
+        }
+      })
+      .catch(() => {
+        if (isActive) {
+          setHasEmailProvider(false);
+        }
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [dispatch, sessionType]);
 
   const openLanguageSettings = () => {
     setIsLanguageSheetOpen(true);
@@ -133,6 +163,12 @@ export function MobileDrawer({
     if (key === "auth") {
       onClose();
       navigate("/auth");
+      return;
+    }
+
+    if (key === "password") {
+      onClose();
+      navigate("/change-password");
       return;
     }
 

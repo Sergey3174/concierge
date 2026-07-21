@@ -46,7 +46,6 @@ export type AsyncRequestStatus = "idle" | "loading" | "succeeded" | "failed";
 
 const AUTH_SESSION_TYPE_KEY = "auth_session_type";
 const AUTH_CHATWOOT_SESSION_KEY = "auth_chatwoot_session";
-const USER_INFO_STORAGE_KEY = "user_info";
 
 function getStoredSessionType(): AuthSessionType {
   const sessionType = getItemFromStore(AUTH_SESSION_TYPE_KEY);
@@ -79,38 +78,20 @@ function saveAuthenticatedSession(session: AnonymousSessionResponse) {
   setItemInStore(AUTH_CHATWOOT_SESSION_KEY, JSON.stringify(session));
 }
 
-export type UserInfo = {
-  email: string | null;
+export type UserProvider = {
+  subject: string;
+  username: string | null;
 };
 
-function getStoredUserInfo(): UserInfo {
-  const storedUserInfo = getItemFromStore(USER_INFO_STORAGE_KEY);
-
-  if (!storedUserInfo) {
-    return { email: null };
-  }
-
-  try {
-    const userInfo = JSON.parse(storedUserInfo) as unknown;
-
-    return typeof userInfo === "object" &&
-      userInfo !== null &&
-      "email" in userInfo &&
-      typeof userInfo.email === "string"
-      ? { email: userInfo.email }
-      : { email: null };
-  } catch {
-    return { email: null };
-  }
-}
-
-function saveUserInfo(userInfo: UserInfo) {
-  setItemInStore(USER_INFO_STORAGE_KEY, JSON.stringify(userInfo));
-}
+export type UserInfo = {
+  providers: {
+    email: UserProvider | null;
+    telegram: UserProvider | null;
+  };
+};
 
 export type AuthUserState = {
   isCreateAccount: boolean;
-  userInfo: UserInfo;
   sessionType: AuthSessionType;
   anonymousSession: AnonymousSessionResponse | null;
   anonymousSessionStatus: AsyncRequestStatus;
@@ -122,7 +103,6 @@ function createInitialState(): AuthUserState {
 
   return {
     isCreateAccount: false,
-    userInfo: getStoredUserInfo(),
     sessionType,
     anonymousSession:
       sessionType === "authenticated" ? getStoredAuthenticatedSession() : null,
@@ -150,9 +130,29 @@ function clearAccessibleCookies() {
 export const logoutUser = createAsyncThunk("authUser/logoutUser", async () => {
   removeItemFromStore(AUTH_SESSION_TYPE_KEY);
   removeItemFromStore(AUTH_CHATWOOT_SESSION_KEY);
-  removeItemFromStore(USER_INFO_STORAGE_KEY);
   removeItemFromStore("auth_token");
   clearAccessibleCookies();
+});
+
+export const fetchUserInfo = createAsyncThunk<
+  UserInfo,
+  void,
+  { rejectValue: string }
+>("authUser/fetchUserInfo", async (_, { rejectWithValue }) => {
+  try {
+    const { data } = await apiClient.get<UserInfo>("/api/profile/providers");
+    return data;
+  } catch (error) {
+    const message = isAxiosError(error)
+      ? (typeof error.response?.data === "string"
+          ? error.response.data
+          : error.response?.data?.message) || error.message
+      : error instanceof Error
+        ? error.message
+        : "Unable to load user profile";
+
+    return rejectWithValue(message);
+  }
 });
 
 export const createAnonymousSession = createAsyncThunk<
@@ -255,7 +255,6 @@ const authUserSlice = createSlice({
     builder
       .addCase(logoutUser.fulfilled, () => ({
         isCreateAccount: false,
-        userInfo: { email: null },
         sessionType: null,
         anonymousSession: null,
         anonymousSessionStatus: "idle",
@@ -285,8 +284,6 @@ const authUserSlice = createSlice({
         state.anonymousSession = action.payload;
         state.anonymousSessionStatus = "succeeded";
         state.sessionType = "authenticated";
-        state.userInfo.email = action.meta.arg.login;
-        saveUserInfo(state.userInfo);
       })
       .addCase(fetchCreateUser.rejected, (state, action) => {
         state.anonymousSessionStatus = "failed";
@@ -301,8 +298,6 @@ const authUserSlice = createSlice({
         state.anonymousSession = action.payload;
         state.anonymousSessionStatus = "succeeded";
         state.sessionType = "authenticated";
-        state.userInfo.email = action.meta.arg.login;
-        saveUserInfo(state.userInfo);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.anonymousSessionStatus = "failed";
@@ -319,6 +314,3 @@ export const selectIsCreateAccount = (state: { authUser: AuthUserState }) =>
 
 export const selectAuthSessionType = (state: { authUser: AuthUserState }) =>
   state.authUser.sessionType;
-
-export const selectUserEmail = (state: { authUser: AuthUserState }) =>
-  state.authUser.userInfo.email;

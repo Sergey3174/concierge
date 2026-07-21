@@ -9,7 +9,12 @@ import {
   type ChatwootMessage,
 } from "../lib/chatwootClient";
 import type { AuthSessionType, ChatwootSession } from "./authUserSlice";
-import type { ChatAttachment, MockChat, MockChatMessage } from "../mocks/chats";
+import type {
+  ChatAttachment,
+  MockChat,
+  MockChatMessage,
+  MockChatPayment,
+} from "../mocks/chats";
 
 export type ChatsRequestStatus = "idle" | "loading" | "succeeded" | "failed";
 
@@ -39,6 +44,48 @@ const initialState: ChatsState = {
   error: null,
   sendStatus: "idle",
 };
+
+// Service messages from the operator set a payment request and must not be
+// exposed as part of the conversation. The command is deliberately matched as
+// the whole message, so a customer can safely mention "/pay25" in their text.
+function getPaymentFromCommand(content: string): MockChatPayment | null {
+  const match = /^\s*\/pay\s*(\d+(?:[.,]\d{1,2})?)\s*$/i.exec(content);
+
+  if (!match) {
+    return null;
+  }
+
+  const amount = Number(match[1].replace(",", "."));
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    return null;
+  }
+
+  return {
+    amount,
+    amountLabel: `${amount} USD`,
+  };
+}
+
+function applyPaymentCommand(chat: MockChat, message: MockChatMessage): boolean {
+  if (message.role !== "assistant") {
+    return false;
+  }
+
+  const payment = getPaymentFromCommand(message.content);
+
+  if (!payment) {
+    return false;
+  }
+
+  chat.status = "payment";
+  chat.payment = payment;
+  return true;
+}
+
+function applyPaymentCommands(chat: MockChat, messages: MockChatMessage[]) {
+  return messages.filter((message) => !applyPaymentCommand(chat, message));
+}
 
 function getFileNameFromUrl(url?: string): string | undefined {
   if (!url) {
@@ -109,16 +156,25 @@ function mapConversation(
   messages: ChatwootMessage[],
 ): MockChat {
   const mappedMessages = messages.map(mapMessage);
-  const firstMessage = mappedMessages.find((message) => message.content.trim());
-  const lastMessage = mappedMessages.at(-1);
+  const chat: MockChat = {
+    id: String(conversation.id),
+    title: `Conversation #${conversation.id}`,
+    preview: "",
+    updatedAt: new Date(0).toISOString(),
+    status: conversation.status,
+    messages: [],
+  };
+  const visibleMessages = applyPaymentCommands(chat, mappedMessages);
+  const firstMessage = visibleMessages.find((message) => message.content.trim());
+  const lastMessage = visibleMessages.at(-1);
+  const lastReceivedMessage = mappedMessages.at(-1);
 
   return {
-    id: String(conversation.id),
+    ...chat,
     title: firstMessage?.content || `Conversation #${conversation.id}`,
     preview: lastMessage?.content || "",
-    updatedAt: lastMessage?.createdAt ?? new Date(0).toISOString(),
-    status: conversation.status,
-    messages: mappedMessages,
+    updatedAt: lastReceivedMessage?.createdAt ?? new Date(0).toISOString(),
+    messages: visibleMessages,
   };
 }
 
@@ -321,6 +377,11 @@ const chatsSlice = createSlice({
         return;
       }
 
+      if (applyPaymentCommand(chat, message)) {
+        chat.updatedAt = message.createdAt;
+        return;
+      }
+
       chat.messages.push(message);
       chat.preview = message.content;
       chat.updatedAt = message.createdAt;
@@ -341,20 +402,35 @@ const chatsSlice = createSlice({
       );
 
       if (chatIndex === -1) {
-        state.chats.unshift({
+        const chat: MockChat = {
           id: socketMessage.chatId,
           title: socketMessage.title,
           preview: socketMessage.message.content,
           updatedAt: socketMessage.message.createdAt,
           status: socketMessage.status,
           messages: [socketMessage.message],
-        });
+        };
+
+        if (applyPaymentCommand(chat, socketMessage.message)) {
+          chat.title = `Conversation #${socketMessage.chatId}`;
+          chat.preview = "";
+          chat.messages = [];
+        }
+
+        state.chats.unshift(chat);
         return;
       }
 
       const chat = state.chats[chatIndex];
 
       if (chat.messages.some((message) => message.id === socketMessage.message.id)) {
+        return;
+      }
+
+      if (applyPaymentCommand(chat, socketMessage.message)) {
+        chat.updatedAt = socketMessage.message.createdAt;
+        state.chats.splice(chatIndex, 1);
+        state.chats.unshift(chat);
         return;
       }
 
@@ -391,11 +467,12 @@ const chatsSlice = createSlice({
         const chat = state.chats.find((item) => item.id === action.payload.chatId);
 
         if (chat) {
-          chat.messages = action.payload.messages;
-          const firstMessage = action.payload.messages.find((message) =>
+          const visibleMessages = applyPaymentCommands(chat, action.payload.messages);
+          chat.messages = visibleMessages;
+          const firstMessage = visibleMessages.find((message) =>
             message.content.trim(),
           );
-          const lastMessage = action.payload.messages.at(-1);
+          const lastMessage = visibleMessages.at(-1);
           chat.title = firstMessage?.content ?? chat.title;
           chat.preview = lastMessage?.content ?? chat.preview;
           chat.updatedAt = lastMessage?.createdAt ?? chat.updatedAt;

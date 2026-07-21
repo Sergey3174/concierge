@@ -6,19 +6,24 @@ import apiClient from "../lib/apiClient";
 
 type ForgotPasswordFormProps = {
   onBack: () => void;
+  email?: string;
 };
 
 type RecoveryStep = "email" | "code" | "password";
 
-export function ForgotPasswordForm({ onBack }: ForgotPasswordFormProps) {
+export function ForgotPasswordForm({
+  onBack,
+  email: providedEmail,
+}: ForgotPasswordFormProps) {
   const [step, setStep] = useState<RecoveryStep>("email");
-  const [email, setEmail] = useState("");
+  const [manualEmail, setManualEmail] = useState("");
   const [code, setCode] = useState("");
   const [hash, setHash] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const email = providedEmail ?? manualEmail;
 
   const getErrorMessage = (requestError: unknown, fallback: string) => {
     if (axios.isAxiosError(requestError)) {
@@ -166,7 +171,8 @@ export function ForgotPasswordForm({ onBack }: ForgotPasswordFormProps) {
           placeholder="Email"
           className="w-full rounded-2xl border border-[var(--color-surface-disabled)] bg-[var(--color-bg-tertiary)] px-4 py-4 text-[1rem] text-[var(--color-text-primary)] outline-none transition placeholder:text-[var(--color-text-faint)] focus:border-[var(--color-accent)]"
           value={email}
-          onChange={(event) => setEmail(event.target.value)}
+          onChange={(event) => setManualEmail(event.target.value)}
+          disabled={Boolean(providedEmail)}
         />
       )}
 

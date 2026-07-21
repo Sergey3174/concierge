@@ -25,6 +25,7 @@ import {
   X,
 } from "lucide-react";
 import type { ChatAttachment } from "../mocks/chats";
+import LOGO from "../../public/logo.png";
 
 type PendingAttachment = ChatAttachment & {
   file: File;
@@ -222,6 +223,9 @@ function HomePage() {
       >
         {!showMessages ? (
           <div className="transition-all mx-auto flex min-h-full max-w-[280px] flex-col items-center justify-center py-16">
+            <div className="mx-auto flex size-[6rem] items-center justify-center rounded-3xl bg-[var(--color-surface-muted)] text-[var(--color-accent)]">
+              <img src={LOGO} alt="logo" />
+            </div>
             <h1 className="mt-7 text-center text-[2.15rem] font-light leading-[1.08] tracking-[-0.04em] text-[var(--color-text-primary)]">
               {currentChat ? currentChat.title : t("home.emptyState")}
             </h1>
