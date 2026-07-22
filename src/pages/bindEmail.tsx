@@ -16,11 +16,11 @@ function BindEmailPage() {
 
   const validatePassword = () => {
     if (!password) {
-      return "Password is required";
+      return t("authPage.validation.passwordRequired");
     }
 
     return password.length < 8
-      ? "Password must be at least 8 characters"
+      ? t("authPage.validation.passwordTooShort")
       : null;
   };
 
@@ -33,7 +33,7 @@ function BindEmailPage() {
           </div>
           <EmailConfirmationFlow
             submitLabel={t("authPage.bindEmail")}
-            submittingLabel="Привязка почты"
+            submittingLabel={t("authPage.bindingEmail")}
             validateBeforeRequest={validatePassword}
             onConfirmed={async ({ email, hash }) => {
               await dispatch(

@@ -25,10 +25,12 @@ function RegistrationPage() {
 
   const validatePassword = () => {
     if (!password) {
-      return "Password is required";
+      return t("authPage.validation.passwordRequired");
     }
 
-    return password.length < 8 ? "Password must be at least 8 characters" : null;
+    return password.length < 8
+      ? t("authPage.validation.passwordTooShort")
+      : null;
   };
 
   return (
@@ -40,7 +42,7 @@ function RegistrationPage() {
           </div>
           <EmailConfirmationFlow
             submitLabel={t("authPage.registration")}
-            submittingLabel="Creating account..."
+            submittingLabel={t("authPage.creatingAccount")}
             validateBeforeRequest={validatePassword}
             onConfirmed={async ({ email, hash }) => {
               await dispatch(

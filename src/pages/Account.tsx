@@ -1,22 +1,16 @@
 import { Send } from "lucide-react";
 import { useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
-import { fetchUserInfo, selectUserInfo } from "../store/authUserSlice";
 import { openExternalLink } from "../lib/openExternalLink";
+import { fetchUserInfo, selectUserInfo } from "../store/authUserSlice";
 import type { AppDispatch } from "../store/store";
 import { Capacitor } from "@capacitor/core";
 
-const telegramBindErrorMessages: Record<string, string> = {
-  provider_already_bound: "This provider is already linked.",
-  login_already_bound: "This login is already in use by another user.",
-  oauth_code_invalid_or_expired: "Authorization is invalid or has expired.",
-  oauth_user_not_found: "Telegram user not found.",
-  bind_failed: "Failed to link Telegram. Please try again.",
-};
-
 function AccountPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const userInfo = useSelector(selectUserInfo);
   const [searchParams] = useSearchParams();
@@ -35,14 +29,14 @@ function AccountPage() {
     }
 
     return status === "success"
-      ? { type: "success" as const, message: "Telegram linked successfully." }
+      ? { type: "success" as const, message: t("account.telegramLinked") }
       : {
           type: "error" as const,
-          message:
-            (errorKey ? telegramBindErrorMessages[errorKey] : undefined) ??
-            "An error occurred while linking Telegram.",
+          message: t(`account.telegramErrors.${errorKey ?? "default"}`, {
+            defaultValue: t("account.telegramErrors.default"),
+          }),
         };
-  }, [searchParams]);
+  }, [searchParams, t]);
 
   useEffect(() => {
     if (telegramBindFeedback?.type === "success") {
@@ -78,7 +72,7 @@ function AccountPage() {
             <div className="flex items-center gap-3">
               <Send className="size-5 text-[#229ED9]" />
               <div className="min-w-0 flex-1">
-                <h2 className="font-medium">Telegram</h2>
+                <h2 className="font-medium">{t("account.telegram")}</h2>
                 <p className="truncate text-sm text-[var(--color-text-soft)]">
                   {telegram.username
                     ? `@${telegram.username}`
@@ -95,7 +89,7 @@ function AccountPage() {
             }`}
           >
             <Send size={19} />
-            Привязать Telegram
+            {t("account.linkTelegram")}
           </button>
         </section>
       </div>

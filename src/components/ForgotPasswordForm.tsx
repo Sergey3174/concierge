@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import apiClient from "../lib/apiClient";
 
@@ -15,6 +16,7 @@ export function ForgotPasswordForm({
   onBack,
   email: providedEmail,
 }: ForgotPasswordFormProps) {
+  const { t } = useTranslation();
   const [step, setStep] = useState<RecoveryStep>("email");
   const [manualEmail, setManualEmail] = useState("");
   const [code, setCode] = useState("");
@@ -62,7 +64,7 @@ export function ForgotPasswordForm({
 
   const requestRecoveryCode = async () => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      setError("Enter a valid email");
+      setError(t("authPage.validation.emailInvalid"));
       return;
     }
 
@@ -77,7 +79,7 @@ export function ForgotPasswordForm({
       setStep("code");
     } catch (requestError) {
       setError(
-        getErrorMessage(requestError, "Unable to send confirmation code"),
+        getErrorMessage(requestError, t("authPage.errors.sendCode")),
       );
     } finally {
       setIsLoading(false);
@@ -86,7 +88,7 @@ export function ForgotPasswordForm({
 
   const confirmRecoveryCode = async () => {
     if (!/^\d{6}$/.test(code.trim())) {
-      setError("Enter the 6-digit confirmation code");
+      setError(t("authPage.validation.codeInvalid"));
       return;
     }
 
@@ -101,14 +103,14 @@ export function ForgotPasswordForm({
       const recoveryHash = data?.data?.hash;
 
       if (!recoveryHash) {
-        setError("Confirmation code was not accepted");
+        setError(t("authPage.validation.codeNotAccepted"));
         return;
       }
 
       setHash(recoveryHash);
       setStep("password");
     } catch (requestError) {
-      setError(getErrorMessage(requestError, "Unable to confirm code"));
+      setError(getErrorMessage(requestError, t("authPage.errors.confirmCode")));
     } finally {
       setIsLoading(false);
     }
@@ -116,12 +118,12 @@ export function ForgotPasswordForm({
 
   const resetPassword = async () => {
     if (password.length < 8) {
-      setError("Password must be at least 8 characters");
+      setError(t("authPage.validation.passwordTooShort"));
       return;
     }
 
     if (password !== passwordConfirmation) {
-      setError("Passwords do not match");
+      setError(t("authPage.validation.passwordsMismatch"));
       return;
     }
 
@@ -135,7 +137,7 @@ export function ForgotPasswordForm({
       );
       onBack();
     } catch (requestError) {
-      setError(getErrorMessage(requestError, "Unable to reset password"));
+      setError(getErrorMessage(requestError, t("authPage.errors.resetPassword")));
     } finally {
       setIsLoading(false);
     }
@@ -156,7 +158,7 @@ export function ForgotPasswordForm({
     >
       <button
         type="button"
-        aria-label="Back"
+        aria-label={t("common.back")}
         className="flex size-10 items-center justify-center rounded-full text-[var(--color-text-primary)] transition hover:bg-[var(--color-surface-soft)]"
         onClick={handleBack}
       >
@@ -168,7 +170,7 @@ export function ForgotPasswordForm({
           type="email"
           name="email"
           autoComplete="email"
-          placeholder="Email"
+          placeholder={t("common.email")}
           className="w-full rounded-2xl border border-[var(--color-surface-disabled)] bg-[var(--color-bg-tertiary)] px-4 py-4 text-[1rem] text-[var(--color-text-primary)] outline-none transition placeholder:text-[var(--color-text-faint)] focus:border-[var(--color-accent)]"
           value={email}
           onChange={(event) => setManualEmail(event.target.value)}
@@ -182,7 +184,7 @@ export function ForgotPasswordForm({
           name="code"
           inputMode="numeric"
           autoComplete="one-time-code"
-          placeholder="Confirmation code"
+          placeholder={t("common.confirmationCode")}
           className="w-full rounded-2xl border border-[var(--color-surface-disabled)] bg-[var(--color-bg-tertiary)] px-4 py-4 text-[1rem] text-[var(--color-text-primary)] outline-none transition placeholder:text-[var(--color-text-faint)] focus:border-[var(--color-accent)]"
           value={code}
           onChange={(event) => setCode(event.target.value)}
@@ -195,7 +197,7 @@ export function ForgotPasswordForm({
             type="password"
             name="password"
             autoComplete="new-password"
-            placeholder="New password"
+            placeholder={t("authPage.newPassword")}
             className="w-full rounded-2xl border border-[var(--color-surface-disabled)] bg-[var(--color-bg-tertiary)] px-4 py-4 text-[1rem] text-[var(--color-text-primary)] outline-none transition placeholder:text-[var(--color-text-faint)] focus:border-[var(--color-accent)]"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
@@ -204,7 +206,7 @@ export function ForgotPasswordForm({
             type="password"
             name="passwordConfirmation"
             autoComplete="new-password"
-            placeholder="Repeat password"
+            placeholder={t("authPage.repeatPassword")}
             className="w-full rounded-2xl border border-[var(--color-surface-disabled)] bg-[var(--color-bg-tertiary)] px-4 py-4 text-[1rem] text-[var(--color-text-primary)] outline-none transition placeholder:text-[var(--color-text-faint)] focus:border-[var(--color-accent)]"
             value={passwordConfirmation}
             onChange={(event) => setPasswordConfirmation(event.target.value)}
@@ -219,12 +221,12 @@ export function ForgotPasswordForm({
         className="mt-2 w-full rounded-2xl bg-[var(--color-accent)] px-5 py-4 text-[1.05rem] font-medium text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)]"
       >
         {isLoading
-          ? "Please wait..."
+          ? t("common.pleaseWait")
           : step === "email"
-            ? "Continue"
+            ? t("common.continue")
             : step === "code"
-              ? "Confirm code"
-              : "Reset password"}
+              ? t("common.confirmCode")
+              : t("authPage.resetPassword")}
       </button>
     </form>
   );

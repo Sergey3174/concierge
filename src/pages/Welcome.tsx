@@ -1,5 +1,6 @@
 import { Download, Plus, Share } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import LOGO from "../../public/logo.png";
 
 type BeforeInstallPromptEvent = Event & {
@@ -28,6 +29,7 @@ function hasKnownPwaInstallation() {
 }
 
 export default function WelcomePage() {
+  const { t } = useTranslation();
   const [installPrompt, setInstallPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
   const [isPwaInstalled, setIsPwaInstalled] = useState(hasKnownPwaInstallation);
@@ -99,20 +101,22 @@ export default function WelcomePage() {
           {iosDevice && (
             <div className="rounded-2xl bg-[var(--color-surface-muted)] px-5 py-5 text-[0.95rem] leading-6 text-[var(--color-text-secondary)]">
               <p className="font-medium text-[var(--color-text-primary)]">
-                Как установить на iPhone или iPad
+                {t("welcome.iosInstallTitle")}
               </p>
               <ol className="mt-3 space-y-2">
                 <li className="flex items-center gap-2">
                   <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-soft)] text-xs">
                     1
                   </span>
-                  Нажмите <Share className="size-4" /> «Поделиться».
+                  {t("welcome.iosStepOneStart")} <Share className="size-4" />{" "}
+                  {t("welcome.iosStepOneAction")}
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-soft)] text-xs">
                     2
                   </span>
-                  Выберите <Plus className="size-4" /> «На экран Домой».
+                  {t("welcome.iosStepTwoStart")} <Plus className="size-4" />{" "}
+                  {t("welcome.iosStepTwoAction")}
                 </li>
               </ol>
             </div>
@@ -126,7 +130,7 @@ export default function WelcomePage() {
               className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--color-accent)] px-5 py-4 text-[1.05rem] font-medium text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)] disabled:cursor-default disabled:opacity-55"
             >
               <Download size={19} />
-              {isPwaInstalled ? "Открыть приложение" : "Установить PWA"}
+              {isPwaInstalled ? t("welcome.openApp") : t("welcome.installPwa")}
             </button>
           )}
 
@@ -137,7 +141,7 @@ export default function WelcomePage() {
               className="flex w-full items-center justify-center gap-2 rounded-2xl border border-[var(--color-surface-disabled)] px-5 py-4 text-[1.05rem] font-medium text-[var(--color-text-muted)] opacity-60"
             >
               <Download size={19} />
-              Скачать APK
+              {t("welcome.downloadApk")}
             </button>
           )}
         </div>

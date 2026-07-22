@@ -32,6 +32,7 @@ type PendingAttachment = ChatAttachment & {
 };
 
 function AttachmentCard({ attachment }: { attachment: ChatAttachment }) {
+  const { t } = useTranslation();
   const isImage = attachment.type.startsWith("image/");
 
   if (isImage && attachment.previewUrl) {
@@ -61,7 +62,7 @@ function AttachmentCard({ attachment }: { attachment: ChatAttachment }) {
           download={attachment.name}
           target="_blank"
           rel="noreferrer"
-          aria-label={`Download ${attachment.name}`}
+          aria-label={t("home.downloadAttachment", { name: attachment.name })}
           className="flex size-9 shrink-0 items-center justify-center rounded-full text-[var(--color-text-muted)] transition hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-text-primary)]"
         >
           <Download size={18} />
@@ -320,7 +321,7 @@ function HomePage() {
                   </div>
                   <button
                     type="button"
-                    aria-label={`Remove ${attachment.name}`}
+                    aria-label={t("home.removeAttachment", { name: attachment.name })}
                     onClick={() =>
                       setAttachments((current) =>
                         current.filter((item) => item.id !== attachment.id),

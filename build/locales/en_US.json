@@ -4,7 +4,13 @@
   },
   "common": {
     "cancel": "Cancel",
-    "save": "Save"
+    "save": "Save",
+    "back": "Back",
+    "continue": "Continue",
+    "pleaseWait": "Please wait...",
+    "email": "Email",
+    "confirmationCode": "Confirmation code",
+    "confirmCode": "Confirm code"
   },
   "navigation": {
     "new-request": "New request",
@@ -610,7 +616,19 @@
     "emptyState": "How can I help you?\nWrite what you need.",
     "waitingForPayment": "We are waiting for payment",
     "pay": "Pay {{amount}}",
-    "askPlaceholder": "Ask Concierge"
+    "askPlaceholder": "Ask Concierge",
+    "downloadAttachment": "Download {{name}}",
+    "removeAttachment": "Remove {{name}}"
+  },
+  "welcome": {
+    "iosInstallTitle": "How to install on iPhone or iPad",
+    "iosStepOneStart": "Tap",
+    "iosStepOneAction": "“Share”.",
+    "iosStepTwoStart": "Choose",
+    "iosStepTwoAction": "“Add to Home Screen”.",
+    "openApp": "Open app",
+    "installPwa": "Install PWA",
+    "downloadApk": "Download APK"
   },
   "services": {
     "small-repairs": {
@@ -684,7 +702,46 @@
     "registration": "Create account",
     "bindEmail": "Bind Email",
     "switchToRegistration": "Don't have an account? Sign up",
-    "switchToLogin": "Already have an account? Sign in"
+    "switchToLogin": "Already have an account? Sign in",
+    "forgotPassword": "Forgot password",
+    "signingIn": "Signing in...",
+    "signingInTelegram": "Signing in with Telegram...",
+    "creatingAccount": "Creating account...",
+    "bindingEmail": "Linking email...",
+    "newPassword": "New password",
+    "repeatPassword": "Repeat password",
+    "resetPassword": "Reset password",
+    "backToEmailDetails": "Back to email details",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email",
+      "passwordRequired": "Password is required",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "codeInvalid": "Enter the 6-digit confirmation code",
+      "codeNotAccepted": "Confirmation code was not accepted",
+      "passwordsMismatch": "Passwords do not match"
+    },
+    "errors": {
+      "sendCode": "Unable to send confirmation code",
+      "confirmCode": "Unable to confirm code",
+      "resetPassword": "Unable to reset password",
+      "signIn": "Unable to sign in",
+      "oauth": "OAuth authentication failed",
+      "oauthMissingParameters": "OAuth callback is missing code or state"
+    }
+  },
+  "account": {
+    "telegram": "Telegram",
+    "linkTelegram": "Link Telegram",
+    "telegramLinked": "Telegram linked successfully.",
+    "telegramErrors": {
+      "provider_already_bound": "This provider is already linked.",
+      "login_already_bound": "This login is already in use by another user.",
+      "oauth_code_invalid_or_expired": "Authorization is invalid or has expired.",
+      "oauth_user_not_found": "Telegram user not found.",
+      "bind_failed": "Failed to link Telegram. Please try again.",
+      "default": "An error occurred while linking Telegram."
+    }
   },
   "faq": {
     "title": "FAQ",

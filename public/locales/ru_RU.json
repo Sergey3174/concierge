@@ -4,7 +4,13 @@
   },
   "common": {
     "cancel": "Отмена",
-    "save": "Сохранить"
+    "save": "Сохранить",
+    "back": "Назад",
+    "continue": "Продолжить",
+    "pleaseWait": "Подождите...",
+    "email": "Почта",
+    "confirmationCode": "Код подтверждения",
+    "confirmCode": "Подтвердить код"
   },
   "navigation": {
     "new-request": "Новый запрос",
@@ -610,7 +616,19 @@
     "emptyState": " Чем вам помочь?\n Опишите свою задачу.",
     "waitingForPayment": "Ожидается оплата",
     "pay": "Оплатить {{amount}}",
-    "askPlaceholder": "Напишите, что нужно сделать"
+    "askPlaceholder": "Напишите, что нужно сделать",
+    "downloadAttachment": "Скачать {{name}}",
+    "removeAttachment": "Удалить {{name}}"
+  },
+  "welcome": {
+    "iosInstallTitle": "Как установить на iPhone или iPad",
+    "iosStepOneStart": "Нажмите",
+    "iosStepOneAction": "«Поделиться».",
+    "iosStepTwoStart": "Выберите",
+    "iosStepTwoAction": "«На экран Домой».",
+    "openApp": "Открыть приложение",
+    "installPwa": "Установить PWA",
+    "downloadApk": "Скачать APK"
   },
   "services": {
     "small-repairs": {
@@ -684,7 +702,46 @@
     "registration": "Зарегистрироваться",
     "bindEmail": "Привязать почту",
     "switchToRegistration": "Нет аккаунта? Зарегистрироваться",
-    "switchToLogin": "Уже есть аккаунт? Войти"
+    "switchToLogin": "Уже есть аккаунт? Войти",
+    "forgotPassword": "Забыли пароль?",
+    "signingIn": "Выполняется вход...",
+    "signingInTelegram": "Выполняется вход через Telegram...",
+    "creatingAccount": "Создание аккаунта...",
+    "bindingEmail": "Привязка почты...",
+    "newPassword": "Новый пароль",
+    "repeatPassword": "Повторите пароль",
+    "resetPassword": "Сбросить пароль",
+    "backToEmailDetails": "Вернуться к данным почты",
+    "validation": {
+      "emailRequired": "Укажите почту",
+      "emailInvalid": "Введите корректную почту",
+      "passwordRequired": "Введите пароль",
+      "passwordTooShort": "Пароль должен содержать минимум 8 символов",
+      "codeInvalid": "Введите шестизначный код",
+      "codeNotAccepted": "Код подтверждения не принят",
+      "passwordsMismatch": "Пароли не совпадают"
+    },
+    "errors": {
+      "sendCode": "Не удалось отправить код подтверждения",
+      "confirmCode": "Не удалось подтвердить код",
+      "resetPassword": "Не удалось сбросить пароль",
+      "signIn": "Не удалось выполнить вход",
+      "oauth": "Ошибка OAuth-авторизации",
+      "oauthMissingParameters": "В OAuth callback отсутствует code или state"
+    }
+  },
+  "account": {
+    "telegram": "Telegram",
+    "linkTelegram": "Привязать Telegram",
+    "telegramLinked": "Telegram успешно привязан.",
+    "telegramErrors": {
+      "provider_already_bound": "Этот провайдер уже привязан.",
+      "login_already_bound": "Этот логин уже используется другим пользователем.",
+      "oauth_code_invalid_or_expired": "Авторизация недействительна или истекла.",
+      "oauth_user_not_found": "Пользователь Telegram не найден.",
+      "bind_failed": "Не удалось привязать Telegram. Попробуйте ещё раз.",
+      "default": "При привязке Telegram произошла ошибка."
+    }
   },
   "faq": {
     "title": "Частые вопросы",

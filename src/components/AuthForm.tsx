@@ -47,15 +47,15 @@ export function AuthForm({ onForgotPassword }: AuthFormProps) {
     const nextErrors: FormErrors = {};
 
     if (!mail.trim()) {
-      nextErrors.email = "Email is required";
+      nextErrors.email = t("authPage.validation.emailRequired");
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail.trim())) {
-      nextErrors.email = "Enter a valid email";
+      nextErrors.email = t("authPage.validation.emailInvalid");
     }
 
     if (!password) {
-      nextErrors.password = "Password is required";
+      nextErrors.password = t("authPage.validation.passwordRequired");
     } else if (password.length < 8) {
-      nextErrors.password = "Password must be at least 8 characters";
+      nextErrors.password = t("authPage.validation.passwordTooShort");
     }
 
     if (Object.keys(nextErrors).length > 0) {
@@ -68,7 +68,7 @@ export function AuthForm({ onForgotPassword }: AuthFormProps) {
       await dispatch(loginUser({ login: mail.trim(), password })).unwrap();
       navigate("/", { replace: true });
     } catch (error) {
-      setErrors({ email: getErrorMessage(error, "Unable to sign in") });
+      setErrors({ email: getErrorMessage(error, t("authPage.errors.signIn")) });
     }
   };
 
@@ -109,7 +109,7 @@ export function AuthForm({ onForgotPassword }: AuthFormProps) {
         className="self-start text-sm text-[var(--color-accent)] transition hover:text-[var(--color-accent)]"
         onClick={onForgotPassword}
       >
-        Forgot password
+        {t("authPage.forgotPassword")}
       </button>
       {(errors.email || errors.password) && (
         <p className="text-sm text-red-500">
@@ -121,7 +121,7 @@ export function AuthForm({ onForgotPassword }: AuthFormProps) {
         disabled={loginStatus === "loading"}
         className="mt-2 w-full rounded-2xl bg-[var(--color-accent)] px-5 py-4 text-[1.05rem] font-medium text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)]"
       >
-        {loginStatus === "loading" ? "Signing in..." : t("authPage.login")}
+        {loginStatus === "loading" ? t("authPage.signingIn") : t("authPage.login")}
       </button>
     </form>
   );

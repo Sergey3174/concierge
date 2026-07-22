@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ArrowLeft } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 import apiClient from "../lib/apiClient";
 
@@ -21,9 +22,10 @@ export function EmailConfirmationFlow({
   onConfirmed,
   validateBeforeRequest,
   children,
-  submitLabel = "Continue",
-  submittingLabel = "Please wait...",
+  submitLabel,
+  submittingLabel,
 }: EmailConfirmationFlowProps) {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [isCodeStep, setIsCodeStep] = useState(false);
@@ -48,7 +50,7 @@ export function EmailConfirmationFlow({
 
   const requestCode = async () => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      setError("Enter a valid email");
+      setError(t("authPage.validation.emailInvalid"));
       return;
     }
 
@@ -69,7 +71,7 @@ export function EmailConfirmationFlow({
       );
       setIsCodeStep(true);
     } catch (requestError) {
-      setError(getErrorMessage(requestError, "Unable to send confirmation code"));
+      setError(getErrorMessage(requestError, t("authPage.errors.sendCode")));
     } finally {
       setIsLoading(false);
     }
@@ -77,7 +79,7 @@ export function EmailConfirmationFlow({
 
   const confirmCode = async () => {
     if (!/^\d{6}$/.test(code.trim())) {
-      setError("Enter the 6-digit confirmation code");
+      setError(t("authPage.validation.codeInvalid"));
       return;
     }
 
@@ -92,13 +94,13 @@ export function EmailConfirmationFlow({
       const hash = data?.data?.hash;
 
       if (!hash) {
-        setError("Confirmation code was not accepted");
+        setError(t("authPage.validation.codeNotAccepted"));
         return;
       }
 
       await onConfirmed({ email: email.trim(), hash });
     } catch (requestError) {
-      setError(getErrorMessage(requestError, "Unable to confirm code"));
+      setError(getErrorMessage(requestError, t("authPage.errors.confirmCode")));
     } finally {
       setIsLoading(false);
     }
@@ -116,7 +118,7 @@ export function EmailConfirmationFlow({
         <>
           <button
             type="button"
-            aria-label="Back to email details"
+            aria-label={t("authPage.backToEmailDetails")}
             className="flex size-10 items-center justify-center rounded-full text-[var(--color-text-primary)] transition hover:bg-[var(--color-surface-soft)]"
             onClick={() => {
               setCode("");
@@ -131,7 +133,7 @@ export function EmailConfirmationFlow({
             name="otpCode"
             inputMode="numeric"
             autoComplete="one-time-code"
-            placeholder="Confirmation code"
+            placeholder={t("common.confirmationCode")}
             className="w-full rounded-2xl border border-[var(--color-surface-disabled)] bg-[var(--color-bg-tertiary)] px-4 py-4 text-[1rem] text-[var(--color-text-primary)] outline-none transition placeholder:text-[var(--color-text-faint)] focus:border-[var(--color-accent)]"
             value={code}
             onChange={(event) => setCode(event.target.value)}
@@ -143,7 +145,7 @@ export function EmailConfirmationFlow({
             type="email"
             name="login"
             autoComplete="username"
-            placeholder="Email"
+            placeholder={t("common.email")}
             className="w-full rounded-2xl border border-[var(--color-surface-disabled)] bg-[var(--color-bg-tertiary)] px-4 py-4 text-[1rem] text-[var(--color-text-primary)] outline-none transition placeholder:text-[var(--color-text-faint)] focus:border-[var(--color-accent)]"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
@@ -159,10 +161,10 @@ export function EmailConfirmationFlow({
         className="mt-2 w-full rounded-2xl bg-[var(--color-accent)] px-5 py-4 text-[1.05rem] font-medium text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)]"
       >
         {isLoading
-          ? submittingLabel
+          ? (submittingLabel ?? t("common.pleaseWait"))
           : isCodeStep
-            ? "Confirm code"
-            : submitLabel}
+            ? t("common.confirmCode")
+            : (submitLabel ?? t("common.continue"))}
       </button>
     </form>
   );

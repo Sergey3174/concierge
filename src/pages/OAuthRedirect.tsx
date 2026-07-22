@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { loginWithOAuth } from "../store/authUserSlice";
 import type { AppDispatch } from "../store/store";
 
 function OAuthRedirectPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -32,18 +34,18 @@ function OAuthRedirectPage() {
         setError(
           typeof requestError === "string"
             ? requestError
-            : "OAuth authentication failed",
+            : t("authPage.errors.oauth"),
         );
       });
-  }, [code, dispatch, missingCallbackParameters, navigate, state]);
+  }, [code, dispatch, missingCallbackParameters, navigate, state, t]);
 
   return (
     <main className="flex flex-1 items-center justify-center px-5 text-center text-[var(--color-text-primary)]">
       <p>
         {error ??
           (missingCallbackParameters
-            ? "OAuth callback is missing code or state"
-            : "Signing in with Telegram...")}
+            ? t("authPage.errors.oauthMissingParameters")
+            : t("authPage.signingInTelegram"))}
       </p>
     </main>
   );
