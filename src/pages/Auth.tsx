@@ -14,9 +14,8 @@ function AuthPage() {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const openTelegramOAuth = () => {
     const source = Capacitor.isNativePlatform() ? "apk" : "pwa";
-    window.open(
+    window.location.assign(
       `${import.meta.env.VITE_BASENAME_API}/api/oauth/telegram?source=${source}`,
-      "_blank",
     );
   };
 
