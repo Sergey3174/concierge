@@ -1,15 +1,14 @@
-import { Send } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { EmailConfirmationFlow } from "../components/EmailConfirmationFlow";
-import { fetchCreateUser } from "../store/authUserSlice";
+import { bindEmail, fetchUserInfo } from "../store/authUserSlice";
 import type { AppDispatch } from "../store/store";
 import LOGO from "../../public/logo.png";
 
-function RegistrationPage() {
+function BindEmailPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -20,7 +19,9 @@ function RegistrationPage() {
       return "Password is required";
     }
 
-    return password.length < 8 ? "Password must be at least 8 characters" : null;
+    return password.length < 8
+      ? "Password must be at least 8 characters"
+      : null;
   };
 
   return (
@@ -31,13 +32,14 @@ function RegistrationPage() {
             <img src={LOGO} alt="logo" />
           </div>
           <EmailConfirmationFlow
-            submitLabel={t("authPage.registration")}
-            submittingLabel="Creating account..."
+            submitLabel={t("authPage.bindEmail")}
+            submittingLabel="Привязка почты"
             validateBeforeRequest={validatePassword}
             onConfirmed={async ({ email, hash }) => {
               await dispatch(
-                fetchCreateUser({ login: email, password, hash }),
+                bindEmail({ login: email, password, hash }),
               ).unwrap();
+              await dispatch(fetchUserInfo());
               navigate("/", { replace: true });
             }}
           >
@@ -51,25 +53,10 @@ function RegistrationPage() {
               onChange={(event) => setPassword(event.target.value)}
             />
           </EmailConfirmationFlow>
-          <button
-            type="button"
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#229ED9] px-5 py-4 text-[1rem] font-medium text-white transition hover:bg-[#1d8bc1]"
-          >
-            <Send size={19} />
-            {t("authPage.telegram")}
-          </button>
         </div>
       </div>
-
-      <button
-        type="button"
-        className="py-3 text-[0.95rem] text-[var(--color-accent)] transition hover:text-[var(--color-accent-hover)]"
-        onClick={() => navigate("/auth")}
-      >
-        {t("authPage.switchToLogin")}
-      </button>
     </main>
   );
 }
 
-export default RegistrationPage;
+export default BindEmailPage;

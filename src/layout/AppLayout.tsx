@@ -8,7 +8,7 @@ import { MobileDrawer } from "../components/MobileDrawer";
 import { SettingsEditorSheet } from "../components/SettingsEditorSheet";
 import { useAppViewport } from "../hooks/useAppViewport";
 import { useChatwootCable } from "../hooks/useChatwootCable";
-import { createAnonymousSession } from "../store/authUserSlice";
+import { createAnonymousSession, fetchUserInfo } from "../store/authUserSlice";
 import {
   applyChatwootSocketMessage,
   loadChatwootChats,
@@ -78,6 +78,12 @@ function AppLayout() {
       void dispatch(createAnonymousSession());
     }
   }, [anonymousSession, anonymousSessionStatus, dispatch, sessionType]);
+
+  useEffect(() => {
+    if (sessionType === "authenticated") {
+      void dispatch(fetchUserInfo());
+    }
+  }, [dispatch, sessionType]);
 
   useEffect(() => {
     if (

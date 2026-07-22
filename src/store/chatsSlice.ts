@@ -45,26 +45,73 @@ const initialState: ChatsState = {
   sendStatus: "idle",
 };
 
-// Service messages from the operator set a payment request and must not be
-// exposed as part of the conversation. The command is deliberately matched as
-// the whole message, so a customer can safely mention "/pay25" in their text.
-function getPaymentFromCommand(content: string): MockChatPayment | null {
-  const match = /^\s*\/pay\s*(\d+(?:[.,]\d{1,2})?)\s*$/i.exec(content);
+type PaymentCommand =
+  | { type: "offer"; payment: MockChatPayment }
+  | { type: "cancel" };
+
+// Service messages from the operator update a payment offer and must not be
+// exposed as part of the conversation.
+function getPaymentCommand(content: string): PaymentCommand | null {
+  // Some transports format multiline commands with a trailing backslash on
+  // every line. It is a line-continuation marker, not part of the JSON.
+  const normalizedContent = content.replace(/\\\r?\n/g, "\n");
+
+  if (/^\s*\/cancel_pay_offer\s*$/i.test(normalizedContent)) {
+    return { type: "cancel" };
+  }
+
+  const match = /^\s*\/pay_offer\s*\r?\n([\s\S]+?)\s*$/i.exec(
+    normalizedContent,
+  );
 
   if (!match) {
     return null;
   }
 
-  const amount = Number(match[1].replace(",", "."));
+  try {
+    const payload = JSON.parse(
+      match[1]
+        .replace(/[“”]/g, '"')
+        .replace(/[‘’]/g, "'")
+        .replace(/\\"/g, '"'),
+    ) as unknown;
 
-  if (!Number.isFinite(amount) || amount <= 0) {
+    if (!isRecord(payload)) {
+      return null;
+    }
+
+    const { name, price, currency, description } = payload;
+    const amount =
+      typeof price === "number"
+        ? price
+        : typeof price === "string"
+          ? Number(price.replace(",", "."))
+          : Number.NaN;
+
+    if (
+      typeof name !== "string" ||
+      !name.trim() ||
+      typeof currency !== "string" ||
+      !currency.trim() ||
+      !Number.isFinite(amount) ||
+      amount <= 0 ||
+      (description !== undefined && typeof description !== "string")
+    ) {
+      return null;
+    }
+
+    return {
+      type: "offer",
+      payment: {
+        name: name.trim(),
+        amount,
+        amountLabel: `${amount} ${currency.trim()}`,
+        description: description?.trim() || undefined,
+      },
+    };
+  } catch {
     return null;
   }
-
-  return {
-    amount,
-    amountLabel: `${amount} USD`,
-  };
 }
 
 function applyPaymentCommand(chat: MockChat, message: MockChatMessage): boolean {
@@ -72,14 +119,24 @@ function applyPaymentCommand(chat: MockChat, message: MockChatMessage): boolean 
     return false;
   }
 
-  const payment = getPaymentFromCommand(message.content);
+  const command = getPaymentCommand(message.content);
 
-  if (!payment) {
+  if (!command) {
     return false;
   }
 
+  if (command.type === "cancel") {
+    chat.status = chat.statusBeforePayment;
+    delete chat.statusBeforePayment;
+    delete chat.payment;
+    return true;
+  }
+
+  if (chat.status !== "payment") {
+    chat.statusBeforePayment = chat.status;
+  }
   chat.status = "payment";
-  chat.payment = payment;
+  chat.payment = command.payment;
   return true;
 }
 

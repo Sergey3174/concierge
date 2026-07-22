@@ -41,6 +41,12 @@ export type LoginUserArgs = {
   password: string;
 };
 
+export type BindEmailArgs = {
+  login: string;
+  password: string;
+  hash: string;
+};
+
 export type AuthSessionType = "anonymous" | "authenticated" | null;
 export type AsyncRequestStatus = "idle" | "loading" | "succeeded" | "failed";
 
@@ -92,6 +98,7 @@ export type UserInfo = {
 
 export type AuthUserState = {
   isCreateAccount: boolean;
+  userInfo: UserInfo | null;
   sessionType: AuthSessionType;
   anonymousSession: AnonymousSessionResponse | null;
   anonymousSessionStatus: AsyncRequestStatus;
@@ -103,6 +110,7 @@ function createInitialState(): AuthUserState {
 
   return {
     isCreateAccount: false,
+    userInfo: null,
     sessionType,
     anonymousSession:
       sessionType === "authenticated" ? getStoredAuthenticatedSession() : null,
@@ -221,6 +229,30 @@ export const fetchCreateUser = createAsyncThunk<
   },
 );
 
+export const bindEmail = createAsyncThunk<
+  void,
+  BindEmailArgs,
+  { rejectValue: string }
+>("authUser/bindEmail", async ({ login, password, hash }, { rejectWithValue }) => {
+  try {
+    await apiClient.post(
+      "/api/profile/bind/email",
+      { login, password },
+      { params: { guard_hash: hash } },
+    );
+  } catch (error) {
+    const message = isAxiosError(error)
+      ? (typeof error.response?.data === "string"
+          ? error.response.data
+          : error.response?.data?.message) || error.message
+      : error instanceof Error
+        ? error.message
+        : "Unable to bind email";
+
+    return rejectWithValue(message);
+  }
+});
+
 export const loginUser = createAsyncThunk<
   AnonymousSessionResponse,
   LoginUserArgs,
@@ -255,6 +287,7 @@ const authUserSlice = createSlice({
     builder
       .addCase(logoutUser.fulfilled, () => ({
         isCreateAccount: false,
+        userInfo: null,
         sessionType: null,
         anonymousSession: null,
         anonymousSessionStatus: "idle",
@@ -275,6 +308,9 @@ const authUserSlice = createSlice({
           action.payload ??
           action.error.message ??
           "Unable to create anonymous session";
+      })
+      .addCase(fetchUserInfo.fulfilled, (state, action) => {
+        state.userInfo = action.payload;
       })
       .addCase(fetchCreateUser.pending, (state) => {
         state.anonymousSessionStatus = "loading";
@@ -314,3 +350,6 @@ export const selectIsCreateAccount = (state: { authUser: AuthUserState }) =>
 
 export const selectAuthSessionType = (state: { authUser: AuthUserState }) =>
   state.authUser.sessionType;
+
+export const selectUserInfo = (state: { authUser: AuthUserState }) =>
+  state.authUser.userInfo;

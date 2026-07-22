@@ -1,33 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { getUserAnimalIcon } from "../constants/animals";
-import { fetchUserInfo } from "../store/authUserSlice";
-import type { AppDispatch, RootState } from "../store/store";
+import { selectUserInfo } from "../store/authUserSlice";
 
 export function UserProfileButton() {
   const { t } = useTranslation();
-  const dispatch = useDispatch<AppDispatch>();
-  const sessionType = useSelector(
-    (state: RootState) => state.authUser.sessionType,
-  );
-  const [email, setEmail] = useState<string | null>(null);
+  const userInfo = useSelector(selectUserInfo);
   const [userAnimal] = useState(getUserAnimalIcon);
   const UserAnimalIcon = userAnimal.icon;
-
-  useEffect(() => {
-    if (sessionType !== "authenticated") {
-      return;
-    }
-
-    void dispatch(fetchUserInfo())
-      .unwrap()
-      .then((userInfo) => setEmail(userInfo.providers.email?.subject ?? null))
-      .catch(() => setEmail(null));
-  }, [dispatch, sessionType]);
-
-  const userEmail = sessionType === "authenticated" ? email : null;
+  const userEmail = userInfo?.providers.email?.subject ?? null;
 
   if (userEmail) {
     return (

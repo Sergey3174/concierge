@@ -8,22 +8,24 @@ import AuthPage from "../pages/Auth";
 import RegistrationPage from "../pages/Registration";
 import { BrowserOnlyRoute } from "./BrowserOnlyRoute";
 import ChangePasswordPage from "../pages/ChangePassword";
-import { AppOnlyRoute } from "./AppOnlyRoute";
+import BindEmailPage from "../pages/bindEmail";
+// import { AppOnlyRoute } from "./AppOnlyRoute";
 
 function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<AppOnlyRoute />}>
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/payment" element={<PaymentsPage />} />
-            <Route path="/faq" element={<FaqPage />} />
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/registration" element={<RegistrationPage />} />
-            <Route path="/change-password" element={<ChangePasswordPage />} />
-          </Route>
+        {/* <Route element={<AppOnlyRoute />}> */}
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/payment" element={<PaymentsPage />} />
+          <Route path="/faq" element={<FaqPage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/registration" element={<RegistrationPage />} />
+          <Route path="/bind-email" element={<BindEmailPage />} />
+          <Route path="/change-password" element={<ChangePasswordPage />} />
         </Route>
+        {/* </Route> */}
 
         <Route element={<BrowserOnlyRoute />}>
           <Route path="/welcome" element={<WelcomePage />} />

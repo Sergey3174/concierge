@@ -16,6 +16,7 @@ export type ChatAttachment = {
 export type MockChatStatus = "payment" | (string & {});
 
 export type MockChatPayment = {
+  name: string;
   amount: number;
   amountLabel: string;
   description?: string;
@@ -28,6 +29,7 @@ export type MockChat = {
   updatedAt: string;
   unreadCount?: number;
   status?: MockChatStatus;
+  statusBeforePayment?: MockChatStatus;
   payment?: MockChatPayment;
   messages: MockChatMessage[];
 };
@@ -70,6 +72,7 @@ export const mockChats: MockChat[] = [
     unreadCount: 2,
     status: "payment",
     payment: {
+      name: "Visa application assistance",
       amount: 15,
       amountLabel: "15 USD",
       description: "Visa application assistance",
@@ -160,6 +163,7 @@ export const mockChats: MockChat[] = [
     updatedAt: "2026-06-28T11:10:00+03:00",
     status: "payment",
     payment: {
+      name: "Service booking deposit",
       amount: 15,
       amountLabel: "15 USD",
       description: "Service booking deposit",

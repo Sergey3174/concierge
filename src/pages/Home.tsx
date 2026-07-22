@@ -17,11 +17,11 @@ import type { AppLayoutOutletContext } from "../layout/AppLayout";
 import { useTranslation } from "react-i18next";
 import {
   ArrowUp,
-  CreditCard,
   Download,
   FileText,
   Paperclip,
   Plus,
+  ReceiptText,
   X,
 } from "lucide-react";
 import type { ChatAttachment } from "../mocks/chats";
@@ -268,28 +268,32 @@ function HomePage() {
 
       <footer className="absolute bottom-[calc(12px+var(--sa-b))] mx-auto w-full max-w-3xl left-1/2 -translate-x-1/2">
         {paymentRequest ? (
-          <div className="mb-3 mt-5 flex justify-start">
+          <div className="mb-3 mt-5 w-full">
             <div className="w-full rounded-lg bg-[var(--color-surface)] px-4 py-3 text-[var(--color-text-primary)]">
               <div className="flex items-center gap-3">
                 <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-soft)] text-[var(--color-text-muted)]">
-                  <CreditCard className="size-5" />
+                  <ReceiptText className="size-5" />
                 </div>
 
                 <div className="min-w-0 flex-1">
                   <h2 className="text-[1rem] font-medium text-[var(--color-text-primary)]">
-                    {t("home.waitingForPayment")}
+                    {paymentRequest.name || t("home.waitingForPayment")}
                   </h2>
-
-                  <button
-                    type="button"
-                    className="mt-3 inline-flex items-center justify-center rounded-lg bg-[var(--color-accent)] px-5 py-2.5 text-sm font-medium text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)]"
-                    onClick={() => navigate("/payment")}
-                  >
-                    {t("home.pay", { amount: paymentRequest.amountLabel })}
-                  </button>
+                  {paymentRequest.description && (
+                    <p className="mt-1 text-sm text-[var(--color-text-soft)]">
+                      {paymentRequest.description}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
+            <button
+              type="button"
+              className="mx-auto mt-2 flex w-full  items-center justify-center rounded-lg bg-[var(--color-accent)] px-5 py-2.5 text-sm font-medium text-[var(--color-accent-contrast)] transition hover:bg-[var(--color-accent-hover)]"
+              onClick={() => navigate("/payment")}
+            >
+              {t("home.pay", { amount: paymentRequest.amountLabel })}
+            </button>
           </div>
         ) : null}
         <div className="rounded-lg bg-[var(--color-surface-translucent)] px-4 py-3">
