@@ -6,15 +6,17 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthForm } from "../components/AuthForm";
 import { ForgotPasswordForm } from "../components/ForgotPasswordForm";
+import { openExternalLink } from "../lib/openExternalLink";
 import LOGO from "../../public/logo.png";
 
 function AuthPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isForgotPassword, setIsForgotPassword] = useState(false);
-  const openTelegramOAuth = () => {
+
+  const openTelegramOAuth = async () => {
     const source = Capacitor.isNativePlatform() ? "apk" : "pwa";
-    window.location.assign(
+    await openExternalLink(
       `${import.meta.env.VITE_BASENAME_API}/api/oauth/telegram?source=${source}`,
     );
   };
@@ -26,6 +28,7 @@ function AuthPage() {
           <div className="mx-auto flex size-[6rem] items-center justify-center rounded-3xl bg-[var(--color-surface-muted)] text-[var(--color-accent)]">
             <img src={LOGO} alt="logo" />
           </div>
+          ы
           {isForgotPassword ? (
             <ForgotPasswordForm onBack={() => setIsForgotPassword(false)} />
           ) : (

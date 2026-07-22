@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { EmailConfirmationFlow } from "../components/EmailConfirmationFlow";
+import { openExternalLink } from "../lib/openExternalLink";
 import { fetchCreateUser } from "../store/authUserSlice";
 import type { AppDispatch } from "../store/store";
 import LOGO from "../../public/logo.png";
@@ -15,9 +16,9 @@ function RegistrationPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const [password, setPassword] = useState("");
-  const openTelegramOAuth = () => {
+  const openTelegramOAuth = async () => {
     const source = Capacitor.isNativePlatform() ? "apk" : "pwa";
-    window.location.assign(
+    await openExternalLink(
       `${import.meta.env.VITE_BASENAME_API}/api/oauth/telegram?source=${source}`,
     );
   };

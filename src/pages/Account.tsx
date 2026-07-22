@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
 import { fetchUserInfo, selectUserInfo } from "../store/authUserSlice";
+import { openExternalLink } from "../lib/openExternalLink";
 import type { AppDispatch } from "../store/store";
+import { Capacitor } from "@capacitor/core";
 
 const telegramBindErrorMessages: Record<string, string> = {
   provider_already_bound: "This provider is already linked.",
@@ -48,9 +50,11 @@ function AccountPage() {
     }
   }, [dispatch, telegramBindFeedback?.type]);
 
-  const bindTelegram = () => {
-    window.location.assign(
-      `${import.meta.env.VITE_BASENAME_API}/api/profile/bind/telegram`,
+  const bindTelegram = async () => {
+    const source = Capacitor.isNativePlatform() ? "apk" : "pwa";
+
+    await openExternalLink(
+      `${import.meta.env.VITE_BASENAME_API}/api/profile/bind/telegram?source=${source}`,
     );
   };
 
@@ -83,16 +87,16 @@ function AccountPage() {
               </div>
             </div>
           )}
-            <button
-              type="button"
-              onClick={bindTelegram}
-              className={`flex w-full items-center justify-center gap-2 rounded-2xl bg-[#229ED9] px-5 py-4 text-[1rem] font-medium text-white transition hover:bg-[#1d8bc1] ${
-                telegram ? "mt-4" : ""
-              }`}
-            >
-              <Send size={19} />
-              Привязать Telegram
-            </button>
+          <button
+            type="button"
+            onClick={bindTelegram}
+            className={`flex w-full items-center justify-center gap-2 rounded-2xl bg-[#229ED9] px-5 py-4 text-[1rem] font-medium text-white transition hover:bg-[#1d8bc1] ${
+              telegram ? "mt-4" : ""
+            }`}
+          >
+            <Send size={19} />
+            Привязать Telegram
+          </button>
         </section>
       </div>
     </main>
