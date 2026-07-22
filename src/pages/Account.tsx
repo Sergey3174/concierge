@@ -70,7 +70,7 @@ function AccountPage() {
         )}
 
         <section className="rounded-xl  p-4">
-          {telegram ? (
+          {telegram && (
             <div className="flex items-center gap-3">
               <Send className="size-5 text-[#229ED9]" />
               <div className="min-w-0 flex-1">
@@ -82,16 +82,17 @@ function AccountPage() {
                 </p>
               </div>
             </div>
-          ) : (
+          )}
             <button
               type="button"
               onClick={bindTelegram}
-              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#229ED9] px-5 py-4 text-[1rem] font-medium text-white transition hover:bg-[#1d8bc1]"
+              className={`flex w-full items-center justify-center gap-2 rounded-2xl bg-[#229ED9] px-5 py-4 text-[1rem] font-medium text-white transition hover:bg-[#1d8bc1] ${
+                telegram ? "mt-4" : ""
+              }`}
             >
               <Send size={19} />
               Привязать Telegram
             </button>
-          )}
         </section>
       </div>
     </main>
