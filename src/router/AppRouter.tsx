@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "../pages/Home";
 import AppLayout from "../layout/AppLayout";
 import PaymentsPage from "../pages/Payments";
@@ -33,7 +33,7 @@ function AppRouter() {
           <Route path="/welcome" element={<WelcomePage />} />
         </Route>
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
       </Routes>
     </BrowserRouter>
   );
