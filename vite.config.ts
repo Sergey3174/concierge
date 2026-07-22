@@ -34,12 +34,6 @@ export default defineConfig({
             purpose: "any",
           },
           {
-            src: "/icon.png",
-            sizes: "512x512",
-            type: "image/png",
-            purpose: "any",
-          },
-          {
             src: "/icon-maskable.png",
             sizes: "512x512",
             type: "image/png",
@@ -49,9 +43,7 @@ export default defineConfig({
       },
     }),
   ],
-  build: {
-    outDir: "build",
-  },
+
   server: {
     host: true,
   },
