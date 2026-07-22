@@ -115,9 +115,15 @@ export function MobileDrawer({
       : guestSettingsItems;
 
   useEffect(() => {
-    if (!isOpen) {
-      setIsSettingsView(false);
+    if (isOpen) {
+      return;
     }
+
+    const frameId = window.requestAnimationFrame(() => {
+      setIsSettingsView(false);
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
   }, [isOpen]);
 
   const openLanguageSettings = () => {
@@ -139,6 +145,12 @@ export function MobileDrawer({
     if (key === "auth") {
       onClose();
       navigate("/auth");
+      return;
+    }
+
+    if (key === "telegram") {
+      onClose();
+      navigate("/account");
       return;
     }
 
