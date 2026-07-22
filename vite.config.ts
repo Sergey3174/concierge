@@ -10,6 +10,11 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
+      workbox: {
+        // API navigation requests must reach Nginx instead of receiving the
+        // PWA app shell from Workbox's navigation fallback.
+        navigateFallbackDenylist: [/^\/api\//],
+      },
       manifest: {
         name: "Concierge",
         short_name: "Concierge",
