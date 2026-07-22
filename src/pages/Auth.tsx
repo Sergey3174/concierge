@@ -28,7 +28,6 @@ function AuthPage() {
           <div className="mx-auto flex size-[6rem] items-center justify-center rounded-3xl bg-[var(--color-surface-muted)] text-[var(--color-accent)]">
             <img src={LOGO} alt="logo" />
           </div>
-          ы
           {isForgotPassword ? (
             <ForgotPasswordForm onBack={() => setIsForgotPassword(false)} />
           ) : (
