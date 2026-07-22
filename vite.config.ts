@@ -17,7 +17,7 @@ export default defineConfig({
       workbox: {
         // API navigation requests must reach Nginx instead of receiving the
         // PWA app shell from Workbox's navigation fallback.
-        navigateFallbackDenylist: [/^\/api\//],
+        navigateFallbackDenylist: [/^\/api\//, /^\/oauth\/redirect\/catch/],
       },
       manifest: {
         name: "Concierge",
