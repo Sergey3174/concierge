@@ -41,6 +41,11 @@ export type LoginUserArgs = {
   password: string;
 };
 
+export type OAuthLoginArgs = {
+  code: string;
+  state: string;
+};
+
 export type BindEmailArgs = {
   login: string;
   password: string;
@@ -279,6 +284,31 @@ export const loginUser = createAsyncThunk<
   }
 });
 
+export const loginWithOAuth = createAsyncThunk<
+  AnonymousSessionResponse,
+  OAuthLoginArgs,
+  { rejectValue: string }
+>("authUser/loginWithOAuth", async ({ code, state }, { rejectWithValue }) => {
+  try {
+    const { data } = await apiClient.get<AnonymousSessionResponse>("/api/oauth", {
+      params: { code, state },
+    });
+
+    saveAuthenticatedSession(data);
+    return data;
+  } catch (error) {
+    const message = isAxiosError(error)
+      ? (typeof error.response?.data === "string"
+          ? error.response.data
+          : error.response?.data?.message) || error.message
+      : error instanceof Error
+        ? error.message
+        : "OAuth authentication failed";
+
+    return rejectWithValue(message);
+  }
+});
+
 const authUserSlice = createSlice({
   name: "authUser",
   initialState,
@@ -339,6 +369,20 @@ const authUserSlice = createSlice({
         state.anonymousSessionStatus = "failed";
         state.anonymousSessionError =
           action.payload ?? action.error.message ?? "Unable to sign in";
+      })
+      .addCase(loginWithOAuth.pending, (state) => {
+        state.anonymousSessionStatus = "loading";
+        state.anonymousSessionError = null;
+      })
+      .addCase(loginWithOAuth.fulfilled, (state, action) => {
+        state.anonymousSession = action.payload;
+        state.anonymousSessionStatus = "succeeded";
+        state.sessionType = "authenticated";
+      })
+      .addCase(loginWithOAuth.rejected, (state, action) => {
+        state.anonymousSessionStatus = "failed";
+        state.anonymousSessionError =
+          action.payload ?? action.error.message ?? "OAuth authentication failed";
       });
   },
 });

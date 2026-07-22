@@ -9,6 +9,7 @@ import RegistrationPage from "../pages/Registration";
 import { BrowserOnlyRoute } from "./BrowserOnlyRoute";
 import ChangePasswordPage from "../pages/ChangePassword";
 import BindEmailPage from "../pages/bindEmail";
+import OAuthRedirectPage from "../pages/OAuthRedirect";
 // import { AppOnlyRoute } from "./AppOnlyRoute";
 
 function AppRouter() {
@@ -23,6 +24,7 @@ function AppRouter() {
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/registration" element={<RegistrationPage />} />
           <Route path="/bind-email" element={<BindEmailPage />} />
+          <Route path="/oauth/redirect" element={<OAuthRedirectPage />} />
           <Route path="/change-password" element={<ChangePasswordPage />} />
         </Route>
         {/* </Route> */}
