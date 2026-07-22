@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -37,6 +37,7 @@ function AppLayout() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isOpenDefaultTask, setIsOpenDefaultTask] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
+  const location = useLocation();
   const anonymousSession = useSelector(
     (state: RootState) => state.authUser.anonymousSession,
   );
@@ -71,13 +72,20 @@ function AppLayout() {
 
   useEffect(() => {
     if (
+      location.pathname !== "/oauth/redirect" &&
       sessionType !== "authenticated" &&
       anonymousSession === null &&
       anonymousSessionStatus === "idle"
     ) {
       void dispatch(createAnonymousSession());
     }
-  }, [anonymousSession, anonymousSessionStatus, dispatch, sessionType]);
+  }, [
+    anonymousSession,
+    anonymousSessionStatus,
+    dispatch,
+    location.pathname,
+    sessionType,
+  ]);
 
   useEffect(() => {
     if (sessionType === "authenticated") {
