@@ -2,13 +2,19 @@ import { useCallback, useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Browser } from "@capacitor/browser";
 
 import { DefaultTaskPicker } from "../components/DefaultTaskPicker";
 import { MobileDrawer } from "../components/MobileDrawer";
 import { SettingsEditorSheet } from "../components/SettingsEditorSheet";
 import { useAppViewport } from "../hooks/useAppViewport";
 import { useChatwootCable } from "../hooks/useChatwootCable";
-import { createAnonymousSession, fetchUserInfo } from "../store/authUserSlice";
+import { useOAuthDeepLink } from "../hooks/useOAuthDeepLink";
+import {
+  createAnonymousSession,
+  fetchUserInfo,
+  loginWithOAuth,
+} from "../store/authUserSlice";
 import {
   applyChatwootSocketMessage,
   loadChatwootChats,
@@ -61,6 +67,36 @@ function AppLayout() {
     [dispatch],
   );
 
+  const handleOAuthDeepLink = useCallback(
+    ({ code, state }: { code: string; state: string }) => {
+      void dispatch(loginWithOAuth({ code, state }))
+        .unwrap()
+        .then(async () => {
+          await Browser.close();
+          navigate("/", { replace: true });
+        })
+        .catch((error: unknown) => {
+          console.error("OAuth deep link authentication failed", error);
+          navigate("/auth", { replace: true });
+        });
+    },
+    [dispatch, navigate],
+  );
+
+  const handleAccountDeepLink = useCallback(
+    (search: string) => {
+      void Browser.close().finally(() => {
+        navigate(`/account${search}`, { replace: true });
+      });
+    },
+    [navigate],
+  );
+
+  const isDeepLinkLaunchResolved = useOAuthDeepLink({
+    onOAuthDeepLink: handleOAuthDeepLink,
+    onAccountDeepLink: handleAccountDeepLink,
+  });
+
   useChatwootCable({
     session: anonymousSession?.chatwoot,
     onMessage: handleChatwootSocketMessage,
@@ -72,6 +108,7 @@ function AppLayout() {
 
   useEffect(() => {
     if (
+      isDeepLinkLaunchResolved &&
       location.pathname !== "/oauth/redirect" &&
       sessionType !== "authenticated" &&
       anonymousSession === null &&
@@ -83,6 +120,7 @@ function AppLayout() {
     anonymousSession,
     anonymousSessionStatus,
     dispatch,
+    isDeepLinkLaunchResolved,
     location.pathname,
     sessionType,
   ]);
