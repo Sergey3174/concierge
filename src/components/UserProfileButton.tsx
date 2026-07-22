@@ -10,18 +10,21 @@ export function UserProfileButton() {
   const userInfo = useSelector(selectUserInfo);
   const [userAnimal] = useState(getUserAnimalIcon);
   const UserAnimalIcon = userAnimal.icon;
-  const userEmail = userInfo?.providers.email?.subject ?? null;
+  const telegramUsername = userInfo?.providers.telegram?.username?.trim();
+  const email = userInfo?.providers.email?.subject?.trim();
+  const telegramId = userInfo?.providers.telegram?.subject?.trim();
+  const userLabel = telegramUsername || email;
 
-  if (userEmail) {
+  if (userLabel) {
     return (
       <button
         type="button"
         className="flex items-center gap-3 rounded-full px-2 py-2 text-[var(--color-text-primary)] transition hover:bg-[var(--color-surface-soft)]"
       >
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-accent)] text-lg font-semibold text-[var(--color-accent-contrast)]">
-          {userEmail[0].toUpperCase()}
+          {userLabel[0].toUpperCase()}
         </div>
-        <span className="max-w-40 truncate text-[1.05rem]">{userEmail}</span>
+        <span className="max-w-40 truncate text-[1.05rem]">{userLabel}</span>
       </button>
     );
   }
@@ -36,7 +39,9 @@ export function UserProfileButton() {
       >
         <UserAnimalIcon size={24} />
       </div>
-      <span className="text-[1.05rem]">{t(`animals.${userAnimal.key}`)}</span>
+      <span className="max-w-40 truncate text-[1.05rem]">
+        {telegramId ?? t(`animals.${userAnimal.key}`)}
+      </span>
     </button>
   );
 }
